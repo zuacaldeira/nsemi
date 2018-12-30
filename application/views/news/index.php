@@ -1,4 +1,4 @@
-<h2><?php echo $title; ?></h2>
+<h2 class="my-5"><?php echo $title; ?></h2>
 
 
 <?php foreach($news as $news_item): ?>

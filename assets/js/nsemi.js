@@ -28,11 +28,22 @@ function handleEvents() {
         $('#id-resize').dialog({
             height: "auto",
             modal: true,
+            buttons: {
+                Resize: function(event) {
+                    event.preventDefault();
+                    requestResize();
+                    $('#id-resize').dialog("close");
+                },
+                Cancel: function() {
+                    $('#id-resize').dialog("close");
+                }
+            },
             close: function () {
-                form[0].reset();
+                $('#id-resize').dialog("close");
             }
         });
     });
+    
     $('#ia-thumbnail').on('click', function (event) {
         event.preventDefault();
         $('#id-thumbnail').dialog();
@@ -41,6 +52,7 @@ function handleEvents() {
         event.preventDefault();
         $('#id-convert').dialog();
     });
+    
 }
 
 function readURL(input) {
@@ -57,4 +69,36 @@ function readURL(input) {
 
 function enableActions() {
     $('button:disabled').prop('disabled', false);
+}
+
+function requestResize() {
+    var data   = $('#previewer img').attr('src');
+    var width  = parseInt($('#id-resize .width').val());
+    var height = parseInt($('#id-resize .height').val());
+    var name = $('#upload').val();
+    prepareThumbnails(width, height);
+    resize(width, height, data, name);
+}
+
+function prepareThumbnails(width, height) {
+}
+
+function resize(width, height, data, name) {
+    //alert('Implement ajax call / MVC Implementation');
+    $.ajax({
+        url: 'assets/php/resize_image.php',
+        method: 'POST',
+        data: {
+            width: width,
+            height: height,
+            name: name,
+            data: data
+        },
+        success: function(result){
+            $('#thumbnails').append(
+                $('<img />').attr('src', result.url)
+            );
+        },
+        error: function() {}
+    })
 }

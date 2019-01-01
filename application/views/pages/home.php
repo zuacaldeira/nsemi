@@ -29,18 +29,27 @@
 <div id="dialogs" class="d-none text-success position-absolute">
     <form id="id-resize" title="Resize Image Dialog" class="shadow text-secondary border border-secondary">
         <div class="my-1 p-1">
-            <input id="width" class="w-100" placeholder="W: "/>            
+            <input class="w-100 width" placeholder="W: "/>
         </div>
         
         <div class="p-1">
-            <input id="height" class="w-100" placeholder="H: "/>            
+            <input class="w-100 height" placeholder="H: "/>
+        </div>
+    </form>
+    
+    <div id="id-thumbnail"  title="Create Thumbnail Dialog" class="shadow text-secondary border border-secondary">
+        <div class="my-1 p-1">
+            <input class="w-100 width" placeholder="W: "/>            
+        </div>
+        
+        <div class="p-1">
+            <input class="w-100 height" placeholder="H: "/>            
         </div>
         <div class="text-right my-1 p-1">
             <button type="submit" class="btn btn-sm btn-success">Resize</button>
             <button type="reset" class="btn btn-sm btn-secondary">Cancel</button>
         </div>
-    </form>
-    <div id="id-thumbnail"></div>
+    </div>
     <div id="id-convert"></div>
 </div>
 
@@ -48,10 +57,9 @@
     <img src="" />
 </div>
 
-<div id="thumbnails" class="border border-secondary my-2" style="height: 64px;">
+<div id="thumbnails" class="border border-secondary my-2" style="min-height: 64px;">
 
 </div>
-
-<div class="clearfix">
-    <button class="btn btn-sm btn-secondary float-right">Download</button>
+<div class="">
+    <button class="btn btn-sm btn-secondary">Download</button>
 </div>

@@ -1,41 +1,79 @@
 <?php
-ob_start("ob_gzhandler");
+set_time_limit(0);
 
+ob_start("ob_gzhandler");
 require_once('./utils.php');
 header('Content-type:application/json;charset=utf-8');
 
 $name = getRequestParameter('name');
-$width = getRequestParameter('width');
-$height = getRequestParameter('height');
+$width = json_decode(getRequestParameter('width'));
+$height = json_decode(getRequestParameter('height'));
 $data = getRequestParameter('data');
+$filters = getRequestParameter('filters');
+$multiple = json_decode(getRequestParameter('multiple'));
 
 if($data == null) {
     report_error('Invalid or empty data url');
 }
 else {
-    $image = createImageFromDataUrl($data);    
-    if($image == null) {
-        report_error("Could't create image from the given data url");
+    if(!$multiple) {
+        echo json_encode(resize_single($name, $data, $width, $height, $filters));
     }
     else {
-        if($width == null || $height == null) {
-            report_error('Invalid width or height');
-        }
-        else {
-            $image_resized = resizeImage($image, $width, $height);
-            if($image_resized == null) {
-                report_error("Could't resize image");
-            }
-            else {
-                echo json_encode([
-                    'url' => toDataUrl($image_resized->getImageBlob()), 
-                    'stored' => false
-                ]);
-            }
-        }
+        echo json_encode(resize_multiple($name, $data, $width, $height, $filters));
     }
 }
 
+function resize_single($name, $data, $width, $height, $filters) {
+    $result = [];
+    $filters = ($filters != NULL) ? $filters: ["FILTER_UNDEFINED"];
+    foreach($filters as $filter) {
+        $result[] = resize_single_filter($name, $data, $width, $height, $filter);
+    }
+    return $result;
+}
+
+function resize_single_filter($name, $data, $width, $height, $filter) {
+    $f = getImagickFilter($filter);
+    $time_start = microtime(true); 
+    $image = createImageFromDataUrl($data);    
+
+    $image_resized = resizeImage(
+        $image, 
+        $width, 
+        $height, 
+        $f);    
+        
+    $time_end = microtime(true); 
+    $execution_time = ($time_end - $time_start) * 1000;
+
+    $result = [
+        'name'      => createNewName($name, $image, $width, $height, $filter),
+        'src'       => toDataUrl($image_resized->getImageBlob()),
+        'width'     => $width,
+        'height'    => $height,
+        'filter'    => $filter,
+        'size'      => $image_resized->getImageLength()/1024,
+        'time'      => $execution_time,
+        'stored'    => false
+    ];
+    
+    return $result;
+}
+
+function resize_multiple($name, $image, $dw, $dh, $filters) {
+    $W = 1080;
+    $H = 1080;
+    
+    $result = [];
+    $i = 0;
+    for($h = $dh; $h <= $H; $h += $dh) {
+        for($w = $dw; $w <= $W; $w += $dw) {
+            $result = array_merge($result, resize_single($name, $image, $w, $h, $filters));
+        }
+    }
+    return $result;
+}
 
 /**
  * Creates an imagick imgae object from the data url.
@@ -57,11 +95,34 @@ function createImageFromDataUrl($data_url) {
     return $im;
 }
 
+function getImagickFilter($filter) {
+    switch($filter) {
+        case 'FILTER_POINT': return imagick::FILTER_POINT;
+        case 'FILTER_BOX': return imagick::FILTER_BOX;
+        case 'FILTER_TRIANGLE': return imagick::FILTER_TRIANGLE;
+        case 'FILTER_HERMITE': return imagick::FILTER_HERMITE;
+        case 'FILTER_HANNING': return imagick::FILTER_HANNING;
+        case 'FILTER_HAMMING': return imagick::FILTER_HAMMING;
+        case 'FILTER_BLACKMAN': return imagick::FILTER_BLACKMAN;
+        case 'FILTER_GAUSSIAN': return imagick::FILTER_GAUSSIAN;
+        case 'FILTER_QUADRATIC': return imagick::FILTER_QUADRATIC;
+        case 'FILTER_CUBIC': return imagick::FILTER_CUBIC;
+        case 'FILTER_CATROM': return imagick::FILTER_CATROM;
+        case 'FILTER_MITCHELL': return imagick::FILTER_MITCHELL;
+        case 'FILTER_LANCZOS': return imagick::FILTER_LANCZOS;
+        case 'FILTER_BESSEL': imagick::FILTER_BESSEL;
+        case 'FILTER_SINC': imagick::FILTER_SINC;
+        case null:
+        case '':
+        case 'FILTER_UNDEFINED':
+        default: return imagick::FILTER_UNDEFINED;
+    }
+}
 
-function resizeImage($im, $width, $height) {
-    $filter = 0;
+
+function resizeImage($im, $width, $height, $filter) {
     $blur = 0.0;
-    //$im->optimizeImageLayers();
+    $im->optimizeImageLayers();
     $im->resizeImage($width, $height, $filter, $blur, false, false);
     return $im;
 }
@@ -95,13 +156,17 @@ function storeImageInDatabase($pdo, $data, $mime, $width, $height, $name) {
 
 function report_error($message) {
     http_response_code(400);
-    echo 'Error during server#resize';
+    echo 'Error during server#resize: ' . $message;
 }
 
-/*function resizeOnly($name, $width, $height, $data) {
-    $im = resizeImage($name, $width, $height, $data);
-    echo json_encode(['url' => toDataUrl($im->getImageBlob()), 'stored' => false]);
-}*/
+function createNewName($name, $image, $width, $height, $filter){
+    $pInfo = pathinfo($name);
+    
+    $new_name = implode('_', [$pInfo['filename'], $width, $height, $filter]);
+    $new_name .= '.' . $pInfo['extension'];
+    
+    return $new_name;
+}
 
 
 ob_end_flush();

@@ -35,15 +35,14 @@ function resize_single($name, $data, $width, $height, $filters) {
 
 function resize_single_filter($name, $data, $width, $height, $filter) {
     $f = getImagickFilter($filter);
-    $time_start = microtime(true); 
     $image = createImageFromDataUrl($data);    
 
+    $time_start = microtime(true); 
     $image_resized = resizeImage(
         $image, 
         $width, 
         $height, 
-        $f);    
-        
+        $f);            
     $time_end = microtime(true); 
     $execution_time = ($time_end - $time_start) * 1000;
 

@@ -16,7 +16,7 @@ $(document).ready(function () {
 });
 
 function init() {
-    $upload = $('#upload').val('');
+    $upload = $('#upload, #data').val('');
     $previewer = $('#previewer');
     $thumbnails = $('#thumbnails');
 

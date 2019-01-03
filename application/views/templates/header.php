@@ -26,7 +26,7 @@
 
     </script>
 
-    <script src="assets/js/nsemi.js"></script>
+    <script src="<?php echo base_url().'assets/js/nsemi.js'; ?>"></script>
 
 </head>
 

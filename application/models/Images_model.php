@@ -27,6 +27,7 @@ class Images_model extends CI_Model {
             'owner' => 1
         );
         
+        $this->db->reconnect();
         return $this->db->insert('image', $data);
     }
 }

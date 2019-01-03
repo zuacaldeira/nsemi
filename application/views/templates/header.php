@@ -37,6 +37,7 @@
                 <span class="nav-brand text-left text-secondary">Nsemi</span>
                 <ul class="menu list-unstyled container text-right d-inline">
                     <li class="nav-item d-inline"><a href="home">Home</a></li>
+                    <li class="nav-item d-inline"><a href="gallery">Gallery</a></li>
                     <li class="nav-item d-inline"><a href="news">News</a></li>
                 </ul>
             </div>

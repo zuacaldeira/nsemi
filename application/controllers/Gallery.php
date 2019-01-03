@@ -21,8 +21,8 @@ class Gallery extends CI_Controller {
         $config = array(
             'upload_path'   => "./uploads/",
             'allowed_types' => "gif|jpg|png|jpeg|pdf",
-            'overwrite'     => TRUE
-        );
+            'overwrite'     => TRUE,
+            'max_size'      => "2048000");
 
         $this->load->helper('form');
         $this->load->library('upload', $config);

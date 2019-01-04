@@ -9,7 +9,7 @@
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+    <link rel="stylesheet" href="<?php echo base_url().'assets/css/style.css'; ?>" />
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js">
 
@@ -30,7 +30,7 @@
 
 </head>
 
-<body class="container-fluid bg-light text-secondary m-0 p-0">
+<body class="container-fluid bg-light m-0 p-0">
     <header>
         <nav class="nav nav-bar bg-dark container-fluid">
             <div class="container my-3">
@@ -38,6 +38,7 @@
                 <ul class="menu list-unstyled container text-right d-inline">
                     <li class="nav-item d-inline"><a href="<?php echo base_url();?>home">Home</a></li>
                     <li class="nav-item d-inline"><a href="<?php echo base_url();?>gallery">Gallery</a></li>
+                    <li class="nav-item d-inline"><a href="<?php echo base_url();?>tools">Tools</a></li>
                     <li class="nav-item d-inline"><a href="<?php echo base_url();?>news">News</a></li>
                 </ul>
             </div>

@@ -10,7 +10,7 @@ class Gallery extends CI_Controller {
     
     public function index() {
         $data['images'] = $this->images_model->get_thumbs();
-        $data['title'] = 'Images Gallery';
+        $data['title'] = 'Gallery';
         
         $this->load->view('templates/header', $data);
         $this->load->view('gallery/index', $data);

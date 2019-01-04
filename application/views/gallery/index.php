@@ -6,7 +6,7 @@
     </h2>
     <div class="">
         <?php foreach($images as $item): ?>
-            <img src="<?php echo $item['data']; ?>" class="shadow mb-1 bg-transparent d-inline-block" style="min-height:150px;"/>
+            <img src="<?php echo $item['data']; ?>" class="mb-1" style="height: 150px;"/>
         <?php endforeach; ?>
     </div>
 </div>

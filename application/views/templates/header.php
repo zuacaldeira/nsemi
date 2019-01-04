@@ -36,9 +36,9 @@
             <div class="container my-3">
                 <span class="nav-brand text-left text-secondary">Nsemi</span>
                 <ul class="menu list-unstyled container text-right d-inline">
-                    <li class="nav-item d-inline"><a href="home">Home</a></li>
-                    <li class="nav-item d-inline"><a href="gallery">Gallery</a></li>
-                    <li class="nav-item d-inline"><a href="news">News</a></li>
+                    <li class="nav-item d-inline"><a href="<?php echo base_url();?>home">Home</a></li>
+                    <li class="nav-item d-inline"><a href="<?php echo base_url();?>gallery">Gallery</a></li>
+                    <li class="nav-item d-inline"><a href="<?php echo base_url();?>news">News</a></li>
                 </ul>
             </div>
         </nav>

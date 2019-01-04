@@ -3,7 +3,7 @@
         <?php echo $title; ?>
         <a class="btn btn-sm btn-primary d-inline float-right" href="gallery/create">Upload Image</a>
     </h2>
-    <div class="card-columns">
+    <div class="">
         <?php foreach($images as $item): ?>
             <img src="<?php echo $item['data']; ?>" class="card shadow" />
         <?php endforeach; ?>

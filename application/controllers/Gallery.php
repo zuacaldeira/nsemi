@@ -9,7 +9,7 @@ class Gallery extends CI_Controller {
     }
     
     public function index() {
-        $data['images'] = $this->images_model->get_images();
+        $data['images'] = $this->images_model->get_thumbs();
         $data['title'] = 'Images Gallery';
         
         $this->load->view('templates/header', $data);
@@ -29,17 +29,8 @@ class Gallery extends CI_Controller {
         
         if($this->upload->do_upload('data')) {
             $upload_data = $this->upload->data();
-            $data['data'] = $upload_data;
-            $data['name'] = $upload_data['file_name'];
-            $data['type'] = $upload_data['file_type'];
-            $data['path'] = $upload_data['file_path'];
-            //$data['width'] = $upload_data['width'];
-            //$data['height'] = $upload_data['height'];
-            $data['size'] = $upload_data['file_size'];
-            
-            $data['data_url'] = $this->toDataUrl(file_get_contents('./uploads/'.$data['name']));
-            
-            $this->images_model->set_images($data);
+            $data = $this->storeOriginal($upload_data);
+            $this->storeThumbnails($upload_data);
             $this->load->view('gallery/success', $data);
         }
         else {
@@ -52,6 +43,44 @@ class Gallery extends CI_Controller {
     
     private function toDataUrl($blob) {
         return 'data:image/jpg;base64,' . base64_encode($blob);
+    }
+    
+    private function storeOriginal($upload_data) {
+        $data['data'] = $upload_data;
+        $data['name'] = $upload_data['file_name'];
+        $data['type'] = $upload_data['file_type'];
+        $data['path'] = $upload_data['full_path'];
+        $data['size'] = $upload_data['file_size'];
+        $data['thumb'] = false;
+
+        $data['data_url'] = $this->toDataUrl(file_get_contents($data['path']));
+        $this->images_model->set_images($data);
+        return $data;
+    }
+    
+    private function storeThumbnails($upload_data) {
+        $config['image_library'] = 'gd2';
+        $config['source_image'] = $upload_data['full_path'];
+        $config['create_thumb'] = TRUE;
+        $config['maintain_ratio'] = TRUE;
+        $config['width']         = 150;
+        $config['height']       = 100;
+        
+        $this->load->library('image_lib', $config);
+        $status = $this->image_lib->resize();
+        if(!$status) {
+            echo $this->handle_error($this->image_lib->display_errors());
+        }
+        else {
+            $data['name'] = $upload_data['raw_name'] . "_thumb" . $upload_data['file_ext'] ;
+            $data['type'] = 'image/'.$upload_data['image_type'];
+            $data['path'] = $upload_data['file_path'].$data['name'];
+            $data['data_url'] = $this->toDataUrl(file_get_contents($data['path']));
+            $data['thumb'] = true;
+
+            $this->images_model->set_images($data);
+            return $data;
+        }
     }
     
 }

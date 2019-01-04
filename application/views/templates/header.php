@@ -31,15 +31,19 @@
 </head>
 
 <body class="container-fluid bg-light m-0 p-0">
-    <header>
-        <nav class="nav nav-bar bg-dark container-fluid">
-            <div class="container my-3">
-                <span class="nav-brand text-left text-secondary">Nsemi</span>
-                <ul class="menu list-unstyled container text-right d-inline">
+    <header class="container-fluid bg-dark pt-3">
+        <nav class="container">
+            <div class="row">
+                <span class="col-auto nav-brand text-secondary">Nsemi</span>
+                <ul class="col list-unstyled">
                     <li class="nav-item d-inline"><a href="<?php echo base_url();?>home">Home</a></li>
                     <li class="nav-item d-inline"><a href="<?php echo base_url();?>gallery">Gallery</a></li>
                     <li class="nav-item d-inline"><a href="<?php echo base_url();?>tools">Tools</a></li>
                     <li class="nav-item d-inline"><a href="<?php echo base_url();?>news">News</a></li>
+                </ul>
+                <ul class="col list-unstyled text-right">
+                    <li class="d-inline"><a class="btn btn-sm btn-success" href="<?php echo base_url();?>login">Login</a></li>
+                    <li class="d-inline"><a class="btn btn-sm btn-success" href="<?php echo base_url();?>register">Register</a></li>
                 </ul>
             </div>
         </nav>

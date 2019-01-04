@@ -30,8 +30,11 @@ class Gallery extends CI_Controller {
         if($this->upload->do_upload('data')) {
             $upload_data = $this->upload->data();
             $data = $this->storeOriginal($upload_data);
-            $this->storeThumbnails($upload_data);
+            $data = $this->storeThumbnails($upload_data);
+            
+            $this->load->view('templates/header');
             $this->load->view('gallery/success', $data);
+            $this->load->view('templates/footer');
         }
         else {
             $error = array('error' => $this->upload->display_errors());
@@ -63,8 +66,8 @@ class Gallery extends CI_Controller {
         $config['source_image'] = $upload_data['full_path'];
         $config['create_thumb'] = TRUE;
         $config['maintain_ratio'] = TRUE;
-        $config['width']         = 150;
-        $config['height']       = 100;
+        $config['width']         = 225;
+        $config['height']       = 150;
         
         $this->load->library('image_lib', $config);
         $status = $this->image_lib->resize();

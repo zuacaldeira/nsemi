@@ -43,4 +43,4 @@
             </div>
         </nav>
     </header>
-    <main class="container">
+    <main class="container" style="min-height: 100vh;">

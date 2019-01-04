@@ -5,7 +5,7 @@
     </h2>
     <div class="">
         <?php foreach($images as $item): ?>
-            <img src="<?php echo $item['data']; ?>" class="card shadow" />
+            <img src="<?php echo $item['data']; ?>" class="card shadow d-inline" />
         <?php endforeach; ?>
     </div>
 </div>

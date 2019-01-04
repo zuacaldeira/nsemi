@@ -30,7 +30,7 @@
 
 </head>
 
-<body>
+<body class="container-fluid bg-light text-secondary m-0 p-0">
     <header>
         <nav class="nav nav-bar bg-dark container-fluid">
             <div class="container my-3">

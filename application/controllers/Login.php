@@ -30,12 +30,13 @@ class Login extends CI_COntroller {
         }
         else {
             $result = $this->users_model->login_user();
-            if(!result) {
+            if(!$result) {
                 $this->load->view('templates/header');
                 $this->load->view("login/index");
                 $this->load->view('templates/footer');
             }
             else {
+                $this->session->set_userdata(array('username' => $this->input->post('username')));
                 $this->load->view('templates/header');
                 $this->load->view("login/success");
                 $this->load->view('templates/footer');

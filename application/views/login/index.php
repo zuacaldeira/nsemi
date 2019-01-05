@@ -16,7 +16,7 @@
 
    <div class="input-group my-1 w-100 p-3">
        <button id="btn-cancel" type="reset" class="btn btn-sm btn-danger m-1">Reset</button>
-       <button id="btn-register" type="submit" class="btn btn-sm btn-success m-1">Register</button>
+       <button id="btn-login" type="submit" class="btn btn-sm btn-success m-1">Login</button>
     </div>
 
 </form>

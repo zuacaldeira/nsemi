@@ -12,25 +12,19 @@
     <link rel="stylesheet" href="<?php echo base_url().'assets/css/style.css'; ?>" />
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js">
-
-
     </script>
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js">
-
-
     </script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" type="text/javascript">
-
-
     </script>
-
-    <script src="<?php echo base_url().'assets/js/nsemi.js'; ?>"></script>
-
 </head>
 
 <body class="container-fluid bg-light m-0 p-0">
+   <?php 
+        $username = $this->session->userdata('username');
+    ?>
     <header class="container-fluid bg-dark pt-3">
         <nav class="container">
             <div class="row">
@@ -42,10 +36,16 @@
                     <li class="nav-item d-inline"><a href="<?php echo base_url();?>news">News</a></li>
                 </ul>
                 <ul class="col list-unstyled text-right">
-                    <li class="d-inline"><a class="btn btn-sm btn-success" href="<?php echo base_url();?>login">Login</a></li>
-                    <li class="d-inline"><a class="btn btn-sm btn-success" href="<?php echo base_url();?>register">Register</a></li>
+                   <?php if($username != null): ?>
+                        <li id="logout" class="d-inline"><a class="btn btn-sm btn-danger" href="<?php echo base_url();?>logout">Logout</a></li>
+                    <?php else: ?>
+                        <li id="login" class="d-inline"><a class="btn btn-sm btn-success" href="<?php echo base_url();?>login">Login</a></li>
+                        <li id="register"  class="d-inline"><a class="btn btn-sm btn-success" href="<?php echo base_url();?>register">Register</a></li>                    
+                    <?php endif; ?>
+                    
                 </ul>
             </div>
         </nav>
     </header>
     <main class="container" style="min-height: 100vh;">
+

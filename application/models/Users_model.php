@@ -20,9 +20,6 @@ class Users_model extends CI_Model {
     }
     
     public function set_users() {
-        $this->load->helper('url');
-        $slug = url_title($this->input->post('title'), 'dash', TRUE);
-        
         $data = array(
             'firstname' => $this->input->post('firstname'),
             'lastname' => $this->input->post('lastname'),
@@ -32,6 +29,28 @@ class Users_model extends CI_Model {
         );
         
         return $this->db->insert('users', $data);
+    }
+    
+    public function login_user() {
+        $data = array(
+            'username' => $this->input->post('username'),
+            'password' => $this->input->post('password'),
+        );
+        
+        $user = $this->get_users($data['username']);
+        if($user != null) {
+            $this->db->set('is_logged_in', true);
+            $this->db->where(
+                array(
+                    'username' => $data['username'], 
+                    'password' => $data['password']
+                )
+            );
+            $result = $this->db->update('users');
+            return $result;
+        }
+        
+        return false;
     }
     
 }

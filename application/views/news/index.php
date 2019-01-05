@@ -1,8 +1,8 @@
 <?php 
     $username = $this->session->userdata('username');
 ?>
-<div id="news">
-    <h2 class="my-5">
+<div id="news" class="my-5">
+    <h2 class="py-5">
         <?php echo $title; ?>
         <small class="text-muted">(<?php echo count($news); ?> articles)</small>
         <?php if($username != null): ?>

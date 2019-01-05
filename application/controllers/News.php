@@ -41,13 +41,14 @@ class News extends CI_Controller {
     public function create() {
         $this->load->helper('form');
         $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
+
         
-        $data['title'] = 'Create a news item';
-        
-        $this->form_validation->set_rules('title', 'Title', 'required');
-        $this->form_validation->set_rules('text', 'Text', 'required');
+        $this->form_validation->set_rules('title', 'Title', 'required|trim');
+        $this->form_validation->set_rules('text', 'Text', 'required|trim');
         
         if($this->form_validation->run() === FALSE) {
+            $data['title'] = 'You are writing a new article...';
             $this->load->view('templates/header', $data);
             $this->load->view('news/create');
             $this->load->view('templates/footer');

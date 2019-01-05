@@ -8,6 +8,8 @@ class Login extends CI_COntroller {
     }
     
     public function index() {
+        $referrer = $this->agent->referrer();
+        
         $this->load->helper(array('url', 'form'));
         $this->load->library('form_validation');#
         $this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
@@ -36,10 +38,13 @@ class Login extends CI_COntroller {
                 $this->load->view('templates/footer');
             }
             else {
-                $this->session->set_userdata(array('username' => $this->input->post('username')));
-                $this->load->view('templates/header');
-                $this->load->view("login/success");
-                $this->load->view('templates/footer');
+                
+                $username = $this->input->post('username');
+                $data = array('username' => $username);
+                
+                $this->session->set_userdata($data);
+                
+                redirect($referrer);
             }
         }
 

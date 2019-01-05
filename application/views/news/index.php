@@ -1,8 +1,13 @@
+<?php 
+    $username = $this->session->userdata('username');
+?>
 <div id="news">
     <h2 class="my-5">
         <?php echo $title; ?>
-    <a class="btn btn-sm btn-primary d-inline float-right" href="news/create">Write Article</a>
-    <small class="text-muted">(<?php echo count($news); ?> articles)</small>
+        <small class="text-muted">(<?php echo count($news); ?> articles)</small>
+        <?php if($username != null): ?>
+            <a class="btn btn-sm btn-primary d-inline float-right" href="news/create">Write Article</a>
+        <?php endif; ?>
     </h2>
 
 

@@ -33,7 +33,7 @@ class Images_model extends CI_Model {
             'slug' => $slug,
             'mime_type' => $image['type'],
             'data'      => $image['data_url'],
-            'owner' => 1,
+            'owner' => $image['owner'],
             'thumb' => $image['thumb']
         );        
         return $this->db->insert('image', $data);

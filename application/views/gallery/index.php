@@ -1,7 +1,12 @@
+<?php 
+    $username = $this->session->userdata('username'); 
+?>  
 <div id="gallery" class="container-fluid">
     <h2 class="my-5 clearfix sticky-top bg-light py-3 shadow px-2">
         <?php echo $title; ?>
-        <a class="btn btn-sm btn-primary d-inline float-right" href="gallery/create">Upload Image</a>
+        <?php if($username != null): ?>
+            <a class="btn btn-sm btn-primary d-inline float-right" href="gallery/create">Upload Image</a>
+        <?php endif; ?>
         <small class="text-muted">(<?php echo count($images); ?> images)</small>
     </h2>
     <div class="">

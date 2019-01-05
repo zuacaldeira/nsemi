@@ -29,12 +29,11 @@ class Gallery extends CI_Controller {
         
         if($this->upload->do_upload('data')) {
             $upload_data = $this->upload->data();
+            $upload_data['owner'] = $this->session->userdata('username');
             $data = $this->storeOriginal($upload_data);
             $data = $this->storeThumbnails($upload_data);
             
-            $this->load->view('templates/header');
-            $this->load->view('gallery/success', $data);
-            $this->load->view('templates/footer');
+            redirect('/gallery');
         }
         else {
             $error = array('error' => $this->upload->display_errors());
@@ -55,6 +54,7 @@ class Gallery extends CI_Controller {
         $data['path'] = $upload_data['full_path'];
         $data['size'] = $upload_data['file_size'];
         $data['thumb'] = false;
+        $data['owner'] = $upload_data['owner'];
 
         $data['data_url'] = $this->toDataUrl(file_get_contents($data['path']));
         $this->images_model->set_images($data);
@@ -80,6 +80,7 @@ class Gallery extends CI_Controller {
             $data['path'] = $upload_data['file_path'].$data['name'];
             $data['data_url'] = $this->toDataUrl(file_get_contents($data['path']));
             $data['thumb'] = true;
+            $data['owner'] = $upload_data['owner'];
 
             $this->images_model->set_images($data);
             return $data;

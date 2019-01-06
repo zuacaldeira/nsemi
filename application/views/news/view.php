@@ -7,7 +7,7 @@
         <p class="author clearfix">
             <span>by <i><?php echo $author; ?></i></span> | <span class="date small"><?php echo $date; ?></span>
             <?php if($owner == $session_user): ?>
-            <button id="edit" class="btn btn-sm btn-primary float-right"><i></i>Edit Article</button>
+            <a id="edit" class="btn btn-sm btn-primary float-right" href="<?php echo base_url().'news/update/'.$slug; ?>"><i></i>Edit Article</a>
             <?php endif; ?>
         </p>
     </div>

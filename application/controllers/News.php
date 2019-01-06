@@ -31,6 +31,9 @@ class News extends CI_Controller {
         $data['date'] = $article['updatedAt'];
         $data['text'] = $article['text'];
         $data['owner'] = $user['username'];
+        $data['slug'] = $article['slug'];
+        $data['id'] = $article['id'];
+        
         $data['session_user'] = $this->session->userdata('username');
         
         $this->load->view('templates/header', $data);
@@ -58,4 +61,37 @@ class News extends CI_Controller {
             $this->load->view('news/success');
         }
     }
+    
+    public function update($slug = NULL) {
+        if($slug === NULL) {
+            show_404();
+        }
+        
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
+
+        
+        $this->form_validation->set_rules('title', 'Title', 'required|trim');
+        $this->form_validation->set_rules('text', 'Text', 'required|trim');
+        
+        if($this->form_validation->run() === FALSE) {
+            $data['title'] = 'You are updating a new article...';
+            
+            $article = $this->news_model->get_news($slug);
+            $_POST['title'] = $article['title'];
+            $_POST['text'] = $article['text'];
+            $_POST['slug'] = $article['slug'];
+            
+            $this->load->view('templates/header', $data);
+            $this->load->view('news/create');
+            $this->load->view('templates/footer');
+        }
+        else {
+            $_POST['slug'] = $slug;
+            $this->news_model->set_news();
+            $this->load->view('news/success');
+        }
+    }
+
 }

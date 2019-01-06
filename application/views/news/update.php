@@ -7,7 +7,7 @@
 </div>
 
 <div>
-    <?php echo form_open('news/create'); ?>
+    <?php echo form_open('news/update'); ?>
 
     <div>
         <label for="title" class="w-100">Title</label>
@@ -27,18 +27,9 @@
         <?php echo form_error('text'); ?>         
     </div>
 
-    <div>
-            <input 
-                class="w-100" 
-                type="input" 
-                name="slug" 
-                value="<?php echo set_value('slug'); ?>"
-                hidden/>
-    </div>
-
     <div class="my-4">
         <input type="reset" name="cancel" value="Clear" class="btn btn-small btn-danger" />
-        <input type="submit" name="submit" value="Save" class="btn btn-small btn-success" />
+        <input type="submit" name="submit" value="Update article" class="btn btn-small btn-success" />
     </div>
 
     </form>

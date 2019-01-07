@@ -2,7 +2,7 @@
     $username = $this->session->userdata('username'); 
 ?>  
 <div id="gallery" class="container-fluid">
-    <h2 class="my-5 clearfix sticky-top bg-light py-3 px-2">
+    <h2 class="my-5 clearfix sticky-top py-3 px-2">
         <?php echo $title; ?>
         <?php if($username != null): ?>
             <a class="btn btn-sm btn-primary d-inline float-right" href="gallery/create">Upload Image</a>

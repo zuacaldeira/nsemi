@@ -1,6 +1,6 @@
 <h2 class="my-5"><?php echo $title; ?></h2>
 
-<div class="clearfix my-1 sticky-top bg-light py-3">
+<div class="clearfix my-1 sticky-left py-3">
     <input id="upload" type="file" name="original" class="float-left" required />
     <div id="iactions" class="float-right m-0">
         <button id="ia-resize" class="btn btn-sm btn-outline-secondary" title="Resize Image" style="border-radius: 50%; width: 32px; height: 32px;" disabled>
@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <div id="thumbnails" class="shadow my-2 mx-auto px-auto container">
+    <div id="thumbnails" class="shadow m-0 p-0 container-fluid text-dark">
 
     </div>
 </div>

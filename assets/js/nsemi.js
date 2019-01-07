@@ -160,11 +160,11 @@ function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
     
-    var $card = $('<div class="card small shadow d-inline-block m-1">')
+    var $card = $('<div class="card small shadow d-inline-block mt-2">')
         .css({width: '' + (width + 1)});
     
-    var $cardHeader = $('<div class="card-header p-0"/>');
-    var $cardImage = $('<img class="card-image p-0"/>')
+    var $cardHeader = $('<div class="card-header bg-transparent p-0"/>');
+    var $cardImage = $('<img class="card-image  rounded p-0"/>')
         .attr('src', image.src)
         .appendTo($cardHeader);
 

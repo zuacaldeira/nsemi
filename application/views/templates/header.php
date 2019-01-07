@@ -19,13 +19,19 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" type="text/javascript">
     </script>
+    
+    <script src="<?php echo base_url().'assets/js/nsemi.js'; ?>"></script>
+
+    <script src="<?php echo base_url().'assets/js/page_background.js'; ?>"></script>
+    
+    
 </head>
 
-<body class="container-fluid bg-light m-0 p-0">
+<body class="container-fluid m-0 p-0 "  style="min-height: 100vh;">
    <?php 
         $username = $this->session->userdata('username');
     ?>
-    <header class="container-fluid bg-dark pt-3">
+    <header class="container-fluid pt-3 shadow">
         <nav class="container">
             <div class="row">
                 <span class="col-auto nav-brand text-secondary">Nsemi</span>
@@ -47,5 +53,5 @@
             </div>
         </nav>
     </header>
-    <main class="container" style="min-height: 100vh;">
+    <main class="container text-light" style="min-height:80vh;">
 

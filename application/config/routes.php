@@ -61,7 +61,6 @@ $route['gallery/create'] = 'gallery/create';
 $route['gallery/(:any)'] = 'gallery/view/$1';
 $route['gallery'] = 'gallery';
 $route['news/create'] = 'news/create';
-$route['news/update'] = 'news';
 $route['news/update/(:any)'] = 'news/update/$1';
 $route['news/(:any)'] = 'news/view/$1';
 $route['news'] = 'news';

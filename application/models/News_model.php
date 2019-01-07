@@ -34,6 +34,7 @@ class News_model extends CI_Model {
             
         }
 
+        $_POST['slug'] = $data['slug'];
         return $this->db->replace('news', $data);
     }
 }

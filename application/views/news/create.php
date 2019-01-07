@@ -41,7 +41,7 @@
                 type="text" 
                 name="id" 
                 value="<?php echo set_value('id'); ?>"
-                />
+                hidden/>
     </div>
 
     <div>
@@ -50,7 +50,7 @@
                 type="text" 
                 name="createdAt" 
                 value="<?php echo set_value('createdAt'); ?>"
-                />
+                hidden/>
     </div>
 
    <div class="my-4">

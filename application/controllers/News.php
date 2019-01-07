@@ -5,7 +5,7 @@ class News extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('news_model');
-        $this->load->helper('url_helper');
+        $this->load->helper('url');
     }
     
     public function index() {
@@ -58,7 +58,9 @@ class News extends CI_Controller {
         }
         else {
             $this->news_model->set_news();
-            $this->load->view('news/success');
+            $new_slug = url_title($this->input->post('title'), 'dash', TRUE);
+            
+            redirect("news/$new_slug");
         }
     }
     
@@ -90,12 +92,18 @@ class News extends CI_Controller {
             $this->load->view('templates/footer');
         }
         else {
-            /*$_POST['slug'] = $slug;
-            $_POST['id'] = $article['id'];
-            $_POST['createdAt'] = $article['createdAt'];
+            /*
+                $_POST['slug'] = $slug;
+                $_POST['id'] = $article['id'];
+                $_POST['createdAt'] = $article['createdAt'];
             */
+            /*
+                IT WILL NEVER COME HERE BECAUSE FORM ACTION IS CREATE!!!
             $this->news_model->set_news();
-            $this->load->view('news/success');
+            $new_slug = url_title($this->input->post('title'), 'dash', TRUE);
+            
+            redirect("news/view/$new_slug");
+            */
         }
     }
 

@@ -75,20 +75,25 @@ class News extends CI_Controller {
         $this->form_validation->set_rules('title', 'Title', 'required|trim');
         $this->form_validation->set_rules('text', 'Text', 'required|trim');
         
+        $article = $this->news_model->get_news($slug);
         if($this->form_validation->run() === FALSE) {
             $data['title'] = 'You are updating a new article...';
             
-            $article = $this->news_model->get_news($slug);
             $_POST['title'] = $article['title'];
             $_POST['text'] = $article['text'];
             $_POST['slug'] = $article['slug'];
+            $_POST['id'] = $article['id'];
+            $_POST['createdAt'] = $article['createdAt'];
             
             $this->load->view('templates/header', $data);
             $this->load->view('news/create');
             $this->load->view('templates/footer');
         }
         else {
-            $_POST['slug'] = $slug;
+            /*$_POST['slug'] = $slug;
+            $_POST['id'] = $article['id'];
+            $_POST['createdAt'] = $article['createdAt'];
+            */
             $this->news_model->set_news();
             $this->load->view('news/success');
         }

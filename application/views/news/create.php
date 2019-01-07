@@ -30,13 +30,30 @@
     <div>
             <input 
                 class="w-100" 
-                type="input" 
+                type="text" 
                 name="slug" 
                 value="<?php echo set_value('slug'); ?>"
                 hidden/>
     </div>
+    <div>
+            <input 
+                class="w-100" 
+                type="text" 
+                name="id" 
+                value="<?php echo set_value('id'); ?>"
+                />
+    </div>
 
-    <div class="my-4">
+    <div>
+            <input 
+                class="w-100" 
+                type="text" 
+                name="createdAt" 
+                value="<?php echo set_value('createdAt'); ?>"
+                />
+    </div>
+
+   <div class="my-4">
         <input type="reset" name="cancel" value="Clear" class="btn btn-small btn-danger" />
         <input type="submit" name="submit" value="Save" class="btn btn-small btn-success" />
     </div>

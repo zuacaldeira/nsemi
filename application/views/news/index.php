@@ -16,10 +16,12 @@
         <h3>
             <?php echo $news_item['title']; ?>
         </h3>
-        <div class="main">
-            <?php echo $news_item['text'];  ?>
+        <div class="body">
+            <?php   
+                echo $news_item['summary']; 
+            ?>
+            <a class="display-inline" href="<?php echo base_url().'news/'.$news_item['slug']; ?>">Read more</a>
         </div>
-        <p><a href="<?php echo base_url().'news/'.$news_item['slug']; ?>">View Article</a></p>
     </div>
 
     <?php endforeach; ?>

@@ -14,7 +14,7 @@
         <h2>
             <input 
                 class="w-100" 
-                type="input" 
+                type="text" 
                 name="title" 
                 value="<?php echo set_value('title'); ?>"/>
             <?php echo '<small>'.form_error('title').'</small>'; ?>         
@@ -22,6 +22,12 @@
     </div>
 
     <div>
+        <label for="summary" class="w-100">Abstract</label>
+            <textarea class="w-100" name="summary" rows="5"><?php echo set_value('summary'); ?></textarea>
+            <?php echo '<small>'.form_error('summary').'</small>'; ?>         
+    </div>
+
+   <div>
         <label for="text" class="w-100">Text</label>
         <textarea name="text" class="w-100" rows="10"><?php echo set_value('text'); ?></textarea>
         <?php echo form_error('text'); ?>         

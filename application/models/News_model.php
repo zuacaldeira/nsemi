@@ -22,6 +22,7 @@ class News_model extends CI_Model {
         $data = array(
             'slug' => url_title($this->input->post('title'), 'dash', TRUE),
             'title' => remove_invisible_characters($this->input->post('title')),
+            'summary' => remove_invisible_characters($this->input->post('summary')),
             'text' => remove_invisible_characters($this->input->post('text')),
             'author' => $this->session->userdata('username'),
             'updatedAt' => NULL

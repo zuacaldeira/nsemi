@@ -33,6 +33,7 @@ class News extends CI_Controller {
         $data['owner'] = $user['username'];
         $data['slug'] = $article['slug'];
         $data['id'] = $article['id'];
+        $data['summary'] = $article['summary'];
         
         $data['session_user'] = $this->session->userdata('username');
         
@@ -49,6 +50,7 @@ class News extends CI_Controller {
         
         $this->form_validation->set_rules('title', 'Title', 'required|trim');
         $this->form_validation->set_rules('text', 'Text', 'required|trim');
+        $this->form_validation->set_rules('summary', 'Summary', 'required|trim');
         
         if($this->form_validation->run() === FALSE) {
             $data['title'] = 'You are writing a new article...';
@@ -86,6 +88,7 @@ class News extends CI_Controller {
             $_POST['slug'] = $article['slug'];
             $_POST['id'] = $article['id'];
             $_POST['createdAt'] = $article['createdAt'];
+            $_POST['summary'] = $article['summary'];
             
             $this->load->view('templates/header', $data);
             $this->load->view('news/create');

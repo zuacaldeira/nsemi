@@ -31,6 +31,6 @@
             position: 'fixed',
             top: '1.1em',
             right: '2em'
-        });
+        }).fadeIn(10000);
     });
 </script>

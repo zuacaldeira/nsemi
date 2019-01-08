@@ -7,22 +7,26 @@
 
     <title>Nsemi Image Processing</title>
 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+          
     <link rel="stylesheet" href="<?php echo base_url().'assets/css/style.css'; ?>" />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js">
+   
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js">
-
-
-    </script>
-
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" type="text/javascript">
-
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea'
+        });
 
     </script>
 
@@ -38,7 +42,7 @@
         $username = $this->session->userdata('username');
     ?>
     <header class="container-fluid shadow">
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg container">
             <a class="navbar-brand shadow pb-0 h1 btn btn-sm" href="#">Nsemi</a>
 
             <ul class="navbar-nav mr-auto">

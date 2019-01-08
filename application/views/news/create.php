@@ -67,3 +67,12 @@
     </form>
 
 </div>
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $('textarea').jqte();
+    });
+</script>

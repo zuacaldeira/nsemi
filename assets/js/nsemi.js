@@ -65,6 +65,7 @@ function handleEvents() {
     });
     
     $('#by-filename, #by-width, #by-height, #by-size, #by-filter').on('click', function(event){
+        event.preventDefault();
         var $this = $(this);
         $this.parent().find('.active').removeClass('active');
         $this.addClass('active');
@@ -160,7 +161,7 @@ function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
     
-    var $card = $('<div class="small shadow d-inline-block m-2">')
+    var $card = $('<div class="single-image small shadow d-inline-block m-2">')
         .css({width: '' + (width + 1)});
     
     var $cardHeader = $('<div class="bg-transparent p-0"/>');
@@ -202,7 +203,7 @@ function createImageDetailLine(label, data) {
 }
 
 function sortImagesBy(criteria) {
-    var $images = $('.card');
+    var $images = $('.single-image');
     
     switch(criteria) {
         case 'by-filename':

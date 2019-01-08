@@ -1,0 +1,7 @@
+body {
+    background: linear-gradient(to bottom right, black, #1d1e30);
+}
+
+header nav a.nav-link {
+    color: #ddd;
+}

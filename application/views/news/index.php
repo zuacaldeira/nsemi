@@ -12,11 +12,11 @@
 
 
     <?php foreach($news as $news_item): ?>
-    <div class="border-bottom py-3">
-        <h3>
+    <div class="my-3 p-3 shadow">
+        <h3 class="border-bottom border-secondary">
             <?php echo $news_item['title']; ?>
         </h3>
-        <div class="body">
+        <div class="body text-justify text-muted">
             <?php   
                 echo $news_item['summary']; 
             ?>

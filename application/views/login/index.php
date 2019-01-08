@@ -1,6 +1,5 @@
 <h2 class="my-5 w-50 mx-auto">Login From</h2>
-
-<?php echo form_open('login'); ?>      
+<?php echo form_open('login/index'); ?>      
        
     <div class="input-group my-1 w-100 p-3">
         <label for="username" class="w-100">Username</label>

@@ -7,6 +7,7 @@ class Logout extends CI_Controller {
     
     public function index() {
         $this->session->unset_userdata('username');
-        redirect($_SERVER['HTTP_REFERER']);
+        $this->session->unset_userdata('referrer');
+        redirect($this->agent->referrer());
     }
 }

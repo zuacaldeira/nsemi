@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <div id="thumbnails" class="shadow m-0 p-0 container-fluid text-dark">
+    <div id="thumbnails" class="m-0 p-0 container-fluid">
 
     </div>
 </div>

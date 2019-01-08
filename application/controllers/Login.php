@@ -9,7 +9,7 @@ class Login extends CI_COntroller {
     
     public function index() {
         $this->load->helper(array('url', 'form'));
-        $this->load->library('form_validation');#
+        $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
         
         $this->form_validation->set_rules(
@@ -22,6 +22,11 @@ class Login extends CI_COntroller {
             'Password', 
             'trim|required'
         );
+
+        if(!strpos( $this->agent->referrer(), 'login' )) {
+            $this->session->set_userdata('referrer', $this->agent->referrer());
+        }
+        
 
         if($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header');
@@ -37,27 +42,31 @@ class Login extends CI_COntroller {
             }
             else {
                 $username = $this->input->post('username');
-                $data = array('username' => $username);
+                $this->session->set_userdata('username', $username);
                 
-                $this->session->set_userdata($data);
-                
-                $referrer = $this->agent->referrer();
-                redirect($referrer);
+                $data = array(
+                    'username' => $this->session->userdata('username'), 
+                    'referrer' => $this->session->userdata('referrer')
+                );
+                $this->load->view('login/success', $data);
+                redirect($this->session->userdata('referrer'));
             }
         }
 
     }
+    
+    private function startsWith($haystack, $needle) {
+        // search backwards starting from haystack length characters from the end
+        return $needle === ''
+          || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+    }
+
+    private function endsWith($haystack, $needle) {
+        // search forward starting from end minus needle length characters
+        if ($needle === '') {
+            return true;
+        }
+        $diff = \strlen($haystack) - \strlen($needle);
+        return $diff >= 0 && strpos($haystack, $needle, $diff) !== false;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

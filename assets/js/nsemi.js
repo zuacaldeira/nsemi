@@ -61,7 +61,7 @@ function handleEvents() {
     
     $('#btn-details').on('click', function(event){
         event.preventDefault();
-        $('#thumbnails .card-body').toggle();
+        $('#thumbnails .details').toggle();
     });
     
     $('#by-filename, #by-width, #by-height, #by-size, #by-filter').on('click', function(event){
@@ -160,15 +160,15 @@ function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
     
-    var $card = $('<div class="card small shadow d-inline-block mt-2">')
+    var $card = $('<div class="small shadow d-inline-block m-2">')
         .css({width: '' + (width + 1)});
     
-    var $cardHeader = $('<div class="card-header bg-transparent p-0"/>');
-    var $cardImage = $('<img class="card-image  rounded p-0"/>')
+    var $cardHeader = $('<div class="bg-transparent p-0"/>');
+    var $cardImage = $('<img class="image rounded p-0"/>')
         .attr('src', image.src)
         .appendTo($cardHeader);
 
-    var $cardBody = $('<div class="card-body">');
+    var $cardBody = $('<div class="details p-2">');
     
     var $filename = createImageDetailLine('Filename', image.name);
     var $size = createImageDetailLine('Size', image.size.toFixed(2) + ' KB');
@@ -176,11 +176,11 @@ function addNewImageCard(image) {
     var $filter = createImageDetailLine('Filter', image.filter);
     var $time = createImageDetailLine('Time', image.time.toFixed(3) + ' ms');
     
-    var $cardTitle = $('<div class="card-title clearfix"/>')
+    var $cardTitle = $('<div class="clearfix"/>')
         .append($filename)
         .appendTo($cardBody);
     
-    var $cardText = $('<div class="card-text clearfix"/>')
+    var $cardText = $('<div class="clearfix"/>')
         .append($dimensions)
         .append($filter)
         .append($size)

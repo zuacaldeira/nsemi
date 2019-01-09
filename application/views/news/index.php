@@ -1,13 +1,14 @@
 <?php 
     $username = $this->session->userdata('username');
 ?>
+<?php if($username != null && $username == 'zuacaldeira'): ?>
+    <a id="write" class="btn btn-sm btn-warning" href="news/create"><i class="fas fa-edit"></i> Write</a>
+<?php endif; ?>
+
 <div id="news" class="my-5">
     <h2 class="py-5">
         <?php echo $title; ?>
         <small class="text-muted">(<?php echo count($news); ?> articles)</small>
-        <?php if($username != null): ?>
-        <a class="btn btn-sm btn-primary d-inline float-right" href="news/create">Write Article</a>
-        <?php endif; ?>
     </h2>
 
 
@@ -26,3 +27,12 @@
 
     <?php endforeach; ?>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#write')
+            .prependTo($('#actions'))
+            .addClass('mr-1')
+            .fadeIn(10000);
+    });
+</script>

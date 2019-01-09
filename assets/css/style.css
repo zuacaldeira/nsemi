@@ -6,6 +6,6 @@ header nav a.nav-link {
     color: #ddd;
 }
 
-#edit {
- display: none;   
+#edit, #write {
+ display: none;
 }

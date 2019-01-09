@@ -27,10 +27,9 @@
 
 <script>
     $(document).ready(function() {
-        $('#edit').css({
-            position: 'fixed',
-            top: '1.1em',
-            right: '2em'
-        }).fadeIn(10000);
+        $('#edit')
+            .prependTo($('#actions'))
+            .addClass('mr-1')
+            .fadeIn(10000);
     });
 </script>

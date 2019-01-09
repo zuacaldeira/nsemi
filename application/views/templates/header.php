@@ -25,7 +25,18 @@
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script>
         tinymce.init({
-            selector: 'textarea'
+            selector: 'textarea',
+            height: 500,
+            menubar: false,
+            plugins: [
+            'advlist autolink lists link image charmap print preview anchor textcolor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table contextmenu paste code help wordcount'
+            ],
+            toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | code',
+            content_css: [
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//www.tinymce.com/css/codepen.min.css']
         });
 
     </script>
@@ -59,7 +70,7 @@
                     <a class="nav-link btn" href="<?php echo base_url();?>news">News</a>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto">
+            <ul id="actions" class="navbar-nav ml-auto">
                 <?php if($username != null): ?>
                 <li id="logout" class="nav-item">
                     <a class="btn btn-sm btn-danger" href="<?php echo base_url();?>logout">Logout</a>

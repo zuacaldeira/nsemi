@@ -1,0 +1,100 @@
+
+A Database Error Occurred
+
+Error Number: 1048
+
+Column 'author' cannot be null
+
+REPLACE INTO `news` (`slug`, `title`, `summary`, `text`, `author`, `updatedAt`, `id`, `createdAt`) VALUES ('introduction-to-nsemi-part-2-conceptual-model', 'Introduction to Nsemi, Part 2: Conceptual Model', '
+
+The first step towards a correct software solution given an informal description and list of requirements is to extract the core concepts, actors and actions and build a Conceptual Model. Conceptual Modelling give us a first opportunity to formalize the system specification by translation of these concepts, actors and actions into Entities and Relationship between them. In this article we review the problem description and requirements list a produce a simple Entity Relationship Model that will expose the system core structure and functionality.
+', '
+Users, Roles and Accounts
+\r\n
+
+Most people interacting with the system will do it with one of two possible roles:
+Guests
+and
+Registered Users
+. Registered Users are those who create an account to access extra functionality upon login. Guest users represent the role of a user not loged in. We don\'t keep track of guests explicitly because we do not capture any data around on them: they are a kind of anonymous users.
+\r\n
+
+For registered users we capture the
+first name(s), surname(s), email, password
+, and other information that the user decides to share with us. The same user can in a single session change roles via login and logout operations. Internally we have two aditional roles to interact with the system,
+Admin
+and
+Developer
+. Figure 1 show us the first set of entities of Nsemi, and their properties and how they relate to each other within the system.
+\r\n
+
+ 
+\r\n
+
+FIG 1: User/Account Entity
+\r\n
+
+ 
+\r\n
+Images and Image Gallery
+\r\n
+
+Images are the golden eggs of Nsemi. They have a
+name
+,
+width,
+height
+,
+size
+in KB, a format (image type or
+mime type
+) as main properties. They also have an
+owner
+or
+author
+inequivocally represented by an User entity. There is a relationship between User and Image that is established during image upload. The relationship User-Image is strong because, beyond ownership, users interact intensively with images by means of transformations, format conversions and comercial transactions.
+\r\n
+
+By requirement we keep track of the total number of downloads for each image, which in principle we could keep as a property of image. But we also want to know which users downloaded which images. In this case a simple property on image entity is not sufficient to hold all this information. We consider then a new entity
+Download
+to reflect the relation
+(user, image, dowload_details)
+. This enables us to ask how often a user downloaded each image, which is relevant for paid content, were it is expected the user to pay once and use forever the acquired item.
+\r\n
+
+ 
+\r\n
+
+This is captured in Figure 2.
+\r\n
+
+ 
+\r\n
+
+ 
+\r\n
+
+FIG 2: Images and Image Ownership
+\r\n
+
+ 
+\r\n
+
+Obs: The same reasoning applies to Share
+(user, image, post)
+, Transaction
+(user, image, partner, transaction_details)
+or Transformations
+(user, image, method, transformation_parameters)
+.
+\r\n
+
+ 
+\r\n
+
+ 
+', NULL, NULL, '99', '0000-00-00 00:00:00')
+
+Filename: C:/xampp/htdocs/websites/nsemi/system/database/DB_driver.php
+
+Line Number: 691

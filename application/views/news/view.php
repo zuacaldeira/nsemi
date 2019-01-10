@@ -2,10 +2,10 @@
     <a id="edit" class="btn btn-sm btn-warning circle" href="<?php echo base_url().'news/update/'.$slug; ?>" title="Edit Article"><i class="fas fa-edit"></i>Edit</a>
 <?php endif; ?>
 
-<article class="container my-5">
+<article id="article" class="container my-5 p-5">
 
     <div class="header border-bottom">
-        <h2>
+        <h2 class="display-3">
             <?php echo $title; ?>
         </h2>
         <p class="author clearfix">
@@ -31,5 +31,12 @@
             .prependTo($('#actions'))
             .addClass('mr-1')
             .fadeIn(10000);
+        
+        $('#article').css({
+            background: 'white',
+            color: '#222'
+        });
+
+        alert($('#article').length);
     });
 </script>

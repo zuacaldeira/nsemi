@@ -1,7 +1,9 @@
 <h2 class="my-5"><?php echo $title; ?></h2>
 
 <div class="clearfix my-1 sticky-left py-3">
-    <input id="upload" type="file" name="original" class="float-left" required />
+   <?php if($original == null): ?>
+       <input id="upload" type="file" name="original" class="float-left" required />
+   <?php endif; ?>
     <div id="iactions" class="float-right m-0">
         <button id="ia-resize" class="btn btn-sm btn-outline-secondary" title="Resize Image" style="border-radius: 50%; width: 32px; height: 32px;" disabled>
             R
@@ -72,8 +74,8 @@
     <div id="id-convert"></div>
 </div>
 
-<div id="previewer" class="border border-secondary my-2 w-100 overflow-auto position-relative" style="height: 400px;">
-    <img src="" />
+<div id="previewer" class="border border-secondary my-2 w-100 overflow-auto position-relative" style="height: 400px;" data-name="<?php echo $original['name']; ?>">
+    <img src="<?php echo $original['data']; ?>" />
 </div>
 
 <div id="result">
@@ -97,3 +99,7 @@
 
     </div>
 </div>
+
+
+<script src="<?php echo base_url(); ?>assets/js/tools.js">
+</script>

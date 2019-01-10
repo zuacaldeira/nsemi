@@ -6,6 +6,6 @@ header nav a.nav-link {
     color: #ddd;
 }
 
-#edit, #write, #upload {
+#edit, #write, #upload-button {
  display: none;
 }

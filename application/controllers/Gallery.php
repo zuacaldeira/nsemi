@@ -6,6 +6,7 @@ class Gallery extends CI_Controller {
         parent::__construct();
         $this->load->model('images_model');
         $this->load->helper('url_helper');
+        $this->load->library('image_lib');
     }
     
     public function index() {
@@ -17,6 +18,23 @@ class Gallery extends CI_Controller {
         $this->load->view('templates/footer');
     }
     
+    public function view($name = NULL) {
+        if($name === NULL) {
+            show_404();
+        }
+        
+        $new_name = str_replace('_sm_thumb', '_lg_thumb', $name);
+
+        $data['title'] = $new_name;
+        $data['name'] = $new_name;
+        $data['image'] = $this->images_model->get_images_by_name($new_name);
+        
+        
+        $this->load->view('templates/header', $data);
+        $this->load->view("gallery/view", $data);
+        $this->load->view('templates/footer');
+    }
+
     public function create() {
         $config = array(
             'upload_path'   => "./uploads/",
@@ -30,8 +48,8 @@ class Gallery extends CI_Controller {
         if($this->upload->do_upload('data')) {
             $upload_data = $this->upload->data();
             $upload_data['owner'] = $this->session->userdata('username');
-            $data = $this->storeOriginal($upload_data);
-            $data = $this->storeThumbnails($upload_data);
+            $this->storeOriginal($upload_data);
+            $this->storeThumbnails($upload_data);
             
             redirect('/gallery');
         }
@@ -58,27 +76,42 @@ class Gallery extends CI_Controller {
 
         $data['data_url'] = $this->toDataUrl(file_get_contents($data['path']));
         $this->images_model->set_images($data);
-        return $data;
     }
     
     private function storeThumbnails($upload_data) {
+        $this->storeSingleThumbnail($upload_data, 128, 0, 'xs');
+        $this->storeSingleThumbnail($upload_data, 256, 0, 'sm');
+        $this->storeSingleThumbnail($upload_data, 512, 0, 'md');
+        $this->storeSingleThumbnail($upload_data, 768, 0, 'lg');
+        $this->storeSingleThumbnail($upload_data, 1024, 0, 'xl');
+    }
+    
+    private function storeSingleThumbnail($upload_data, $width, $height, $flag) {
         $config['image_library'] = 'gd2';
         $config['source_image'] = $upload_data['full_path'];
         $config['create_thumb'] = TRUE;
+        $config['thumb_marker'] = "_".$flag."_thumb";
         $config['maintain_ratio'] = TRUE;
-        $config['width']         = 225;
-        $config['height']       = 150;
+        $config['width']         = $width;
+        $config['height']       = $height;
         
-        $this->load->library('image_lib', $config);
+        $this->image_lib->initialize($config);
         $status = $this->image_lib->resize();
+        $this->image_lib->clear();
+        
         if(!$status) {
             echo $this->handle_error($this->image_lib->display_errors());
         }
         else {
-            $data['name'] = $upload_data['raw_name'] . "_thumb" . $upload_data['file_ext'] ;
+            $data['name'] = $upload_data['raw_name'] 
+                ."_$flag"
+                . "_thumb" 
+                . $upload_data['file_ext'] ;
             $data['type'] = 'image/'.$upload_data['image_type'];
             $data['path'] = $upload_data['file_path'].$data['name'];
-            $data['data_url'] = $this->toDataUrl(file_get_contents($data['path']));
+            $data['data_url'] = $this->toDataUrl(
+                file_get_contents($data['path'])
+            );
             $data['thumb'] = true;
             $data['owner'] = $upload_data['owner'];
 

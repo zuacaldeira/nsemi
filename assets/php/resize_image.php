@@ -11,11 +11,20 @@ $height = json_decode(getRequestParameter('height'));
 $data = getRequestParameter('data');
 $filters = getRequestParameter('filters');
 $multiple = json_decode(getRequestParameter('multiple'));
+$from_db = json_decode(getRequestParameter('from_db'));
 
-if($data == null) {
+if($data == null && !$from_db) {
     report_error('Invalid or empty data url');
 }
+
 else {
+    if($data == null && $from_db) {
+        $name = str_replace('sm_thumb', 'xl_thumb', $name);
+        $name = str_replace('md_thumb', 'xl_thumb', $name);
+        $name = str_replace('lg_thumb', 'xl_thumb', $name);
+        $data = getImageFromDB($name)->data;
+    }
+
     if(!$multiple) {
         echo json_encode(resize_single($name, $data, $width, $height, $filters));
     }
@@ -81,10 +90,9 @@ function resize_multiple($name, $image, $dw, $dh, $filters) {
  * @return imagick An imagick object created from the given data url
  */
 function createImageFromDataUrl($data_url) {
-    // Get the myme type from data url
-    $mimeType = mime_content_type($data_url);
     // Extract data from data url
-    $imageData = str_replace("data:$mimeType;base64,", '', $data_url);
+    $imageData = explode("base64,", $data_url)[1];
+    
     // Create a blob by base64-decoding of data 
     $imageBlob = base64_decode($imageData);
     // Create a imagick object by reading the image blob
@@ -137,7 +145,7 @@ function cropThumbnailImage($im, $width, $height) {
 }
 
 function toDataUrl($blob) {
-    return 'data:image/jpg;base64,' . base64_encode($blob);
+    return 'data:image/jpeg;base64,' . base64_encode($blob);
 }
 
 function storeImageInDatabase($pdo, $data, $mime, $width, $height, $name) {
@@ -165,6 +173,15 @@ function createNewName($name, $image, $width, $height, $filter){
     $new_name .= '.' . $pInfo['extension'];
     
     return $new_name;
+}
+
+function getImageFromDB($name) {
+    $pdo = getPDO();
+    $query = "SELECT * FROM image WHERE name='$name'";
+
+    $erg = $pdo->query($query);
+    $result = $erg->fetch(PDO::FETCH_OBJ);
+    return $result;
 }
 
 

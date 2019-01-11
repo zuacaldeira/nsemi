@@ -71,6 +71,10 @@ class News extends CI_Controller {
             show_404();
         }
         
+        if($this->session->userdata('username') === NULL) {
+            redirect(base_url().'news/'.$slug);
+        }
+        
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');

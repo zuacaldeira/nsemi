@@ -36,7 +36,5 @@
             background: 'white',
             color: '#222'
         });
-
-        alert($('#article').length);
     });
 </script>

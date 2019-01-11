@@ -1,106 +1,93 @@
-<h2 class="my-5"><?php echo $title; ?></h2>
+<h2 class="my-5">
+    <?php echo $title; ?>
+</h2>
 
-<div class="clearfix my-1 sticky-left py-3">
-   <?php if($original == null): ?>
-       <input id="upload" type="file" name="original" class="float-left" required />
-   <?php endif; ?>
-    <div id="iactions" class="float-right m-0">
-        <button id="ia-resize" class="btn btn-sm btn-outline-secondary" title="Resize Image" style="border-radius: 50%; width: 32px; height: 32px;" disabled>
-            R
-        </button>
-        <button id="ia-thumbnail" class="btn btn-sm btn-outline-secondary" title="CreateThumbnail" style="border-radius: 50%; width: 32px; height: 32px;" disabled>
-            T
-        </button>
-        <button id="ia-convert" class="btn btn-sm btn-outline-secondary" title="Convert Image" style="border-radius: 50%; width: 32px; height: 32px;" disabled>
-            C
-        </button>
-    </div>
+<div class="clearfix my-1py-3">
+    <?php if($original == null): ?>
+    <input id="upload" type="file" name="original" class="float-left" required />
+    <?php endif; ?>
 </div>
-<div id="dialogs" class="d-none text-success position-absolute">
-    <form id="id-resize" title="Resize Image Dialog" class="shadow text-secondary border border-secondary">
-        <div class="p-1 container">
-            <div>
-                <input id="single-dimension-radio" type="radio" name="dimension" checked/>Single Dimension
-                <div id="single-dimensions" class="row m-0 mb-2">
-                    <input class="col-6 width border-0 shadow" type="number" placeholder="w: " />
-                    <input class="col-6 height  border-0 shadow" type="number" placeholder="h: " />
-                </div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Image Previewer -->
+        <div id="previewer" class="col-md-9 border border-secondary p-0 overflow-auto" 
+           data-name="<?php echo $original['name']; ?>"
+           data-width="<?php echo $original['width']; ?>"   
+           data-height="<?php echo $original['height']; ?>"   
+        >
+            <img src="<?php echo $original['data']; ?>" />
+        </div>
+
+        <aside class="col-md-3">
+            <div class="my-1">
+                <button class="btn btn-sm btn-success w-100">Resize 1</button>
             </div>
-            <div>
-                <input id="multiple-dimensions-radio" type="radio" name="dimension" />Multiple Dimensions
-                <div id="multiple-dimensions" class="row m-0 mb-3" style="display:none;">
-                    <input class="col-6 width border-0 shadow" type="number" placeholder="dw: " />
-                    <input class="col-6 height  border-0 shadow" type="number" placeholder="dh: " />
-                </div>
+            <div class="my-1">
+                <button class="btn btn-sm btn-success w-100">Resize *</button>
             </div>
-        </div>
-
-        <div class="p-1">
-            <label for="select-filter">Filter</label>
-            <select id="select-filter" class="w-100 height" multiple>
-                <option>FILTER_UNDEFINED</option>
-                <option>FILTER_POINT</option>
-                <option>FILTER_BOX</option>
-                <option>FILTER_TRIANGLE</option>
-                <option>FILTER_HERMITE</option>
-                <option>FILTER_HANNING</option>
-                <option>FILTER_HAMMING</option>
-                <option>FILTER_BLACKMAN</option>
-                <option>FILTER_GAUSSIAN</option>
-                <option>FILTER_QUADRATIC</option>
-                <option>FILTER_CUBIC</option>
-                <option>FILTER_CATROM</option>
-                <option>FILTER_MITCHELL</option>
-                <option>FILTER_LANCZOS</option>
-                <option>FILTER_BESSEL</option>
-                <option>FILTER_SINC</option>
-            </select>
-        </div>
-    </form>
-
-    <div id="id-thumbnail" title="Create Thumbnail Dialog" class="shadow text-secondary border border-secondary">
-        <div class="my-1 p-1">
-            <input class="w-100 width" placeholder="W: " />
-        </div>
-
-        <div class="p-1">
-            <input class="w-100 height" placeholder="H: " />
-        </div>
-        <div class="text-right my-1 p-1">
-            <button type="submit" class="btn btn-sm btn-success">Resize</button>
-            <button type="reset" class="btn btn-sm btn-secondary">Cancel</button>
-        </div>
-    </div>
-    <div id="id-convert"></div>
-</div>
-
-<div id="previewer" class="border border-secondary my-2 w-100 overflow-auto position-relative" style="height: 400px;" data-name="<?php echo $original['name']; ?>">
-    <img src="<?php echo $original['data']; ?>" />
-</div>
-
-<div id="result">
-    <div id="iplayer" class="bg-dark shadow rounded my-2 p-3 sticky-top clearfix" style="display: none;">
-        <div class="btn-group">
-            <button id="btn-details" class="btn btn-sm btn-outline-warning">Hide / Show Details</button>
-        </div>
-        <div class="btn-group">
-            <button id="by-filename" class="btn btn-sm btn-outline-warning">by Filename</button>
-            <button id="by-width" class="btn btn-sm btn-outline-warning">by Width</button>
-            <button id="by-height" class="btn btn-sm btn-outline-warning">by Height</button>
-            <button id="by-size" class="btn btn-sm btn-outline-warning">by Size</button>
-            <button id="by-filter" class="btn btn-sm btn-outline-warning">by Filter</button>
-        </div>
-        <div class="btn-group float-right">
-            <button id="download" class="btn btn-sm btn-success">Download</button>
-        </div>
-    </div>
-
-    <div id="thumbnails" class="m-0 p-0 container-fluid">
-
+            <div class="my-1">
+                <button class="btn btn-sm btn-success w-100">Crop Thumbnail</button>
+            </div>
+            <div class="my-1">
+                <button class="btn btn-sm btn-success w-100">Convert Formats</button>
+            </div>
+        </aside>
     </div>
 </div>
 
-
-<script src="<?php echo base_url(); ?>assets/plugins/jszip.min.js"></script>
+<!-- JAVASCRIPT -->
 <script src="<?php echo base_url(); ?>assets/js/tools.js">
+</script>
+<script>
+    var image_data = null;
+    
+    $(document).ready(function(){
+        
+        $('#previewer img').on('load', function(event){
+            updateImage($(this));
+        });
+        
+        $(window).on('resize', function(event) {
+            updateImage();
+        })
+    });
+    
+    function updateImage($image) {
+            var image_width = getImageWidth();            
+            var image_height = getImageHeight();
+            var image_ratio = image_width/image_height;
+            
+            if($image) {
+                $image.hide();
+            }
+            var width = $('#previewer').innerWidth();
+            var height = width/image_ratio;
+            
+            
+            $('#previewer').css({
+                width: width,
+                height: height,
+               background: 'url(' + getImageData() + ')',
+               backgroundRepeat: 'no-repeat',
+               backgroundSize: 'cover'
+            });
+    }
+    
+    function getImageData() {
+        if(image_data == null) {
+            image_data =  $('#previewer img').attr('src');
+        }
+        return image_data;
+    }
+    
+    function getImageWidth() {
+        return $('#previewer img').innerWidth();
+    }
+    
+    function getImageHeight() {
+        return $('#previewer img').innerHeight();
+    }
+    
+    
 </script>

@@ -153,7 +153,7 @@ function resize(width, height, data, name, filter, multiple) {
     }
 
     $.ajax({
-        url: url,
+        url: 'resize',
         method: 'POST',
         dataType: 'json',
         data: {
@@ -291,58 +291,3 @@ function getOriginalNameNoExt() {
     return $('#previewer').data('name').split('.')[0];
 }
 
-function downloadImages() {
-    alert('Starting download... ' + getOriginalName());
-
-    var originalData = $('#previewer img').attr('src');
-    console.log(originalData);
-
-    //originalData = originalData.replace('image/jpg', 'image/jpeg');
-    //console.log(originalData);
-
-    /*originalData = originalData.split('base64,')[1];
-    console.log(originalData);
-    
-    var zip = new JSZip();
-    var imageDir = zip.folder('nsemi_images');
-    imageDir.file(
-        getOriginalName(), 
-        originalData, 
-        {base64: true}
-    );
-
-    
-    var $images = $('.single-image');
-    $.each($images, function(key, value){
-        var $img = $(this);
-        imageDir.file($img.find('.filename'));
-    });
-
-    zip
-        .generateAsync({
-            type: "blob"
-        })
-        .then(function (blob) {
-            saveAs(blob, "hello.zip"); // 2) trigger the download
-        }, function (err) {
-            jQuery("#blob").text(err);
-        });
-        */
-
-
-    var zip = new JSZip();
-    zip.file("Hello.txt", "Hello world\n");
-
-    jQuery("#download").on("click", function () {
-        zip.generateAsync({
-            type: "blob"
-        }).then(function (blob) { // 1) generate the zip file
-            alert('Starting download... ' + getOriginalNameNoExt());
-            saveAs(blob, "hello.zip"); // 2) trigger the download
-        }, function (err) {
-            jQuery("#blob").text(err);
-        });
-    });
-
-
-}

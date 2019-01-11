@@ -9,3 +9,17 @@ header nav a.nav-link {
 #edit, #write, #upload-button {
  display: none;
 }
+
+#iactions button {
+    border-radius: 50%; 
+    width: 32px; 
+    height: 32px;
+}
+
+#previewer {
+    min-height: 400px;
+}
+
+#multiple-dimensions #options-container{
+    display: none;
+}

@@ -91,7 +91,7 @@
             <button id="by-filter" class="btn btn-sm btn-outline-warning">by Filter</button>
         </div>
         <div class="btn-group float-right">
-            <button class="btn btn-sm btn-success">Download</button>
+            <button id="download" class="btn btn-sm btn-success">Download</button>
         </div>
     </div>
 
@@ -101,5 +101,6 @@
 </div>
 
 
+<script src="<?php echo base_url(); ?>assets/plugins/jszip.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/tools.js">
 </script>

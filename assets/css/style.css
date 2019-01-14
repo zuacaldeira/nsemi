@@ -10,16 +10,33 @@ header nav a.nav-link {
  display: none;
 }
 
+/*
 #iactions button {
     border-radius: 50%; 
     width: 32px; 
     height: 32px;
 }
+*/
 
-#previewer {
+#previewer, #resized {
     min-height: 400px;
 }
 
-#multiple-dimensions #options-container{
+.resize-options {
     display: none;
+}
+
+#s-player, #s-transform {
+    display: none;
+}
+
+#tools-article section {
+}
+
+.hoverin {
+    background: rgba(0,0,0, .5);
+}
+
+.selected {
+    background: rgba(0,150,0, .5);
 }

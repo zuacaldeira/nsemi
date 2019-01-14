@@ -1,39 +1,43 @@
-var $previewer;
-var $thumbnails;
-var $upload;
-var request = {
-    dimension: {
-        single: true,
-        multiple: false
-    }
-};
-
+var transformations = null;
 
 $(document).ready(function () {
-    init();
-    handleEvents();
+    handleFormEvents();
+    handleTransformationEvents();
 });
 
-function init() {
-    $upload = $('#upload, #data').val('');
-    $previewer = $('#previewer');
-    $thumbnails = $('#thumbnails');
-
-    if ($('#upload').length == 0) {
-        $('#iactions button').prop('disabled', false);
-    }
-}
-
-function handleEvents() {
-    $upload.on('change', function (event) {
-        readURL(this);
-        enableActions();
+function handleFormEvents() {
+    $('#btn-resize').on('click', function (event) {
+        showResizeOneForm();
     });
 
+    $('#btn-resize-many').on('click', function (event) {
+        showResizeManyForm();
+    });
+
+    $('#forms').on('click', '#do-resize-one', function (event) {
+        event.preventDefault();
+        requestResize(false);
+    });
+    $('#forms').on('click', '#do-resize-many', function (event) {
+        event.preventDefault();
+        requestResize(true);
+    });
+
+    showResizeOneForm();
+}
+
+function handleTransformationEvents() {
+    $('#iplayer')
+        .css({
+            position: 'fixed',
+            top: '20%',
+            right: '1em',
+            width: '100px'
+        });
 
     $('#btn-details').on('click', function (event) {
         event.preventDefault();
-        $('#thumbnails .details').toggle();
+        $('#thumbnails .details').toggle(1000);
     });
 
     $('#by-filename, #by-width, #by-height, #by-size, #by-filter').on('click', function (event) {
@@ -44,70 +48,58 @@ function handleEvents() {
         sortImagesBy($this.attr('id'));
     });
 
-    $(document).on('click', '#single-dimension-radio', function (event) {
-        $('#multiple-dimensions-radio').next().hide();
-        $('#single-dimension-radio').next().show();
-        request.dimension.single = true;
-        request.dimension.multiple = false;
+    $(document).on('_preview_upload', function (event) {
+        $('#s-transform').show();
     });
 
-    $(document).on('click', '#multiple-dimensions-radio', function (event) {
-        $('#single-dimension-radio').next().hide();
-        $('#multiple-dimensions-radio').next().show();
-        request.dimension.single = false;
-        request.dimension.multiple = true;
+    $('#download').on('click', function (event) {
+        event.preventDefault();
+        
+        var zip = new JSZip();
+        zip.file("Hello.txt", "Hello World\n");
+        
+        var img = zip.folder("images");
+        
+        $.each(transformations, function(key, value){
+            var i = value;
+            img.file(i.name, i.src.split('base64,')[1], {
+                base64: true
+            });
+        });
+        zip.generateAsync({
+                type: "blob"
+            })
+            .then(function (content) {
+                // see FileSaver.js
+                saveAs(content, "nsemi_" + (+ new Date()) + ".zip");
+            });
     });
-
 }
 
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#previewer img').attr('src', e.target.result);
-        }
-
-        reader.readAsDataURL(input.files[0]);
-    }
+function showResizeOneForm() {
+    $('#forms').load('assets/php/forms/form_resize_one.php');
 }
 
-function enableActions() {
-    $('button:disabled').prop('disabled', false);
+function showResizeManyForm() {
+    $('#forms').load('assets/php/forms/form_resize_many.php');
 }
 
-function requestResize() {
+function requestResize(multiple) {
+    var data = $('#previewer img').attr('src');
+    var width = parseInt($('form .width').val());
+    var height = parseInt($('form .height').val());
+
     prepareThumbnails(width, height);
-    if (request.dimension.single) {
-        var data = $('#previewer img').attr('src');
-        var width = parseInt($('#single-dimensions .width').val());
-        var height = parseInt($('#single-dimensions .height').val());
 
-        var name = null;
-        if ($('#upload').length == 0) {
-            name = $('#previewer').data('name');
-        } else {
-            name = $('#upload').val().trim();
-        }
-
-        var filter = $('#select-filter').val();
-        resize(width, height, data, name, filter, false);
-    } else if (request.dimension.multiple) {
-        var data = $('#previewer img').attr('src');
-        var width = parseInt($('#multiple-dimensions .width').val());
-        var height = parseInt($('#multiple-dimensions .height').val());
-
-        var name = null;
-        if ($('#upload').length == 0) {
-            name = $('#previewer').data('name');
-        } else {
-            name = $('#upload').val().trim();
-        }
-
-
-        var filter = $('#select-filter').val();
-        resize(width, height, data, name, filter, true);
+    var name = null;
+    if ($('#data').length == 0) {
+        name = $('#previewer').data('name');
+    } else {
+        name = $('#data').val().trim();
     }
+
+    var filter = $('#select-filter').val();
+    resize(width, height, data, name, filter, multiple);
 }
 
 function prepareThumbnails(width, height) {
@@ -115,15 +107,11 @@ function prepareThumbnails(width, height) {
 }
 
 function resize(width, height, data, name, filter, multiple) {
-    var url = null;
-    if (name.includes("fakepath")) {
-        url = 'assets/php/resize_image.php';
-    } else {
-        url = '../assets/php/resize_image.php';
-    }
-
+    var url = (multiple) ?
+        'assets/php/resize_many.php' :
+        'assets/php/resize_one.php';
     $.ajax({
-        url: 'resize',
+        url: url,
         method: 'POST',
         dataType: 'json',
         data: {
@@ -136,8 +124,12 @@ function resize(width, height, data, name, filter, multiple) {
         },
         success: function (result) {
             console.log(result);
-            $('#iplayer').show();
+            transformations = result;
+            $('#s-player').show();
             addImageCards(result);
+            $('#result').css({
+                width: $('#thumbnails').innerWidth()
+            });
         },
         error: function () {
             alert('Error during resize...');
@@ -156,17 +148,7 @@ function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
 
-    var $card = $('<div class="single-image small shadow d-inline-block m-2">')
-        .css({
-            width: '' + (width + 1)
-        });
-
-    var $cardHeader = $('<div class="bg-transparent p-0"/>');
-    var $cardImage = $('<img class="image rounded p-0"/>')
-        .attr('src', image.src)
-        .appendTo($cardHeader);
-
-    var $cardBody = $('<div class="details p-2">');
+    var $wrapper = $('<div class="single-image small m-1">');
 
     var $filename = createImageDetailLine('Filename', image.name);
     var $size = createImageDetailLine('Size', image.size.toFixed(2) + ' KB');
@@ -174,19 +156,39 @@ function addNewImageCard(image) {
     var $filter = createImageDetailLine('Filter', image.filter);
     var $time = createImageDetailLine('Time', image.time.toFixed(3) + ' ms');
 
-    var $cardTitle = $('<div class="clearfix"/>')
+    var $details = $('<div class="details p-1 text-light" />');
+    $details
         .append($filename)
-        .appendTo($cardBody);
-
-    var $cardText = $('<div class="clearfix"/>')
         .append($dimensions)
         .append($filter)
         .append($size)
         .append($time)
-        .appendTo($cardBody);
+        .hover(
+            function () {
+                $(this).addClass('hoverin');
+            },
+            function () {
+                $(this).removeClass('hoverin');
+            }
+        ).on('click', function (event) {
+            $(this).toggleClass('selected');
+        });
 
-    $card.append($cardHeader).append($cardBody);
-    $('#thumbnails').append($card);
+    $wrapper.css({
+        width: width,
+        height: height,
+        backgroundImage: 'url(' + image.src + ')',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'cover'
+    });
+
+    $details.css({
+        width: width,
+    });
+
+
+    $wrapper.append($details);
+    $('#thumbnails').append($wrapper);
 
 }
 
@@ -260,4 +262,3 @@ function getOriginalName() {
 function getOriginalNameNoExt() {
     return $('#previewer').data('name').split('.')[0];
 }
-

@@ -18,6 +18,7 @@ function getPDO() {
     $pdo = new PDO("mysql:host=".$host."; dbname=".$dbname.'; charset=utf8', $username, $password);
     return $pdo;
 }
+
 function getDatabaseUrlParts($url) {
     $p = explode("@", $url);
     

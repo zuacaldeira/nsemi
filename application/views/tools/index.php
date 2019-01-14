@@ -1,93 +1,77 @@
-<h2 class="my-5">
-    <?php echo $title; ?>
-</h2>
+<article id="tools-article" class="my-5">
+    <h2 class="my-5 display-2">
+        <?php echo $title; ?>
+    </h2>
 
-<div class="clearfix my-1py-3">
-    <?php if($original == null): ?>
-    <input id="upload" type="file" name="original" class="float-left" required />
-    <?php endif; ?>
-</div>
-
-<div class="container-fluid">
-    <div class="row">
-        <!-- Image Previewer -->
-        <div id="previewer" class="col-md-9 border border-secondary p-0 overflow-auto" 
-           data-name="<?php echo $original['name']; ?>"
-           data-width="<?php echo $original['width']; ?>"   
-           data-height="<?php echo $original['height']; ?>"   
-        >
-            <img src="<?php echo $original['data']; ?>" />
+    <!-- File upload -->
+    <section id="s-upload" class="my-5">
+        <h3>1: Upload a photo</h3>
+        <div class="shadow py-3">
+            <input id="data" type="file" name="data" class="btn btn-sm btn-primary my-1 text-left" />
+            <div id="previewer" class="border border-secondary p-0 overflow-auto" data-name="<?php echo $original['name']; ?>" data-width="<?php echo $original['width']; ?>" data-height="<?php echo $original['height']; ?>">
+                <img src="<?php echo $original['data']; ?>" />
+            </div>
         </div>
+    </section>
 
-        <aside class="col-md-3">
-            <div class="my-1">
-                <button class="btn btn-sm btn-success w-100">Resize 1</button>
+    <!-- Transformation forms  -->
+    <section id="s-transform" class="my-5">
+        <h3 class="text-center">2: Choose Transformation</h3>
+        <div class="container-fluid my-3 mx-auto w-50">
+            <!-- Image Previewer -->
+            <div id="iactions" class="my-1">
+                <button id="btn-resize" type="button" class="btn btn-sm btn-primary mb-1" name="action" value="resize_one" disabled>Resize 1</button>
+                <button id="btn-resize-many" type="button" class="btn btn-sm btn-primary mb-1" name="action" value="resize_many" disabled>Resize *</button>
+                <button id="btn-crop-thumbnail" type="button" class="btn btn-sm btn-primary mb-1" name="action" value="crop_thumbnail" disabled>Crop</button>
+                <button id="btn-convert" type="button" class="btn btn-sm btn-primary mb-1" name="action" value="convert_format" disabled>Convert</button>
             </div>
-            <div class="my-1">
-                <button class="btn btn-sm btn-success w-100">Resize *</button>
+            <div id="forms">
             </div>
-            <div class="my-1">
-                <button class="btn btn-sm btn-success w-100">Crop Thumbnail</button>
+        </div>
+    </section>
+
+    <!-- View and analyze details -->
+    <section id="s-player" class="my-5">
+        <h3 class="text-center">3: Transformations</h3>
+        <div id="iplayer" class="shadow rounded mx-auto">
+            <button id="btn-details" class="btn btn-sm btn-outline-warning w-100 mb-1">Hide / Show Details</button>
+            <button id="by-filename" class="btn btn-sm btn-outline-warning w-100 mb-1">by Filename</button>
+            <button id="by-width" class="btn btn-sm btn-outline-warning w-100 mb-1">by Width</button>
+            <button id="by-height" class="btn btn-sm btn-outline-warning w-100 mb-1">by Height</button>
+            <button id="by-size" class="btn btn-sm btn-outline-warning w-100 mb-1">by Size</button>
+            <button id="by-filter" class="btn btn-sm btn-outline-warning w-100 mb-1">by Filter</button>
+            <button id="download" class="btn btn-sm btn-success w-100 mb-1">Download</button>
+        </div>
+        <div class="results w-auto my-5">
+            <div id="thumbnails" class="row">
             </div>
-            <div class="my-1">
-                <button class="btn btn-sm btn-success w-100">Convert Formats</button>
-            </div>
-        </aside>
-    </div>
-</div>
+        </div>
+    </section>
+</article>
+
 
 <!-- JAVASCRIPT -->
-<script src="<?php echo base_url(); ?>assets/js/tools.js">
+<script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+
+<script src="<?php echo base_url(); ?>assets/plugins/jszip.js">
+
+
 </script>
-<script>
-    var image_data = null;
-    
-    $(document).ready(function(){
-        
-        $('#previewer img').on('load', function(event){
-            updateImage($(this));
-        });
-        
-        $(window).on('resize', function(event) {
-            updateImage();
-        })
-    });
-    
-    function updateImage($image) {
-            var image_width = getImageWidth();            
-            var image_height = getImageHeight();
-            var image_ratio = image_width/image_height;
-            
-            if($image) {
-                $image.hide();
-            }
-            var width = $('#previewer').innerWidth();
-            var height = width/image_ratio;
-            
-            
-            $('#previewer').css({
-                width: width,
-                height: height,
-               background: 'url(' + getImageData() + ')',
-               backgroundRepeat: 'no-repeat',
-               backgroundSize: 'cover'
-            });
-    }
-    
-    function getImageData() {
-        if(image_data == null) {
-            image_data =  $('#previewer img').attr('src');
-        }
-        return image_data;
-    }
-    
-    function getImageWidth() {
-        return $('#previewer img').innerWidth();
-    }
-    
-    function getImageHeight() {
-        return $('#previewer img').innerHeight();
-    }
-    
-    
+
+
+
+<script src="<?php echo base_url(); ?>assets/js/upload.js">
+
+
+</script>
+
+<script src="<?php echo base_url(); ?>assets/js/previewer.js">
+
+
+</script>
+
+
+<script src="<?php echo base_url(); ?>assets/js/transformations.js">
+
+
 </script>

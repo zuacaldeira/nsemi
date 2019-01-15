@@ -54,7 +54,7 @@
     ?>
     <header class="container-fluid shadow">
         <nav class="navbar navbar-expand-lg container">
-            <a class="navbar-brand shadow pb-0 h1 btn btn-sm" href="#">Nsemi</a>
+            <a class="navbar-brand pb-0 h1 btn btn-sm" href="#">Nsemi</a>
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">

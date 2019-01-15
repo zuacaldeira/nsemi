@@ -1,8 +1,9 @@
 <?php
 
+
 function resize_single($name, $data, $width, $height, $filters) {
     $result = [];
-    $filters = ($filters != NULL) ? $filters: ["FILTER_UNDEFINED"];
+    $filters = ($filters !== NULL) ? $filters: ["FILTER_UNDEFINED"];
     foreach($filters as $filter) {
         $result[] = resize_single_filter($name, $data, $width, $height, $filter);
     }
@@ -12,7 +13,6 @@ function resize_single($name, $data, $width, $height, $filters) {
 function resize_single_filter($name, $data, $width, $height, $filter) {
     $f = getImagickFilter($filter);
     $image = createImageFromDataUrl($data);    
-
     $time_start = microtime(true); 
     $image_resized = resizeImage(
         $image, 
@@ -25,8 +25,8 @@ function resize_single_filter($name, $data, $width, $height, $filter) {
     $result = [
         'name'      => createNewName($name, $image, $width, $height, $filter),
         'src'       => toDataUrl($image_resized->getImageBlob()),
-        'width'     => $width,
-        'height'    => $height,
+        'width'     => $image_resized->width,
+        'height'    => $image_resized->height,
         'filter'    => $filter,
         'size'      => $image_resized->getImageLength()/1024,
         'time'      => $execution_time,
@@ -44,7 +44,7 @@ function resize_multiple($name, $image, $dw, $dh, $filters) {
     $i = 0;
     for($h = $dh; $h <= $H; $h += $dh) {
         for($w = $dw; $w <= $W; $w += $dw) {
-            $result = array_merge($result, resize_single($name, $image, $w, $h, $filters));
+            $result = array_merge($result, resize_single($name, $image, $w, $h, array($filters)));
         }
     }
     return $result;
@@ -96,8 +96,19 @@ function getImagickFilter($filter) {
 
 function resizeImage($im, $width, $height, $filter) {
     $blur = 0.0;
-    $im->optimizeImageLayers();
-    $im->resizeImage($width, $height, $filter, $blur, false, false);
+    //$im->optimizeImageLayers();
+    $im->setImageCompression(Imagick::COMPRESSION_JPEG);
+    $im->setImageCompressionQuality(80);
+    $im->resizeImage(
+        $width, 
+        $height, 
+        $filter, 
+        $blur, 
+        false, 
+        false
+    );
+    //$im->scaleImage($width, $height, true);
+    //$im->cropThumbnailImage($width, $height);
     return $im;
 }
 

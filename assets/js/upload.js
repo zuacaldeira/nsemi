@@ -13,7 +13,6 @@ function readURL(input) {
         var reader = new FileReader();
 
         reader.onload = function(e) {
-            alert('Changed -> ' + $('#previewer'));
             $('#previewer img').attr('src', e.target.result);
         }
 

@@ -1,9 +1,33 @@
 var transformations = null;
 
+var original = {
+    name: null,
+    src: null
+}
+
 $(document).ready(function () {
+    handleScrollEvent();
     handleFormEvents();
-    handleTransformationEvents();
+    handleTransformationEvents();    
 });
+
+function handleScrollEvent() {
+    $(document).on('scroll', function(event){
+        event.preventDefault();
+        var $header = $('header');
+        var top = $header.offset().top;
+        if(top > 0) {
+            $header.css({
+                background: 'rgba(0,0,0,' + top/100 + ')',
+            });
+        }
+        else {
+            $header.css({
+                color: 'blue'
+            });
+        }
+    });
+}
 
 function handleFormEvents() {
     $('#btn-resize').on('click', function (event) {
@@ -24,17 +48,10 @@ function handleFormEvents() {
     });
 
     showResizeOneForm();
+
 }
 
 function handleTransformationEvents() {
-    $('#iplayer')
-        .css({
-            position: 'fixed',
-            top: '20%',
-            right: '1em',
-            width: '100px'
-        });
-
     $('#btn-details').on('click', function (event) {
         event.preventDefault();
         $('#thumbnails .details').toggle(1000);
@@ -50,9 +67,10 @@ function handleTransformationEvents() {
 
     $(document).on('_preview_upload', function (event) {
         $('#s-transform').show();
+        
     });
 
-    $('#download').on('click', function (event) {
+    $('#download-all').on('click', function (event) {
         event.preventDefault();
         
         var zip = new JSZip();
@@ -123,13 +141,16 @@ function resize(width, height, data, name, filter, multiple) {
             data: data
         },
         success: function (result) {
-            console.log(result);
             transformations = result;
-            $('#s-player').show();
             addImageCards(result);
+            $('#s-player').show();
             $('#result').css({
                 width: $('#thumbnails').innerWidth()
             });
+             $('html, body').animate({
+                 scrollTop: $('#result').offset().top
+             }, 1000);
+            $('#download-all span').text(transformations.length);
         },
         error: function () {
             alert('Error during resize...');
@@ -148,7 +169,7 @@ function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
 
-    var $wrapper = $('<div class="single-image small m-1">');
+    var $wrapper = $('<div class="single-image small m-0 p-0 mb-1 mx-auto" />');
 
     var $filename = createImageDetailLine('Filename', image.name);
     var $size = createImageDetailLine('Size', image.size.toFixed(2) + ' KB');

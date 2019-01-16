@@ -37,14 +37,62 @@ function resize_single_filter($name, $data, $width, $height, $filter) {
 }
 
 function resize_multiple($name, $image, $dw, $dh, $filters) {
-    $W = 1080;
-    $H = 1080;
+    $dimensions = getDimensions($dw, $dh);
+    $result = [];
+    
+    foreach($dimensions as $key => $dim) {
+        $result = array_merge($result, resize_single($name, $image,             $dim['w'], $dim['h'], array($filters)));
+    }
+    return $result;
+}
+
+function crop_single($name, $data, $width, $height) {
+    $image = createImageFromDataUrl($data);    
+    $time_start = microtime(true); 
+    $image_resized = cropThumbnailImage($image, $width, $height);            
+    $time_end = microtime(true); 
+    $execution_time = ($time_end - $time_start) * 1000;
+    
+    $geo = $image->getImageGeometry();
+    
+    $result = [
+        'name'      => createNewName($name, $image, $width, $height, ''),
+        'src'       => toDataUrl($image_resized->getImageBlob()),
+        'width'     => $geo['width'],
+        'height'    => $geo['height'],
+        'filter'    => 'nofilter',
+        'size'      => $image_resized->getImageLength()/1024,
+        'time'      => $execution_time,
+        'stored'    => false
+    ];
+    
+    return $result;
+}
+
+function crop_multiple($name, $image, $dw, $dh) {
+    $dimensions = getDimensions($dw, $dh);
+    $result = [];
+    
+    foreach($dimensions as $key => $dim) {
+        $result[] = crop_single(
+            $name, 
+            $image, 
+            $dim['w'], 
+            $dim['h']
+        );
+    }
+    return $result;
+}
+
+function getDimensions($dw, $dh) {
+    $W = 1024;
+    $H = 1024;
     
     $result = [];
     $i = 0;
     for($h = $dh; $h <= $H; $h += $dh) {
         for($w = $dw; $w <= $W; $w += $dw) {
-            $result = array_merge($result, resize_single($name, $image, $w, $h, array($filters)));
+            $result[] = ['w' => $w, 'h' => $h];
         }
     }
     return $result;
@@ -113,7 +161,7 @@ function resizeImage($im, $width, $height, $filter) {
 }
 
 function cropThumbnailImage($im, $width, $height) {
-    $im->optimizeImageLayers();
+    //$im->optimizeImageLayers();
     // Compression and quality
     $im->setImageCompression(Imagick::COMPRESSION_JPEG);
     $im->setImageCompressionQuality(80);

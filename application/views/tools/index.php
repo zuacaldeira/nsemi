@@ -11,12 +11,13 @@
             </div>
             <aside class="col-md-4 bg-light text-dark">
                 <!-- Image Previewer -->
-                <input id="data" type="file" name="data" class="btn btn-sm btn-primary w-100 mx-auto my-1" />
+                <input id="data" type="file" name="data" class="btn btn-sm btn-outline-primary w-100 mx-auto my-2 mt-4" />
                 <div id="iactions" class="w-100 mx-auto btn-group">
-                    <button id="btn-resize" type="button" class="btn btn-sm btn-primary mb-1" name="action" value="resize_one" disabled>Resize 1</button>
-                    <button id="btn-resize-many" type="button" class="btn btn-sm btn-primary mb-1" name="action" value="resize_many" disabled>Resize *</button>
-                    <button id="btn-crop-thumbnail" type="button" class="btn btn-sm btn-primary mb-1" name="action" value="crop_thumbnail" disabled>Crop</button>
-                    <button id="btn-convert" type="button" class="btn btn-sm btn-primary mb-1" name="action" value="convert_format" disabled>Convert</button>
+                    <button id="btn-resize" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="resize_one" disabled>Resize 1</button>
+                    <button id="btn-resize-many" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="resize_many" disabled>Resize *</button>
+                    <button id="btn-crop-thumbnail" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="crop_thumbnail" disabled>Crop</button>
+                    <button id="btn-crop-thumbnail-many" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="crop_thumbnail_many" disabled>Crop *</button>
+                    <button id="btn-convert" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="convert_format" disabled>Convert</button>
                 </div>
                 <div id="forms" class="my-3">
                 </div>
@@ -26,23 +27,29 @@
 
     <!-- View and analyze details -->
     <section id="result" class="container-fluid m-0 p-0 my-5 pt-5">
-        <h3 class="text-center my-5 pt-5">2: Your Transformations</h3>
+        <h3 class="text-center my-5 pt-5 display-3">2: Your Transformations</h3>
+        <div id="transformations-status" class="text-center">
+            <span class="badge badge-danger">
+                Elapsed time:
+                <span class="elapsed-time">0 s</span>
+            </span>
+        </div>
         <!-- Sort and Details Visibility -->
         <div id="iplayer" class="rounded sticky-top text-center my-5">
-            <button id="btn-details" class="btn btn-sm btn-warning mb-1">Hide / Show Details</button>
+            <button id="btn-details" class="btn btn-sm btn-info mb-1">Hide / Show Details</button>
             <div class="btn-group">
-            <button id="by-filename" class="btn btn-sm btn-warning mb-1">by Filename</button>
-            <button id="by-width" class="btn btn-sm btn-warning mb-1">by Width</button>
-            <button id="by-height" class="btn btn-sm btn-warning mb-1">by Height</button>
-            <button id="by-size" class="btn btn-sm btn-warning  mb-1">by Size</button>
-            <button id="by-filter" class="btn btn-sm btn-warning mb-1">by Filter</button>
+            <button id="by-filename" class="btn btn-sm btn-outline-warning mb-1">by Filename</button>
+            <button id="by-width" class="btn btn-sm btn-outline-warning mb-1">by Width</button>
+            <button id="by-height" class="btn btn-sm btn-outline-warning mb-1">by Height</button>
+            <button id="by-size" class="btn btn-sm btn-outline-warning  mb-1">by Size</button>
+            <button id="by-filter" class="btn btn-sm btn-outline-warning mb-1">by Filter</button>
             </div>
             <div class="btn-group">
-            <button id="download-selected" class="btn btn-sm btn-success mb-1">Download Selected  (<span>0</span>)</button>
-            <button id="download-all" class="btn btn-sm btn-success mb-1">Download All (<span>0</span>)</button>
+            <button id="download-selected" class="btn btn-sm btn-outline-success mb-1">Download Selected  (<span>0</span>)</button>
+            <button id="download-all" class="btn btn-sm btn-outline-success mb-1">Download All (<span>0</span>)</button>
             </div>
         </div>
-        <div id="thumbnails" class="row m-2">
+        <div id="thumbnails" class="row m-2 overflow-auto">
         </div>
     </section>
 

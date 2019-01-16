@@ -1,3 +1,12 @@
+var $form_one = null;
+var $form_many = null;
+var $form_crop_thumbnail = null;
+var $form_crop_thumbnail_many = null;
+
+var t_start = null;
+var t_end = null;
+var status_interval = null;
+
 var transformations = null;
 
 var original = {
@@ -30,12 +39,33 @@ function handleScrollEvent() {
 }
 
 function handleFormEvents() {
+    $('#btn-resize, #btn-resize-many, #btn-crop-thumbnail, #btn-crop-thumbnail-many, #btn-convert').on('click', function(event){
+        event.preventDefault();
+        $(this).parent().find('.active').removeClass('active');
+        $(this).addClass('active');
+    });
+    
     $('#btn-resize').on('click', function (event) {
+        event.preventDefault();
         showResizeOneForm();
+        enableActions();
     });
 
     $('#btn-resize-many').on('click', function (event) {
+        event.preventDefault();
         showResizeManyForm();
+        enableActions();
+    });
+
+    $('#btn-crop-thumbnail').on('click', function (event) {
+        event.preventDefault();
+        showCropThumbnailForm();
+        enableActions();
+    });
+    $('#btn-crop-thumbnail-many').on('click', function (event) {
+        event.preventDefault();
+        showCropThumbnailManyForm();
+        enableActions();
     });
 
     $('#forms').on('click', '#do-resize-one', function (event) {
@@ -45,6 +75,14 @@ function handleFormEvents() {
     $('#forms').on('click', '#do-resize-many', function (event) {
         event.preventDefault();
         requestResize(true);
+    });
+    $('#forms').on('click', '#do-crop-thumbnail', function (event) {
+        event.preventDefault();
+        requestCropThumbnail(false);
+    });
+    $('#forms').on('click', '#do-crop-thumbnail-many', function (event) {
+        event.preventDefault();
+        requestCropThumbnail(true);
     });
 
     showResizeOneForm();
@@ -67,7 +105,7 @@ function handleTransformationEvents() {
 
     $(document).on('_preview_upload', function (event) {
         $('#s-transform').show();
-        
+        enableActions();
     });
 
     $('#download-all').on('click', function (event) {
@@ -95,11 +133,35 @@ function handleTransformationEvents() {
 }
 
 function showResizeOneForm() {
-    $('#forms').load('assets/php/forms/form_resize_one.php');
+    if($form_one == null) {
+        $form_one = $('<div/>').load('assets/php/forms/form_resize_one.php');
+        
+    }
+    $('#forms').empty().append($form_one);
 }
 
 function showResizeManyForm() {
-    $('#forms').load('assets/php/forms/form_resize_many.php');
+    if($form_many == null) {
+        $form_many = $('<div/>').load('assets/php/forms/form_resize_many.php');
+        
+    }
+    $('#forms').empty().append($form_many);
+}
+
+function showCropThumbnailForm() {
+    if($form_crop_thumbnail == null) {
+        $form_crop_thumbnail = $('<div/>').load('assets/php/forms/form_crop_thumbnail.php');
+        
+    }
+    $('#forms').empty().append($form_crop_thumbnail);
+}
+
+function showCropThumbnailManyForm() {
+    if($form_crop_thumbnail_many == null) {
+        $form_crop_thumbnail_many = $('<div/>').load('assets/php/forms/form_crop_thumbnail_many.php');
+        
+    }
+    $('#forms').empty().append($form_crop_thumbnail_many);
 }
 
 function requestResize(multiple) {
@@ -125,6 +187,9 @@ function prepareThumbnails(width, height) {
 }
 
 function resize(width, height, data, name, filter, multiple) {
+    disableActions();
+    startTransformationStatus();
+    
     var url = (multiple) ?
         'assets/php/resize_many.php' :
         'assets/php/resize_one.php';
@@ -141,21 +206,58 @@ function resize(width, height, data, name, filter, multiple) {
             data: data
         },
         success: function (result) {
-            transformations = result;
-            addImageCards(result);
-            $('#s-player').show();
-            $('#result').css({
-                width: $('#thumbnails').innerWidth()
-            });
-             $('html, body').animate({
-                 scrollTop: $('#result').offset().top
-             }, 1000);
-            $('#download-all span').text(transformations.length);
+            updateTransformations(result);
+            endTransformationStatus();
         },
         error: function () {
             alert('Error during resize...');
+            endTransformationStatus();
         }
     })
+}
+
+
+function cropThumbnail(width, height, data, name, multiple) {
+    disableActions();
+    startTransformationStatus();    
+    var url = (multiple) ?
+        'assets/php/crop_thumbnail_many.php' :
+        'assets/php/crop_thumbnail.php';
+    $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data: {
+            width: width,
+            height: height,
+            name: name,
+            data: data,
+            multiple: multiple
+        },
+        success: function (result) {
+            updateTransformations(result);
+            endTransformationStatus();
+        },
+        error: function () {
+            alert('Error during crop...');
+            endTransformationStatus();
+        }
+    })
+}
+
+function updateTransformations(result) {
+    console.log(result);
+    transformations = result;
+    addImageCards(result);
+    enableActions();
+    $('#s-player').show();
+    $('#result').css({
+        width: $('#thumbnails').innerWidth()
+    });
+     $('html, body').animate({
+         scrollTop: $('#result').offset().top
+     }, 1000);
+    $('#download-all span').text(transformations.length);
 }
 
 function addImageCards(images) {
@@ -172,10 +274,10 @@ function addNewImageCard(image) {
     var $wrapper = $('<div class="single-image small m-0 p-0 mb-1 mx-auto" />');
 
     var $filename = createImageDetailLine('Filename', image.name);
-    var $size = createImageDetailLine('Size', image.size.toFixed(2) + ' KB');
+    var $size = createImageDetailLine('Size', getImageSize(image) + ' KB');
     var $dimensions = createImageDetailLine('Dimensions', width + ' x ' + height);
     var $filter = createImageDetailLine('Filter', image.filter);
-    var $time = createImageDetailLine('Time', image.time.toFixed(3) + ' ms');
+    var $time = createImageDetailLine('Time', getImageProcessingTime(image) + ' ms');
 
     var $details = $('<div class="details p-1 text-light" />');
     $details
@@ -211,6 +313,21 @@ function addNewImageCard(image) {
     $wrapper.append($details);
     $('#thumbnails').append($wrapper);
 
+}
+
+function getImageSize(image) {
+    if(image.size) {
+        return image.size.toFixed(2);
+    }
+    
+    else return '?';
+}
+
+function getImageProcessingTime(image) {
+    if(image.time) {
+        return image.time.toFixed(3);
+    }    
+    else return '?';
 }
 
 function createImageDetailLine(label, data) {
@@ -282,4 +399,49 @@ function getOriginalName() {
 
 function getOriginalNameNoExt() {
     return $('#previewer').data('name').split('.')[0];
+}
+
+function startTransformationStatus(){
+    t_start = new Date();
+    startStatusUpdate();
+}
+
+function startStatusUpdate() {
+    status_interval = setInterval(function() {
+        updateStatus();
+    }, 60);
+}
+
+function updateStatus() {
+    t_end = new Date();
+    var diff = ((t_end.getTime() - t_start.getTime())/1000).toFixed(2);
+    $('#transformations-status .elapsed-time').text(diff + ' s');    
+}
+
+function endTransformationStatus(){
+    updateStatus();
+    stopStatusUpdate();
+}
+
+function stopStatusUpdate() {
+    clearInterval(status_interval);
+}
+
+
+function requestCropThumbnail(multiple) {
+    var data = $('#previewer img').attr('src');
+    var width = parseInt($('form .width').val());
+    var height = parseInt($('form .height').val());
+
+    prepareThumbnails(width, height);
+
+    var name = null;
+    if ($('#data').length == 0) {
+        name = $('#previewer').data('name');
+    } else {
+        name = $('#data').val().trim();
+    }
+
+    var filter = $('#select-filter').val();
+    cropThumbnail(width, height, data, name, multiple);
 }

@@ -22,7 +22,12 @@ function readURL(input) {
 
 function enableActions() {
     $('button:disabled').prop('disabled', false);
+    $('input:disabled').prop('disabled', false);
 }
 
+function disableActions() {
+    $('button:disabled').prop('disabled', true);
+    $('input:disabled').prop('disabled', true);
+}
 
 

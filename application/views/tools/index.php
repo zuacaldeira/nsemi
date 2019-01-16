@@ -6,10 +6,10 @@
     <!-- File upload -->
     <section id="s-upload" class="container-fluid my-5">
         <div class="row">
-            <div id="previewer" class="col-md-8 overflow-auto w-100" data-name="<?php echo $original['name']; ?>" data-width="<?php echo $original['width']; ?>" data-height="<?php echo $original['height']; ?>">
+            <div id="previewer" class="col-lg-8 overflow-auto w-100" data-name="<?php echo $original['name']; ?>" data-width="<?php echo $original['width']; ?>" data-height="<?php echo $original['height']; ?>">
                 <img src="<?php echo $original['data']; ?>" class="" />
             </div>
-            <aside class="col-md-4 bg-light text-dark">
+            <aside class="col-lg-4 bg-light text-dark">
                 <!-- Image Previewer -->
                 <input id="data" type="file" name="data" class="btn btn-sm btn-outline-primary w-100 mx-auto my-2 mt-4" />
                 <div id="iactions" class="w-100 mx-auto btn-group">

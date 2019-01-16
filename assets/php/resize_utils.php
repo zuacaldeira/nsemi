@@ -200,6 +200,14 @@ function createNewName($name, $image, $width, $height, $filter){
     
     return $new_name;
 }
+function createNewName2($name, $image, $format){
+    $pInfo = pathinfo($name);
+    
+    $new_name = implode('_', [$pInfo['filename'], time()]);
+    $new_name .= '.' . $format;
+    
+    return $new_name;
+}
 
 function getImageFromDB($name) {
     $pdo = getPDO();
@@ -208,6 +216,37 @@ function getImageFromDB($name) {
     $erg = $pdo->query($query);
     $result = $erg->fetch(PDO::FETCH_OBJ);
     return $result;
+}
+
+
+function convert_image($name, $data, $format) {
+    $image = createImageFromDataUrl($data);    
+    $time_start = microtime(true); 
+    $image_resized = convertImage($image, $format);            
+    $time_end = microtime(true); 
+    $execution_time = ($time_end - $time_start) * 1000;
+
+    $result = [
+        'name'      => createNewName2($name, $image, $format),
+        'src'       => toDataUrl($image_resized->getImageBlob()),
+        'width'     => $image_resized->width,
+        'height'    => $image_resized->height,
+        'filter'    => 'nofilter',
+        'size'      => $image_resized->getImageLength()/1024,
+        'time'      => $execution_time,
+        'stored'    => false
+    ];
+    
+    return $result;
+    
+}
+
+function convertImage($im, $format) {
+    // Compression and quality
+    $im->setImageFormat($format);
+    $im->setImageCompressionQuality(95);
+    
+    return $im;
 }
 
 

@@ -2,6 +2,7 @@ var $form_one = null;
 var $form_many = null;
 var $form_crop_thumbnail = null;
 var $form_crop_thumbnail_many = null;
+var $form_convert = null;
 
 var t_start = null;
 var t_end = null;
@@ -15,7 +16,7 @@ var original = {
 }
 
 $(document).ready(function () {
-    handleScrollEvent();
+    //handleScrollEvent();
     handleFormEvents();
     handleTransformationEvents();    
 });
@@ -67,6 +68,11 @@ function handleFormEvents() {
         showCropThumbnailManyForm();
         enableActions();
     });
+    $('#btn-convert').on('click', function (event) {
+        event.preventDefault();
+        showConvertForm();
+        enableActions();
+    });
 
     $('#forms').on('click', '#do-resize-one', function (event) {
         event.preventDefault();
@@ -84,8 +90,10 @@ function handleFormEvents() {
         event.preventDefault();
         requestCropThumbnail(true);
     });
-
-    showResizeOneForm();
+    $('#forms').on('click', '#do-convert', function (event) {
+        event.preventDefault();
+        requestConvert();
+    });
 
 }
 
@@ -105,29 +113,38 @@ function handleTransformationEvents() {
 
     $(document).on('_preview_upload', function (event) {
         $('#s-transform').show();
+        showResizeOneForm();
         enableActions();
+        
+        var name = $('#data').val().replace("C:\\fakepath\\", '');
+        name = name.split('.')[0];
+        $('#previewer').data('name', name);
     });
 
     $('#download-all').on('click', function (event) {
         event.preventDefault();
-        
         var zip = new JSZip();
         zip.file("Hello.txt", "Hello World\n");
         
         var img = zip.folder("images");
+        
+        var name = $('#previewer').data('name');
         
         $.each(transformations, function(key, value){
             var i = value;
             img.file(i.name, i.src.split('base64,')[1], {
                 base64: true
             });
+            console.log('Added file', i.name);
+            //console.log('Original', getOriginalName());
         });
         zip.generateAsync({
                 type: "blob"
             })
             .then(function (content) {
                 // see FileSaver.js
-                saveAs(content, "nsemi_" + (+ new Date()) + ".zip");
+                saveAs(
+                    content, name + '_v' + (+ new Date()) + ".zip");
             });
     });
 }
@@ -164,22 +181,36 @@ function showCropThumbnailManyForm() {
     $('#forms').empty().append($form_crop_thumbnail_many);
 }
 
+function showConvertForm() {
+    if($form_convert == null) {
+        $form_convert = $('<div/>').load('assets/php/forms/form_convert.php');
+        
+    }
+    $('#forms').empty().append($form_convert);
+}
+
 function requestResize(multiple) {
     var data = $('#previewer img').attr('src');
     var width = parseInt($('form .width').val());
     var height = parseInt($('form .height').val());
 
     prepareThumbnails(width, height);
+    
+    var name = getImageName();
 
+    var filter = $('#select-filter').val();
+    resize(width, height, data, name, filter, multiple);
+}
+
+function getImageName() {
     var name = null;
+    
     if ($('#data').length == 0) {
         name = $('#previewer').data('name');
     } else {
         name = $('#data').val().trim();
     }
-
-    var filter = $('#select-filter').val();
-    resize(width, height, data, name, filter, multiple);
+    return name;
 }
 
 function prepareThumbnails(width, height) {
@@ -242,7 +273,31 @@ function cropThumbnail(width, height, data, name, multiple) {
             alert('Error during crop...');
             endTransformationStatus();
         }
-    })
+    });
+}
+
+function convertImage(data, name, format) {
+    disableActions();
+    startTransformationStatus();    
+    var url = 'assets/php/convert_image.php';
+    $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data: {
+            name: name,
+            data: data,
+            format: format
+        },
+        success: function (result) {
+            updateTransformations(result);
+            endTransformationStatus();
+        },
+        error: function () {
+            alert('Error during conversion...');
+            endTransformationStatus();
+        }
+    });
 }
 
 function updateTransformations(result) {
@@ -394,11 +449,11 @@ function sortImagesBy(criteria) {
 }
 
 function getOriginalName() {
-    return $('#previewer').data('name');
+    return $('#previewer').data('name') || $('#data').data('name');
 }
 
 function getOriginalNameNoExt() {
-    return $('#previewer').data('name').split('.')[0];
+    return ($('#previewer').data('name') || $('#data').data('name')).split('.')[0];
 }
 
 function startTransformationStatus(){
@@ -444,4 +499,24 @@ function requestCropThumbnail(multiple) {
 
     var filter = $('#select-filter').val();
     cropThumbnail(width, height, data, name, multiple);
+}
+
+function requestConvert() {
+    var data = $('#previewer img').attr('src');
+    var width = parseInt($('form .width').val());
+    var height = parseInt($('form .height').val());
+
+    prepareThumbnails(width, height);
+
+    var name = null;
+    if ($('#data').length == 0) {
+        name = $('#previewer').data('name');
+    } else {
+        name = $('#data').val().trim();
+    }
+
+    var format = $('#iformat').val();
+    alert(format);
+    
+    convertImage(data, name, format);
 }

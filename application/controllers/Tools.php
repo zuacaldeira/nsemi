@@ -19,6 +19,27 @@ class Tools extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    public function view($name = NULL) {
+        if($name === NULL) {
+            show_404();
+        }
+        
+        $session_data = $this->session->userdata('data');
+        $width = $this->input->post('width');
+        $height = $this->input->post('height');
+
+        $data['title'] = 'Nsemi Image Transformation Tool';
+        $data['original'] = 
+            ['name' => $name,
+             'data' => $this->images_model->get_originals_by_name($name)['data'],
+             'width' => $width,
+             'height' => $height
+             ];
+        
+        $this->load->view('templates/header');
+        $this->load->view('tools/index', $data);
+        $this->load->view('templates/footer');
+    }
     
     private function toDataUrl($blob) {
         return 'data:image/jpeg;base64,' . base64_encode($blob);

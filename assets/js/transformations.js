@@ -17,9 +17,18 @@ var original = {
 
 $(document).ready(function () {
     //handleScrollEvent();
+    handleImageGiven();
     handleFormEvents();
     handleTransformationEvents();    
 });
+
+function handleImageGiven() {
+    var pData = $('#previewer').data('name');
+    if(pData != '') {
+        showResizeOneForm();
+        enableActions();
+    }
+}
 
 function handleScrollEvent() {
     $(document).on('scroll', function(event){
@@ -150,9 +159,15 @@ function handleTransformationEvents() {
 }
 
 function showResizeOneForm() {
+    if($('#previewer').data('name') != '') {
+        url = '../assets/php/forms/form_resize_one.php'
+    }
+    else {
+        url = 'assets/php/forms/form_resize_one.php';
+    }
+    
     if($form_one == null) {
-        $form_one = $('<div/>').load('assets/php/forms/form_resize_one.php');
-        
+        $form_one = $('<div/>').load(url);
     }
     $('#forms').empty().append($form_one);
 }
@@ -197,6 +212,9 @@ function requestResize(multiple) {
     prepareThumbnails(width, height);
     
     var name = getImageName();
+    if(name == '') {
+        name = getOriginalName();
+    }
 
     var filter = $('#select-filter').val();
     resize(width, height, data, name, filter, multiple);
@@ -224,6 +242,10 @@ function resize(width, height, data, name, filter, multiple) {
     var url = (multiple) ?
         'assets/php/resize_many.php' :
         'assets/php/resize_one.php';
+
+    if($('#previewer').data('name') != '') {
+        url = '../' + url;
+    }
     $.ajax({
         url: url,
         method: 'POST',
@@ -246,7 +268,6 @@ function resize(width, height, data, name, filter, multiple) {
         }
     })
 }
-
 
 function cropThumbnail(width, height, data, name, multiple) {
     disableActions();
@@ -464,7 +485,7 @@ function startTransformationStatus(){
 function startStatusUpdate() {
     status_interval = setInterval(function() {
         updateStatus();
-    }, 60);
+    }, 100);
 }
 
 function updateStatus() {

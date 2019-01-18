@@ -5,21 +5,23 @@
 
     <!-- File upload -->
     <section id="s-upload" class="container-fluid my-5">
-        <div class="row">
+        <div class="row m-0 p-0">
             <div id="previewer" class="col-lg-8 overflow-auto w-100" data-name="<?php echo $original['name']; ?>" data-width="<?php echo $original['width']; ?>" data-height="<?php echo $original['height']; ?>">
                 <img src="<?php echo $original['data']; ?>" class="" />
             </div>
-            <aside class="col-lg-4 bg-light text-dark">
+            <aside class="col-lg-4 text-dark m-0 p-0 px-2 rounded">
                 <!-- Image Previewer -->
-                <input id="data" type="file" name="data" class="btn btn-sm btn-outline-primary w-100 mx-auto my-2 mt-4" />
-                <div id="iactions" class="w-100 mx-auto btn-group">
+                <?php if($original['name'] == null): ?>
+                    <input id="data" type="file" name="data" class="btn btn-sm btn-outline-primary w-100 mx-auto mb-1" />
+               <?php endif; ?> 
+               <div id="iactions" class="w-100 btn-group">
                     <button id="btn-resize" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="resize_one" disabled>Resize 1</button>
                     <button id="btn-resize-many" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="resize_many" disabled>Resize *</button>
                     <button id="btn-crop-thumbnail" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="crop_thumbnail" disabled>Crop</button>
                     <button id="btn-crop-thumbnail-many" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="crop_thumbnail_many" disabled>Crop *</button>
                     <button id="btn-convert" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="convert_format" disabled>Convert</button>
                 </div>
-                <div id="forms" class="my-3">
+                <div id="forms" class="my-0">
                 </div>
             </aside>
         </div>
@@ -46,7 +48,7 @@
             </div>
             <div class="btn-group">
             <button id="download-selected" class="btn btn-sm btn-outline-success mb-1">Download Selected  (<span>0</span>)</button>
-            <button id="download-all" class="btn btn-sm btn-outline-success mb-1">Download All (<span>0</span>)</button>
+            <button id="download-all" class="btn btn-sm btn-outline-success mb-1">Download All (<span>0</span>) </button>
             </div>
         </div>
         <div id="thumbnails" class="row m-2 overflow-auto">

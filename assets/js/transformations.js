@@ -98,6 +98,12 @@ function handleFormEvents() {
         event.preventDefault();
         requestConvert();
     });
+        
+    var hasName = $('#previewer').data('name').length > 0;
+    if(hasName) {
+        $('#btn-resize').click();
+    }
+
     
 }
 
@@ -129,7 +135,15 @@ function handleTransformationEvents() {
         
         var img = zip.folder("images");
         
-        var name = $('#previewer').data('name');
+        var name = getImageName();
+        if(name.includes('.')) {
+            name = getOriginalNameNoExt();
+        }
+        
+        if(name.includes('fakepath')) {
+            name = $('#data').val().split('\\')[2].replace('.jpg', '');
+            alert(name);
+        }
         
         $.each(transformations, function(key, value){
             var i = value;
@@ -365,7 +379,7 @@ function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
 
-    var $wrapper = $('<div class="single-image small m-0 p-0 mb-1 mx-auto" />');
+    var $wrapper = $('<div class="single-image small m-1" />');
 
     var $filename = createImageDetailLine('Filename', image.name);
     var $size = createImageDetailLine('Size', getImageSize(image) + ' KB');
@@ -402,7 +416,6 @@ function addNewImageCard(image) {
     $details.css({
         width: width,
     });
-
 
     $wrapper.append($details);
     $('#thumbnails').append($wrapper);

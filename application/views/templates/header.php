@@ -42,7 +42,6 @@
     </script>
 
     <script src="<?php echo base_url().'assets/js/nsemi.js'; ?>"></script>
-
     <script src="<?php echo base_url().'assets/js/page_background.js'; ?>"></script>
 
 
@@ -57,16 +56,16 @@
             <a class="navbar-brand pb-0 h1 btn btn-sm" href="#">Nsemi</a>
 
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link btn" href="<?php echo base_url();?>home">Home</a>
+                <li id="nav-home" class="nav-item active">
+                    <a class="nav-link btn active" href="<?php echo base_url();?>home">Home</a>
                 </li>
-                <li class="nav-item">
+                <li id="nav-gallery" class="nav-item">
                     <a class="nav-link btn" href="<?php echo base_url();?>gallery">Gallery</a>
                 </li>
-                <li class="nav-item">
+                <li id="nav-tools" class="nav-item">
                     <a class="nav-link btn" href="<?php echo base_url();?>tools">Tools</a>
                 </li>
-                <li class="nav-item">
+                <li id="nav-news" class="nav-item">
                     <a class="nav-link btn" href="<?php echo base_url();?>news">News</a>
                 </li>
             </ul>

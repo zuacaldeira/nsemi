@@ -23,6 +23,12 @@
                 </div>
                 <div id="forms" class="my-0">
                 </div>
+                <div id="transformations-status" class="text-right">
+                    <span class="badge badge-danger">
+                        Elapsed time:
+                        <span class="elapsed-time">0 s</span>
+                    </span>
+                </div>
             </aside>
         </div>
     </section>
@@ -30,12 +36,6 @@
     <!-- View and analyze details -->
     <section id="result" class="container-fluid m-0 p-0 my-5 pt-5">
         <h3 class="text-center my-5 pt-5 display-3">2: Your Transformations</h3>
-        <div id="transformations-status" class="text-center">
-            <span class="badge badge-danger">
-                Elapsed time:
-                <span class="elapsed-time">0 s</span>
-            </span>
-        </div>
         <!-- Sort and Details Visibility -->
         <div id="iplayer" class="rounded sticky-top text-center my-5">
             <button id="btn-details" class="btn btn-sm btn-info mb-1">Hide / Show Details</button>
@@ -63,24 +63,28 @@
 <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/jszip.js">
-
-
 </script>
 
 
 
 <script src="<?php echo base_url(); ?>assets/js/upload.js">
-
-
 </script>
 
 <script src="<?php echo base_url(); ?>assets/js/previewer.js">
-
-
 </script>
 
 
 <script src="<?php echo base_url(); ?>assets/js/transformations.js">
+</script>
 
 
+<script>
+$(document).ready(function() {
+    $(document).on('load', '.single-image', function(event) {
+        $(this).animate({
+            width: 150,
+            height: 150
+        });
+    });
+});
 </script>

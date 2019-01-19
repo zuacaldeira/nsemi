@@ -41,15 +41,15 @@
         <div id="iplayer" class="rounded sticky-top text-center my-5">
             <button id="btn-details" class="btn btn-sm btn-info mb-1">Hide / Show Details</button>
             <div class="btn-group">
-            <button id="by-filename" class="btn btn-sm btn-outline-warning mb-1">by Filename</button>
-            <button id="by-width" class="btn btn-sm btn-outline-warning mb-1">by Width</button>
-            <button id="by-height" class="btn btn-sm btn-outline-warning mb-1">by Height</button>
-            <button id="by-size" class="btn btn-sm btn-outline-warning  mb-1">by Size</button>
-            <button id="by-filter" class="btn btn-sm btn-outline-warning mb-1">by Filter</button>
+            <button id="by-filename" class="btn btn-sm btn-warning mb-1">by Filename</button>
+            <button id="by-width" class="btn btn-sm btn-warning mb-1">by Width</button>
+            <button id="by-height" class="btn btn-sm btn-warning mb-1">by Height</button>
+            <button id="by-size" class="btn btn-sm btn-warning  mb-1">by Size</button>
+            <button id="by-filter" class="btn btn-sm btn-warning mb-1">by Filter</button>
             </div>
             <div class="btn-group">
-            <button id="download-selected" class="btn btn-sm btn-outline-success mb-1">Download Selected  (<span>0</span>)</button>
-            <button id="download-all" class="btn btn-sm btn-outline-success mb-1">Download All (<span>0</span>) </button>
+            <button id="download-selected" class="btn btn-sm btn-success mb-1">Download Selected  (<span>0</span>)</button>
+            <button id="download-all" class="btn btn-sm btn-success mb-1">Download All (<span>0</span>) </button>
             </div>
         </div>
         <div id="thumbnails" class="overflow-auto">

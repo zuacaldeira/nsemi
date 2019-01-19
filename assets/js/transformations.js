@@ -376,14 +376,17 @@ function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
 
-    var $wrapper = $('<img class="single-image image-wrapper shadow m-1" />')
+    var $wrapper = $('<div class="single-image image-wrapper shadow m-1">')
         .attr('data-width', width)
         .attr('data-height', height)
-        .attr('src', image.src)
         .css({
             width: width,
-            height: height,
+            height: height
         });
+    
+    
+    var $img = $('<img/>')
+        .attr('src', image.src);
 
     var $filename = createImageDetailLine('Filename', image.name);
     var $size = createImageDetailLine('Size', getImageSize(image) + ' KB');
@@ -409,7 +412,7 @@ function addNewImageCard(image) {
             $(this).toggleClass('selected');
         });
 
-    $wrapper.append($details);
+    $wrapper.append($img).append($details);
     $('#thumbnails').append($wrapper);
 
 }

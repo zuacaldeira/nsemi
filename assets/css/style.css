@@ -18,7 +18,7 @@ header nav a.nav-link {
 }
 */
 
-#previewer, #resized {
+#previewer {
     min-height: 400px;
 }
 
@@ -48,4 +48,27 @@ header nav a.nav-link {
 .nav-link {
     font-weight: bold;
     color: gray;
+}
+
+aside {
+    position: relative;
+}
+
+aside #forms {
+    position: absolute;
+    bottom: 1em;
+    left: 0;
+}
+
+.image-wrapper {
+    position: relative;
+}
+
+.details {
+    position: absolute;
+    bottom: 0em;
+    left: 0%;
+}
+
+#thumbnails {
 }

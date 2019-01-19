@@ -6,10 +6,10 @@
     <!-- File upload -->
     <section id="s-upload" class="container-fluid my-5">
         <div class="row m-0 p-0">
-            <div id="previewer" class="col-lg-8 overflow-auto w-100" data-name="<?php echo $original['name']; ?>" data-width="<?php echo $original['width']; ?>" data-height="<?php echo $original['height']; ?>">
+            <div id="previewer" class="col-md-7 overflow-auto w-100" data-name="<?php echo $original['name']; ?>" data-width="<?php echo $original['width']; ?>" data-height="<?php echo $original['height']; ?>">
                 <img src="<?php echo $original['data']; ?>" class="" />
             </div>
-            <aside class="col-lg-4 text-dark m-0 p-0 px-2 rounded">
+            <aside class="col-md-5 bg-light text-dark m-0 p-2 py-auto">
                 <!-- Image Previewer -->
                 <?php if($original['name'] == null): ?>
                     <input id="data" type="file" name="data" class="btn btn-sm btn-outline-primary w-100 mx-auto mb-1" />
@@ -21,16 +21,17 @@
                     <button id="btn-crop-thumbnail-many" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="crop_thumbnail_many" disabled>Crop *</button>
                     <button id="btn-convert" type="button" class="btn btn-sm btn-outline-primary mb-1" name="action" value="convert_format" disabled>Convert</button>
                 </div>
-                <div id="forms" class="my-0">
-                </div>
-                <div id="transformations-status" class="text-right">
-                    <span class="badge badge-danger">
-                        Elapsed time:
-                        <span class="elapsed-time">0 s</span>
-                    </span>
+                <div id="forms" class="m-0 p-0">
                 </div>
             </aside>
         </div>
+        <div id="transformations-status" class="text-right">
+            <span class="badge badge-danger">
+                Elapsed time:
+                <span class="elapsed-time">0 s</span>
+            </span>
+        </div>
+
     </section>
 
     <!-- View and analyze details -->
@@ -51,7 +52,7 @@
             <button id="download-all" class="btn btn-sm btn-outline-success mb-1">Download All (<span>0</span>) </button>
             </div>
         </div>
-        <div id="thumbnails" class="row m-2 overflow-auto">
+        <div id="thumbnails" class="overflow-auto">
         </div>
     </section>
 

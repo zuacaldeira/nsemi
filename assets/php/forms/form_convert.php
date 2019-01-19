@@ -1,4 +1,4 @@
-<form id="form-convert" class="container bg-light p-3">
+<form id="form-convert" class="container bg-light w-100 p-3">
     <div class="my-3">
             <label for="iformat"  class="border-bottom w-100">Dimensions</label>
             

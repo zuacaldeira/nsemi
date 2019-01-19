@@ -85,8 +85,8 @@ function crop_multiple($name, $image, $dw, $dh) {
 }
 
 function getDimensions($dw, $dh) {
-    $W = 1024;
-    $H = 1024;
+    $W = 1920;
+    $H = 1080;
     
     $result = [];
     $i = 0;

@@ -19,28 +19,27 @@ $(document).ready(function () {
     //handleScrollEvent();
     handleImageGiven();
     handleFormEvents();
-    handleTransformationEvents();    
+    handleTransformationEvents();
 });
 
 function handleImageGiven() {
     var pData = $('#previewer').data('name');
-    if(pData != '') {
+    if (pData != '') {
         showResizeOneForm();
         enableActions();
     }
 }
 
 function handleScrollEvent() {
-    $(document).on('scroll', function(event){
+    $(document).on('scroll', function (event) {
         event.preventDefault();
         var $header = $('header');
         var top = $header.offset().top;
-        if(top > 0) {
+        if (top > 0) {
             $header.css({
-                background: 'rgba(0,0,0,' + top/100 + ')',
+                background: 'rgba(0,0,0,' + top / 100 + ')',
             });
-        }
-        else {
+        } else {
             $header.css({
                 color: 'blue'
             });
@@ -49,12 +48,12 @@ function handleScrollEvent() {
 }
 
 function handleFormEvents() {
-    $('#btn-resize, #btn-resize-many, #btn-crop-thumbnail, #btn-crop-thumbnail-many, #btn-convert').on('click', function(event){
+    $('#btn-resize, #btn-resize-many, #btn-crop-thumbnail, #btn-crop-thumbnail-many, #btn-convert').on('click', function (event) {
         event.preventDefault();
         $(this).parent().find('.active').removeClass('active');
         $(this).addClass('active');
     });
-    
+
     $('#btn-resize').on('click', function (event) {
         event.preventDefault();
         showResizeOneForm();
@@ -81,30 +80,35 @@ function handleFormEvents() {
     $('#forms').on('click', '#do-resize-one', function (event) {
         event.preventDefault();
         requestResize(false);
+        disableActions();
     });
     $('#forms').on('click', '#do-resize-many', function (event) {
         event.preventDefault();
         requestResize(true);
+        disableActions();
     });
     $('#forms').on('click', '#do-crop-thumbnail', function (event) {
         event.preventDefault();
         requestCropThumbnail(false);
+        disableActions();
     });
     $('#forms').on('click', '#do-crop-thumbnail-many', function (event) {
         event.preventDefault();
         requestCropThumbnail(true);
+        disableActions();
     });
     $('#forms').on('click', '#do-convert', function (event) {
         event.preventDefault();
         requestConvert();
+        disableActions();
     });
-        
+
     var hasName = $('#previewer').data('name').length > 0;
-    if(hasName) {
+    if (hasName) {
         $('#btn-resize').click();
     }
 
-    
+
 }
 
 function handleTransformationEvents() {
@@ -123,8 +127,6 @@ function handleTransformationEvents() {
 
     $(document).on('_preview_upload', function (event) {
         $('#s-transform').show();
-        var name = $('#data').val().replace("C:\\fakepath\\", '');
-        name = name.split('.')[0];
         $('#btn-resize').click();
     });
 
@@ -132,20 +134,20 @@ function handleTransformationEvents() {
         event.preventDefault();
         var zip = new JSZip();
         zip.file("Hello.txt", "Hello World\n");
-        
+
         var img = zip.folder("images");
-        
+
         var name = getImageName();
-        if(name.includes('.')) {
+        if (name.includes('.')) {
             name = getOriginalNameNoExt();
         }
-        
-        if(name.includes('fakepath')) {
+
+        if (name.includes('fakepath')) {
             name = $('#data').val().split('\\')[2].replace('.jpg', '');
             alert(name);
         }
-        
-        $.each(transformations, function(key, value){
+
+        $.each(transformations, function (key, value) {
             var i = value;
             img.file(i.name, i.src.split('base64,')[1], {
                 base64: true
@@ -159,30 +161,28 @@ function handleTransformationEvents() {
             .then(function (content) {
                 // see FileSaver.js
                 saveAs(
-                    content, name + '_v' + (+ new Date()) + ".zip");
+                    content, name + '_v' + (+new Date()) + ".zip");
             });
     });
 }
 
 function showResizeOneForm() {
     var hasName = $('#previewer').data('name').length > 0;
-    if(hasName) {
+    if (hasName) {
         url = '../assets/php/forms/form_resize_one.php'
-    }
-    else {
+    } else {
         url = 'assets/php/forms/form_resize_one.php';
     }
-    
+
     $form_one = $('<div/>').load(url);
     $('#forms').empty().append($form_one);
 }
 
 function showResizeManyForm() {
     var hasName = $('#previewer').data('name').length > 0;
-    if(hasName) {
+    if (hasName) {
         url = '../assets/php/forms/form_resize_many.php'
-    }
-    else {
+    } else {
         url = 'assets/php/forms/form_resize_many.php';
     }
     $form_many = $('<div/>').load(url);
@@ -191,10 +191,9 @@ function showResizeManyForm() {
 
 function showCropThumbnailForm() {
     var hasName = $('#previewer').data('name').length > 0;
-    if(hasName) {
+    if (hasName) {
         url = '../assets/php/forms/form_crop_thumbnail.php'
-    }
-    else {
+    } else {
         url = 'assets/php/forms/form_crop_thumbnail.php';
     }
     $form_crop_thumbnail = $('<div/>').load(url);
@@ -203,10 +202,9 @@ function showCropThumbnailForm() {
 
 function showCropThumbnailManyForm() {
     var hasName = $('#previewer').data('name').length > 0;
-    if(hasName) {
+    if (hasName) {
         url = '../assets/php/forms/form_crop_thumbnail_many.php'
-    }
-    else {
+    } else {
         url = 'assets/php/forms/form_crop_thumbnail_many.php';
     }
     $form_crop_thumbnail_many = $('<div/>').load(url);
@@ -215,10 +213,9 @@ function showCropThumbnailManyForm() {
 
 function showConvertForm() {
     var hasName = $('#previewer').data('name').length > 0;
-    if(hasName) {
+    if (hasName) {
         url = '../assets/php/forms/form_convert.php'
-    }
-    else {
+    } else {
         url = 'assets/php/forms/form_convert.php';
     }
     $form_convert = $('<div/>').load(url);
@@ -231,9 +228,9 @@ function requestResize(multiple) {
     var height = parseInt($('form .height').val());
 
     prepareThumbnails(width, height);
-    
+
     var name = getImageName();
-    if(name == '') {
+    if (name == '') {
         name = getOriginalName();
     }
 
@@ -243,7 +240,7 @@ function requestResize(multiple) {
 
 function getImageName() {
     var name = null;
-    
+
     if ($('#data').length == 0) {
         name = $('#previewer').data('name');
     } else {
@@ -259,15 +256,15 @@ function prepareThumbnails(width, height) {
 function resize(width, height, data, name, filter, multiple) {
     disableActions();
     startTransformationStatus();
-    
+
     var url = (multiple) ?
         'assets/php/resize_many.php' :
         'assets/php/resize_one.php';
 
-    if($('#previewer').data('name') != '') {
+    if ($('#previewer').data('name') != '') {
         url = '../' + url;
     }
-    
+
     $.ajax({
         url: url,
         method: 'POST',
@@ -293,15 +290,15 @@ function resize(width, height, data, name, filter, multiple) {
 
 function cropThumbnail(width, height, data, name, multiple) {
     disableActions();
-    startTransformationStatus();    
+    startTransformationStatus();
     var url = (multiple) ?
         'assets/php/crop_thumbnail_many.php' :
         'assets/php/crop_thumbnail.php';
-    
-    if($('#previewer').data('name') != '') {
+
+    if ($('#previewer').data('name') != '') {
         url = '../' + url;
     }
-    
+
 
     $.ajax({
         url: url,
@@ -327,12 +324,12 @@ function cropThumbnail(width, height, data, name, multiple) {
 
 function convertImage(data, name, format) {
     disableActions();
-    startTransformationStatus();    
+    startTransformationStatus();
     var url = 'assets/php/convert_image.php';
-    if($('#previewer').data('name') != '') {
+    if ($('#previewer').data('name') != '') {
         url = '../' + url;
     }
-        
+
     $.ajax({
         url: url,
         method: 'POST',
@@ -362,9 +359,9 @@ function updateTransformations(result) {
     $('#result').css({
         width: $('#thumbnails').innerWidth()
     });
-     $('html, body').animate({
-         scrollTop: $('#result').offset().top
-     }, 1000);
+    $('html, body').animate({
+        scrollTop: $('#result').offset().top
+    }, 1000);
     $('#download-all span').text(transformations.length);
 }
 
@@ -372,14 +369,21 @@ function addImageCards(images) {
     $.each(images, function (key, image) {
         addNewImageCard(image);
     });
-
+    
 }
 
 function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
 
-    var $wrapper = $('<div class="single-image small m-1" />');
+    var $wrapper = $('<img class="single-image image-wrapper shadow m-1" />')
+        .attr('data-width', width)
+        .attr('data-height', height)
+        .attr('src', image.src)
+        .css({
+            width: width,
+            height: height,
+        });
 
     var $filename = createImageDetailLine('Filename', image.name);
     var $size = createImageDetailLine('Size', getImageSize(image) + ' KB');
@@ -387,7 +391,7 @@ function addNewImageCard(image) {
     var $filter = createImageDetailLine('Filter', image.filter);
     var $time = createImageDetailLine('Time', getImageProcessingTime(image) + ' ms');
 
-    var $details = $('<div class="details p-1 text-light" />');
+    var $details = $('<div class="details w-100 p-1 text-light small" />');
     $details
         .append($filename)
         .append($dimensions)
@@ -405,36 +409,21 @@ function addNewImageCard(image) {
             $(this).toggleClass('selected');
         });
 
-    $wrapper.css({
-        width: width,
-        height: height,
-        backgroundImage: 'url(' + image.src + ')',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'cover'
-    });
-
-    $details.css({
-        width: width,
-    });
-
     $wrapper.append($details);
     $('#thumbnails').append($wrapper);
 
 }
 
 function getImageSize(image) {
-    if(image.size) {
+    if (image.size) {
         return image.size.toFixed(2);
-    }
-    
-    else return '?';
+    } else return '?';
 }
 
 function getImageProcessingTime(image) {
-    if(image.time) {
+    if (image.time) {
         return image.time.toFixed(3);
-    }    
-    else return '?';
+    } else return '?';
 }
 
 function createImageDetailLine(label, data) {
@@ -508,24 +497,24 @@ function getOriginalNameNoExt() {
     return ($('#previewer').data('name') || $('#data').data('name')).split('.')[0];
 }
 
-function startTransformationStatus(){
+function startTransformationStatus() {
     t_start = new Date();
     startStatusUpdate();
 }
 
 function startStatusUpdate() {
-    status_interval = setInterval(function() {
+    status_interval = setInterval(function () {
         updateStatus();
     }, 100);
 }
 
 function updateStatus() {
     t_end = new Date();
-    var diff = ((t_end.getTime() - t_start.getTime())/1000).toFixed(2);
-    $('#transformations-status .elapsed-time').text(diff + ' s');    
+    var diff = ((t_end.getTime() - t_start.getTime()) / 1000).toFixed(2);
+    $('#transformations-status .elapsed-time').text(diff + ' s');
 }
 
-function endTransformationStatus(){
+function endTransformationStatus() {
     updateStatus();
     stopStatusUpdate();
 }
@@ -568,6 +557,6 @@ function requestConvert() {
     }
 
     var format = $('#iformat').val();
-    
+
     convertImage(data, name, format);
 }

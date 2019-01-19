@@ -26,8 +26,8 @@ function enableActions() {
 }
 
 function disableActions() {
-    $('button:disabled').prop('disabled', true);
-    $('input:disabled').prop('disabled', true);
+    $('aside button').prop('disabled', true);
+    $('aside input').prop('disabled', true);
 }
 
 

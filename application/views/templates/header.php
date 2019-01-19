@@ -41,7 +41,10 @@
 
     </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/galleria/1.5.7/galleria.min.js"></script>
+    
     <script src="<?php echo base_url().'assets/js/nsemi.js'; ?>"></script>
+    
     <script src="<?php echo base_url().'assets/js/page_background.js'; ?>"></script>
 
 

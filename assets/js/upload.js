@@ -14,6 +14,8 @@ function readURL(input) {
 
         reader.onload = function(e) {
             $('#previewer img').attr('src', e.target.result);
+            $('#previewer').show();
+            $('aside').addClass('loaded');
         }
 
         reader.readAsDataURL(input.files[0]);
@@ -29,5 +31,3 @@ function disableActions() {
     $('aside button').prop('disabled', true);
     $('aside input').prop('disabled', true);
 }
-
-

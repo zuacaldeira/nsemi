@@ -25,6 +25,7 @@ $(document).ready(function () {
 function handleImageGiven() {
     var pData = $('#previewer').data('name');
     if (pData != '') {
+        updateBodyImage();
         showResizeOneForm();
         enableActions();
     }
@@ -102,7 +103,7 @@ function handleFormEvents() {
         requestConvert();
         disableActions();
     });
-
+    
     var hasName = $('#previewer').data('name').length > 0;
     if (hasName) {
         $('#btn-resize').click();
@@ -111,12 +112,8 @@ function handleFormEvents() {
 
 }
 
-function handleTransformationEvents() {
-    $('#btn-details').on('click', function (event) {
-        event.preventDefault();
-        $('#thumbnails .details').toggle(1000);
-    });
 
+function handleTransformationEvents() {
     $('#by-filename, #by-width, #by-height, #by-size, #by-filter').on('click', function (event) {
         event.preventDefault();
         var $this = $(this);
@@ -124,10 +121,30 @@ function handleTransformationEvents() {
         $this.addClass('active');
         sortImagesBy($this.attr('id'));
     });
+    
+    $('#expand, #compress').on('click', function (event) {
+        event.preventDefault();
+        var $this = $(this);
+        $this.parent().find('.active').removeClass('active');
+        $this.addClass('active');
+        $('.single-image').toggleClass('tools-thumb');
+        $('#expand, #compress').toggle();
+    });
+    $('#btn-details-show, #btn-details-hide').on('click', function (event) {
+        event.preventDefault();
+        var $this = $(this);
+        $this.parent().find('.active').removeClass('active');
+        $this.addClass('active');
+        $('#btn-details-show, #btn-details-hide').toggle();
+        $('#thumbnails .details').toggle(1000);
+    });
+    
+    
 
     $(document).on('_preview_upload', function (event) {
         $('#s-transform').show();
         $('#btn-resize').click();
+        updateBodyImage();
     });
 
     $('#download-all').on('click', function (event) {
@@ -144,7 +161,6 @@ function handleTransformationEvents() {
 
         if (name.includes('fakepath')) {
             name = $('#data').val().split('\\')[2].replace('.jpg', '');
-            alert(name);
         }
 
         $.each(transformations, function (key, value) {
@@ -251,6 +267,7 @@ function getImageName() {
 
 function prepareThumbnails(width, height) {
     $('#thumbnails').empty();
+    $('#result').hide();
 }
 
 function resize(width, height, data, name, filter, multiple) {
@@ -353,9 +370,11 @@ function convertImage(data, name, format) {
 function updateTransformations(result) {
     console.log(result);
     transformations = result;
+    $('#result').show();
+
     addImageCards(result);
     enableActions();
-    $('#s-player').show();
+    
     $('#result').css({
         width: $('#thumbnails').innerWidth()
     });
@@ -376,17 +395,35 @@ function addNewImageCard(image) {
     var width = parseInt(image.width);
     var height = parseInt(image.height);
 
-    var $wrapper = $('<div class="single-image image-wrapper shadow m-1">')
+    var alpha = $('#thumbnails').innerWidth() - 8;
+    var factor = alpha / width;
+    var beta = factor * height;
+    
+    var usedHeight = (width > alpha) ? beta : height;
+    var usedWidth = (width > alpha) ? alpha : width;
+    
+    var $wrapper = $('<div class="single-image image-wrapper shadow d-inline-block">')
         .attr('data-width', width)
         .attr('data-height', height)
+        .attr('data-factor', factor)
+        .attr('title', 
+              'name '  + image.name + ' | ' + 
+              'width '  + width + 'px' + ' | ' + 
+              'heigth ' + height + 'px' + ' | ' + 
+              'factor ' + ((width > alpha) ? factor : 0) + ' | ' + 
+              'filter '   + image.filter 
+             )
         .css({
-            width: width,
-            height: height
+            width: usedWidth,
+            height: usedHeight,
+            margin: '4px'
         });
     
     
     var $img = $('<img/>')
-        .attr('src', image.src);
+        .attr('src', image.src)
+        .css('height', usedHeight)
+        .css('width', usedWidth);
 
     var $filename = createImageDetailLine('Filename', image.name);
     var $size = createImageDetailLine('Size', getImageSize(image) + ' KB');
@@ -394,7 +431,7 @@ function addNewImageCard(image) {
     var $filter = createImageDetailLine('Filter', image.filter);
     var $time = createImageDetailLine('Time', getImageProcessingTime(image) + ' ms');
 
-    var $details = $('<div class="details w-100 p-1 text-light small" />');
+    var $details = $('<div class="details p-1 text-light small w-100" />');
     $details
         .append($filename)
         .append($dimensions)
@@ -493,11 +530,11 @@ function sortImagesBy(criteria) {
 }
 
 function getOriginalName() {
-    return $('#previewer').data('name') || $('#data').data('name');
+    return $('#previewer').data('name') || $('#data').val().trim();
 }
 
 function getOriginalNameNoExt() {
-    return ($('#previewer').data('name') || $('#data').data('name')).split('.')[0];
+    return getOriginalName().split('.')[0];
 }
 
 function startTransformationStatus() {
@@ -520,6 +557,7 @@ function updateStatus() {
 function endTransformationStatus() {
     updateStatus();
     stopStatusUpdate();
+    enableActions();
 }
 
 function stopStatusUpdate() {

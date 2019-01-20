@@ -1,5 +1,14 @@
 body {
     background: linear-gradient(to bottom right, black, #1d1e30);
+    min-height: 100vh;
+}
+
+main {
+    min-height: 70vh;
+}
+
+header {
+    background: rgba(0,0,0,0.45);
 }
 
 header nav a.nav-link {
@@ -54,12 +63,6 @@ aside {
     position: relative;
 }
 
-aside #forms {
-    position: absolute;
-    bottom: 1em;
-    left: 0;
-}
-
 .image-wrapper {
     position: relative;
 }
@@ -72,4 +75,57 @@ aside #forms {
 }
 
 #thumbnails {
+}
+
+.tools-thumb {
+    width: 128px !important;
+    height: 128px !important;
+    display: inline-block;
+    transition: all 1s;
+}
+.tools-thumb img {
+    width: 128px !important;
+    height: 128px !important;
+    display: inline-block;
+    transition: all 1s;
+}
+
+.single-image {
+    transition: all 1s;    
+}
+
+.single-image img {
+    transition: all 1s;    
+}
+
+#expand, #btn-details-show {
+    display: none;
+}
+
+#previewer {
+    display: none;
+}
+
+#result {
+    display:none;
+}
+
+aside.loaded {
+    background: rgba(255,255,255,.75);
+    transition: all 1s;
+}
+
+#iplayer {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    width: 2em;
+}
+
+#iplayer button {
+    width: 4em;
+    margin-bottom: 4px;
+}
+
+#iplayer i {
 }

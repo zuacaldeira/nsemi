@@ -6,6 +6,8 @@ $(document).ready(function() {
     
     if($previewer.data('name') != null) {
         updateImage($previewer);
+        $('#previewer').show();
+        $('aside').addClass('loaded');
     }
     
     $('#previewer img').on('load', function(event) {
@@ -53,3 +55,19 @@ function getImageWidth($wrapper) {
 function getImageHeight($wrapper) {
     return $wrapper.find('img').innerHeight();
 }
+
+function updateBodyImage() {
+    $('#s-upload').css({
+        background: 'url(' + $('#previewer img').attr('src') + ')',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        //backgroundAttachment: 'fixed'        
+    });
+    
+    /*$('main article').css({
+        background: 'rgba(0,0,0,0.85)',
+    });*/
+    
+}
+

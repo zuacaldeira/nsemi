@@ -1,3 +1,4 @@
+<article class="container">
 <?php 
     $username = $this->session->userdata('username');
 ?>
@@ -27,6 +28,8 @@
 
     <?php endforeach; ?>
 </div>
+    
+</article>
 
 <script>
     $(document).ready(function() {

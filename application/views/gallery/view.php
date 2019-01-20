@@ -1,4 +1,4 @@
-<div id="gallery" class="container-fluid">
+<article id="gallery" class="container">
     <h2 class="my-5 clearfix sticky-top py-3 px-2">
         <?php echo $title; ?>
         <small class="text-muted"></small>
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-</div>
+</article>
 
 
 <script>

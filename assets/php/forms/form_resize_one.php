@@ -1,13 +1,13 @@
-<form id="form-resize-one" class="container p-3 bg-light">
-    <div class="my-3">
-        <label for="single-dimension" class="border-bottom w-100">Dimensions</label>
-        <div id="single-dimension" class="row mx-1">
+<form id="form-resize-one" class="container m-0 p-1">
+    <div class="my-1">
+        <label for="single-dimension" class="w-100">Dimensions</label>
+        <div id="single-dimension" class="row m-0 p-0">
             <input name="width" class="width col-6 width border-0 shadow" type="number" placeholder="W: " value="400"/>
             <input name="height" class="col-6 height  border-0 shadow" type="number" placeholder="H: " value="300"/>
         </div>
     </div>
-    <div class="my-3">
-        <label for="select-filter" class="border-bottom w-100">Filter</label>
+    <div class="my-1">
+        <label for="select-filter" class="w-100">Filter</label>
         <select id="select-filter" class="w-100 height" multiple>
             <option>FILTER_UNDEFINED</option>
             <option>FILTER_POINT</option>
@@ -27,7 +27,7 @@
             <option>FILTER_SINC</option>
         </select>
     </div>
-    <div class="my-3">
+    <div class="my-1">
         <input id="do-resize-one" type="button" class="btn btn-sm btn-primary w-100" value="Resize"/>
     </div>
 </form>

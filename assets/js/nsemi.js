@@ -36,3 +36,4 @@ function addCookiesAcceptanceElement() {
         .prependTo('body');    
 }
 
+

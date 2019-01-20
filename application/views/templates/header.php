@@ -50,11 +50,12 @@
 
 </head>
 
-<body class="container-fluid m-0 p-0 bg-transparent" style="min-height: 100vh;">
+<body class="container-fluid m-0 p-0 bg-transparent">
     <?php 
         $username = $this->session->userdata('username');
     ?>
-    <header class="container-fluid shadow">
+    <div class="body-top-image"></div>
+    <header class="container-fluid shadow m-0 p-0">
         <nav class="navbar navbar-expand-lg container">
             <a class="navbar-brand pb-0 h1 btn btn-sm" href="#">Nsemi</a>
 
@@ -89,4 +90,4 @@
             </ul>
         </nav>
     </header>
-    <main class="container text-light" style="min-height:80vh;">
+    <main class="text-light m-0 p-0">

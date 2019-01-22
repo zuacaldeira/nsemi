@@ -129,3 +129,19 @@ aside.loaded {
 
 #iplayer i {
 }
+
+textarea, input {
+    background: transparent;
+    border: none;
+    color: #222;
+}
+
+.news-article {
+    background: linear-gradient(to bottom right, white, gainsboro);   
+    color: #222;
+}
+
+.article-title {
+    
+}
+

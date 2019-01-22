@@ -25,6 +25,8 @@
 </article>
 
 
+<script src="<?php echo base_url(); ?>assets/js/embedded_image.js"></script>
+
 <script>
     $(document).ready(function() {
         $('#edit')
@@ -36,5 +38,8 @@
             background: 'white',
             color: '#222'
         });
+        
+        updateImagesSrc();
     });
+    
 </script>

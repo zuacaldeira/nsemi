@@ -12,7 +12,30 @@ $(document).ready(function() {
         $('header nav .active').removeClass('active');
         $('#' + sessionStorage.getItem('nav')).addClass('active border-bottom border-secondary');
     }
+    
+    handleScrollEvent();
+    
 });
+
+function handleScrollEvent() {
+    $(document).on('scroll', function (event) {
+        event.preventDefault();
+        var $header = $('header');
+        var top = $header.offset().top;
+        var opacity = (top >= 100) ? 1: top/100;
+        if (top > 0) {
+            $header.css({
+                background: 'rgba(0,0,0,' + opacity + ')',
+            });
+        } else {
+            $header.css({
+                color: 'blue'
+            });
+        }
+    });
+}
+
+
 
 function hasSessionData(key) {
     return sessionStorage.getItem(key) != null;

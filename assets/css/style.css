@@ -1,14 +1,14 @@
 body {
-    background: linear-gradient(to bottom right, black, #1d1e30);
-    min-height: 100vh;
+    background: linear-gradient(to bottom right, rgba(124,0,0,.5), #1d1e30);
+    min-height: 90vh;
 }
 
 main {
-    min-height: 70vh;
+    min-height: 90vh;
 }
 
 header {
-    background: rgba(0,0,0,0.45);
+    z-index: 1000;
 }
 
 header nav a.nav-link {
@@ -132,8 +132,16 @@ aside.loaded {
 
 textarea, input {
     background: transparent;
-    border: none;
+    border: 1px solid gray;
     color: #222;
+}
+
+#gallery-wrapper input {
+    height: 2em;
+}
+#gallery-wrapper i {
+    height: 2em;
+    border: 1px solid gray;
 }
 
 .news-article {

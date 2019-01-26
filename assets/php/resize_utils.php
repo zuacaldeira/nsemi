@@ -24,7 +24,7 @@ function resize_single_filter($name, $data, $width, $height, $filter) {
 
     $result = [
         'name'      => createNewName($name, $image, $width, $height, $filter),
-        'src'       => toDataUrl($image_resized->getImageBlob()),
+        'src'       => toDataUrl($image_resized),
         'width'     => $image_resized->width,
         'height'    => $image_resized->height,
         'filter'    => $filter,
@@ -57,7 +57,7 @@ function crop_single($name, $data, $width, $height) {
     
     $result = [
         'name'      => createNewName($name, $image, $width, $height, ''),
-        'src'       => toDataUrl($image_resized->getImageBlob()),
+        'src'       => toDataUrl($image_resized),
         'width'     => $geo['width'],
         'height'    => $geo['height'],
         'filter'    => 'nofilter',
@@ -145,7 +145,7 @@ function getImagickFilter($filter) {
 function resizeImage($im, $width, $height, $filter) {
     $blur = 0.0;
     //$im->optimizeImageLayers();
-    $im->setImageCompression(Imagick::COMPRESSION_JPEG);
+    //$im->setImageCompression(Imagick::COMPRESSION_JPEG);
     $im->setImageCompressionQuality(80);
     $im->resizeImage(
         $width, 
@@ -163,15 +163,20 @@ function resizeImage($im, $width, $height, $filter) {
 function cropThumbnailImage($im, $width, $height) {
     //$im->optimizeImageLayers();
     // Compression and quality
-    $im->setImageCompression(Imagick::COMPRESSION_JPEG);
+    //$im->setImageCompression(Imagick::COMPRESSION_JPEG);
     $im->setImageCompressionQuality(80);
     $im->cropThumbnailImage($width, $height);
     
     return $im;
 }
 
-function toDataUrl($blob) {
-    return 'data:image/jpeg;base64,' . base64_encode($blob);
+function toDataUrl($im) {
+    $mime = $im->getImageMimeType();
+    $mime = str_replace('x-svg', 'svg+xml', $mime);
+    return 'data:'
+        .$mime
+        .';base64,'
+        .base64_encode($im->getImageBlob());
 }
 
 function storeImageInDatabase($pdo, $data, $mime, $width, $height, $name) {
@@ -228,7 +233,7 @@ function convert_image($name, $data, $format) {
 
     $result = [
         'name'      => createNewName2($name, $image, $format),
-        'src'       => toDataUrl($image_resized->getImageBlob()),
+        'src'       => toDataUrl($image_resized),
         'width'     => $image_resized->width,
         'height'    => $image_resized->height,
         'filter'    => 'nofilter',

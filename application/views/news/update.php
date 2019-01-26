@@ -31,7 +31,5 @@
 </section>
 
 <script src="<?php echo base_url(); ?>assets/plugins/jquery.richtext.min.js"></script>
-
 <script src="<?php echo base_url(); ?>assets/js/embedded_image.js"></script>
-
 <script src="<?php echo base_url(); ?>assets/js/news-editor.js"></script>

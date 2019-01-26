@@ -1,22 +1,21 @@
 <article class="home-content container">
-    <h2 class="mt-5 mb-3">Welcome to Nsemi</h2>
-    <div>
-        <p class="text-muted display-3">Image Transformation Tool for Image Lovers
-        </p>
-        <div>
-            <a class="btn btn-sm btn-outline-secondary my-1 text-left" href="<?php echo base_url(); ?>tools">Resize images, Create thumbnails and Convert images</a>
-            <a class="btn btn-sm btn-outline-secondary my-1 text-left" href="<?php echo base_url(); ?>gallery">Search Gallery, Upload and  Monetize your Images</a>
-            <a class="btn btn-sm btn-outline-secondary my-1 text-left" href="<?php echo base_url(); ?>news">Development Blog and News</a>
+    <div class="row">
+        <div class="left col-md-8 mx-auto">
+            <h2 class="mt-5">Welcome to Nsemi</h2>
+            <div class="w-100">
+                <p class="display-4">Image Transformation Tool for Image Lovers
+                </p>
+                <a class="col btn btn-sm btn-outline-light m-1" href="<?php echo base_url(); ?>gallery">Search Gallery, Upload and  Monetize your Images</a>
+                <a class="col btn btn-sm btn-outline-light m-1 circle" href="<?php echo base_url(); ?>tools">Resize images, Create thumbnails and Convert images</a>
+                <a class="col btn btn-sm btn-outline-light m-1" href="<?php echo base_url(); ?>news">Development Blog and News</a>
+            </div>
         </div>
     </div>
 </article>
 <script>
-$(document).ready(function() {
-    $('.home-content').position({
-        of: 'body main'
+    $(document).ready(function() {
+        $('.home-content').position({ of: 'body main'
+        });
     });
-    $('body').addClass('bg-light text-dark');
-});
+
 </script>
-
-

@@ -8,7 +8,6 @@ var article = {
 }
 
 $(document).ready(function(){
-    //alert('Inside news-editor.js');
     loadEditor();
     updateImagesSrc();
 });
@@ -45,14 +44,14 @@ function loadEditor() {
     });
 }
 
-function updateImagesSrc() {
+/*function updateImagesSrc() {
     $.each($('img'), function(key, value){
         var oldSrc = $(this).attr('src');
         if(!oldSrc.includes('http')) {
             $(this).attr('src', getDomain() + oldSrc);
         }
     });
-}
+}*/
 
 function createTitleButton() {
     return $('<button />')

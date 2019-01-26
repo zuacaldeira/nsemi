@@ -10,14 +10,24 @@ class Images_model extends CI_Model {
     
     public function get_images($slug = FALSE) {
         if($slug === FALSE) {
-            $this->db->like('name', '_md_thumb');
-            $this->db->where('thumb', 1);
+            $this->db->where('thumb', 0);
             $query = $this->db->get('image');
             return $query->result_array();
         }
         
         $query = $this->db->get_where('image', array('slug' => $slug));
         return $query->row_array();        
+    }
+
+    public function get_images_names() {
+        $images = $this->get_images();
+        $names = [];
+        
+        foreach($images as $image) {
+            $names[] = $image['name'];
+        }
+        
+        return $names;        
     }
 
     public function get_images_by_name($name = FALSE) {

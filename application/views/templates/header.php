@@ -39,7 +39,6 @@
     <?php 
         $username = $this->session->userdata('username');
     ?>
-    <div class="body-top-image"></div>
     <header class="container-fluid shadow m-0 p-0">
         <nav class="navbar navbar-expand-lg container">
             <a class="navbar-brand pb-0 h1 btn btn-sm" href="#">Nsemi</a>

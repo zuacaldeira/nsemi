@@ -18,7 +18,7 @@
            <h5 class="text-center">Abstract</h5>
            <?php echo $summary; ?>
        </div>
-       <div class="text">
+       <div class="text col-sm-12 col-md-8 mx-auto my-5">
            <?php echo $text; ?>
        </div>
     </div>

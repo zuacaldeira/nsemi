@@ -8,8 +8,6 @@ require_once('./resize_utils.php');
 
 header('Content-type:application/json;charset=utf-8');
 
-$MAX_WIDTH = 1024;
-
 $name = getRequestParameter('name');
 $width = json_decode(getRequestParameter('width'));
 $height = json_decode(getRequestParameter('height'));
@@ -31,10 +29,6 @@ else {
     
     $new_data = resize_single($name, $data, $width, $height, $filters);
     echo json_encode($new_data);
-    
-    /*$new_data = resize_single($name, $data, $MAX_WIDTH, 0, $filters);
-    echo json_encode(resize_single($name, $new_data[0]['src'], $width, $height, $filters));*/
-
 }
 
 

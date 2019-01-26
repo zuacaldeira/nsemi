@@ -23,7 +23,11 @@ else {
         $name = str_replace('sm_thumb', 'xl_thumb', $name);
         $name = str_replace('md_thumb', 'xl_thumb', $name);
         $name = str_replace('lg_thumb', 'xl_thumb', $name);
-        $data = getImageFromDB($name)->data;
+
+        $db_image = getImageFromDB($name);
+        if($db_image != null) {
+            $data = $db_image->data;
+        }
     }
 
     if(!$multiple) {
@@ -58,7 +62,7 @@ function resize_single_filter($name, $data, $width, $height, $filter) {
 
     $result = [
         'name'      => createNewName($name, $image, $width, $height, $filter),
-        'src'       => toDataUrl($image_resized->getImageBlob()),
+        'src'       => toDataUrl($image_resized->getImageBlob(), getMimeType($data)),
         'width'     => $width,
         'height'    => $height,
         'filter'    => $filter,
@@ -138,15 +142,22 @@ function resizeImage($im, $width, $height, $filter) {
 function cropThumbnailImage($im, $width, $height) {
     $im->optimizeImageLayers();
     // Compression and quality
-    $im->setImageCompression(Imagick::COMPRESSION_JPEG);
-    $im->setImageCompressionQuality(80);
+    //$im->setImageCompression(Imagick::COMPRESSION_JPEG);
+    //$im->setImageCompressionQuality(80);
     $im->cropThumbnailImage($width, $height);
     
     return $im;
 }
 
-function toDataUrl($blob) {
-    return 'data:image/jpeg;base64,' . base64_encode($blob);
+
+function getMimeType($data) {
+    $prefix = explode(';base64,', $data)[0];
+    $sufix = explode('data:', $prefix)[1];
+    return $sufix;
+}
+
+function toDataUrl($blob, $mime) {
+    return 'data:'.$mime.';base64,'.base64_encode($blob);
 }
 
 function storeImageInDatabase($pdo, $data, $mime, $width, $height, $name) {
@@ -159,7 +170,7 @@ function storeImageInDatabase($pdo, $data, $mime, $width, $height, $name) {
     $stmt->bindParam(':data', $data, PDO::PARAM_LOB);
     $result = $stmt->execute();
     
-    return toDataUrl($data);
+    return toDataUrl($data, $mime);
 }
 
 function report_error($message) {

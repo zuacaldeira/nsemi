@@ -31,23 +31,6 @@ function handleImageGiven() {
     }
 }
 
-function handleScrollEvent() {
-    $(document).on('scroll', function (event) {
-        event.preventDefault();
-        var $header = $('header');
-        var top = $header.offset().top;
-        if (top > 0) {
-            $header.css({
-                background: 'rgba(0,0,0,' + top / 100 + ')',
-            });
-        } else {
-            $header.css({
-                color: 'blue'
-            });
-        }
-    });
-}
-
 function handleFormEvents() {
     $('#btn-resize, #btn-resize-many, #btn-crop-thumbnail, #btn-crop-thumbnail-many, #btn-convert').on('click', function (event) {
         event.preventDefault();

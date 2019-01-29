@@ -4,7 +4,7 @@ var videoDataUrl = null;
 $(document).ready(function(){
     console.log('Hello Video Player User!');
     configureUploadButton();
-    loadVideos();
+    configureVideoList();
 });
 
 function configureUploadButton() {
@@ -16,6 +16,27 @@ function configureUploadButton() {
     /*$button.on('click', function(event) {
        appendVideoFormular(); 
     });*/
+}
+
+function configureVideoList() {
+    $('.vlist li').on('click', function(){
+        $('.vlist li.active').removeClass('active');
+        $(this).addClass('active');
+        var datasrc = $(this).data('src');
+        var h = $('.vplayer').innerHeight();
+        var $iframe = $('<iframe frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="mx-auto my-auto"/>');
+        $iframe.attr('src', datasrc)
+            .attr('width', '100%')
+            .attr('height', h);
+        
+        $('.vplayer').empty().append($iframe);
+    });
+    
+    $('.vlist li a').on('click', function(event){
+        event.preventDefault();
+    });
+                        
+    $('.vlist li.active').click();
 }
 
 
@@ -55,7 +76,7 @@ function loadVideos() {
     loadVideoList();
 }
 
-function loadVideoList() {
+function loadVideos() {
     $.ajax({
         url: 'assets/php/get_video_list.php',
         sucess: function(result) {

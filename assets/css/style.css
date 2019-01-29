@@ -171,3 +171,11 @@ textarea, input {
     color: red;
     font-size: 75%;
 }
+
+.vlist {}
+
+.vlist .active a {
+    color: #ffc107;
+    font-weight: bold;
+    font-variant: small-caps;
+}

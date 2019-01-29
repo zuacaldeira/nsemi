@@ -53,8 +53,8 @@
                 <li id="nav-tools" class="nav-item">
                     <a class="nav-link btn" href="<?php echo base_url();?>tools">Tools</a>
                 </li>
-                <li id="nav-news" class="nav-item">
-                    <a class="nav-link btn" href="<?php echo base_url();?>news">News</a>
+                <li id="nav-guides" class="nav-item">
+                    <a class="nav-link btn" href="<?php echo base_url();?>vguides">Guides</a>
                 </li>
             </ul>
             <ul id="actions" class="navbar-nav ml-auto">

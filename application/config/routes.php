@@ -57,12 +57,20 @@ $route['register/(:any)'] = 'register/view/$1';
 $route['register'] = 'register';
 $route['tools/(:any)'] = 'tools/view/$1';
 $route['tools'] = 'tools';
+
 $route['gallery/create'] = 'gallery/create';
 $route['gallery/(:any)'] = 'gallery/view/$1';
 $route['gallery'] = 'gallery';
+
+$route['vguides/upload'] = 'vguides/upload';
+$route['vguides/create'] = 'vguides/create';
+$route['vguides/(:any)'] = 'vguides/view/$1';
+$route['vguides'] = 'vguides';
+
 $route['news/create'] = 'news/create';
 $route['news/update/(:any)'] = 'news/update/$1';
 $route['news/(:any)'] = 'news/view/$1';
 $route['news'] = 'news';
+
 $route['(:any)'] = 'pages/view/$1';
 $route['default_controller'] = 'pages';

@@ -1,4 +1,4 @@
-<article class="home-content container">
+<article class="home-content container" data-background="<?php echo base_url(); ?>assets/img/nsemi-background.jpg">
     <div class="row">
         <div class="left col-md-8 mx-auto">
             <h2 class="mt-5">Welcome to Nsemi</h2>
@@ -14,8 +14,8 @@
 </article>
 <script>
     $(document).ready(function() {
-        $('.home-content').position({ of: 'body main'
-        });
+        $('.home-content')
+            .position({ of: 'body main'});
     });
 
 </script>

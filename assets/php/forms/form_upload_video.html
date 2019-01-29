@@ -1,0 +1,24 @@
+<div class="container w-50 mx-auto border shadow bg-light text-dark my-5 py-3">
+    <form class="bg-warning">
+        <h2 class="text-center border-bottom pb-2">Video Upload Form</h2>
+        <div id="title-group" class="form-group px-5 clearfix">
+            <label for="title">Title</label>
+            <span class="error float-right"></span>
+            <input id="title" name="title" type="text" class="w-100" required>
+        </div>
+        <div id="description-group" class="form-group px-5 clearfix">
+            <label for="description">Description</label>
+            <span class="error float-right"></span>
+            <input id="description" name="description" type="text" class="w-100"  required>
+        </div>
+        <div id="video-group" class="form-group px-5 clearfix">
+            <label for="video">Video</label>
+            <span class="error float-right"></span>
+            <input id="video" name="video" type="file" class="w-100"  required>
+        </div>
+        <div class="form-group px-5">
+            <button id="save" name="save" type="button" class="btn btn-sm btn-success" disabled>Upload Video to Server</button>
+            <button id="cancel" name="cancel" type="reset" class="btn btn-sm btn-danger">Cancel</button>
+        </div>
+    </form>
+</div>

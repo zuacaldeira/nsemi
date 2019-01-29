@@ -399,7 +399,7 @@ function addNewImageCard(image) {
         .css({
             width: usedWidth,
             height: usedHeight,
-            margin: '4px'
+            margin: '1px'
         });
     
     

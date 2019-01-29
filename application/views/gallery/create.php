@@ -19,11 +19,7 @@
 
 
 <script src="<?php echo base_url(); ?>assets/js/upload.js">
-
-
 </script>
-
 <script src="<?php echo base_url(); ?>assets/js/previewer.js">
-
-
 </script>
+

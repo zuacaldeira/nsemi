@@ -7,7 +7,7 @@
                 </p>
                 <a class="col btn btn-sm btn-outline-light m-1" href="<?php echo base_url(); ?>gallery">Search Gallery, Upload and  Monetize your Images</a>
                 <a class="col btn btn-sm btn-outline-light m-1 circle" href="<?php echo base_url(); ?>tools">Resize images, Create thumbnails and Convert images</a>
-                <a class="col btn btn-sm btn-outline-light m-1" href="<?php echo base_url(); ?>news">Easy to Use: Watch the Video Guides</a>
+                <a class="col btn btn-sm btn-outline-light m-1" href="<?php echo base_url(); ?>vguides">Easy to Use: Watch the Video Guides</a>
             </div>
         </div>
     </div>

@@ -10,11 +10,17 @@ class Gallery extends CI_Controller {
     }
     
     public function index() {
-        $data['images'] = $this->images_model->get_thumbs();
         $data['title'] = 'Gallery';
-        $this->load->view('templates/header', $data);
-        $this->load->view('gallery/index', $data);
-        $this->load->view('templates/footer');
+        $images = null;
+        try {
+            $images = $this->images_model->get_thumbs();
+            $data['images'] = $images;
+            $this->load->view('templates/header', $data);
+            $this->load->view('gallery/index', $data);
+            $this->load->view('templates/footer');
+        } catch(Exception $ex) {
+            show_404();
+        }
     }
     
     public function view($name = NULL) {

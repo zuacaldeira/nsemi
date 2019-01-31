@@ -72,5 +72,7 @@ $route['news/update/(:any)'] = 'news/update/$1';
 $route['news/(:any)'] = 'news/view/$1';
 $route['news'] = 'news';
 
+$route['migrate'] = 'migrate';
+
 $route['(:any)'] = 'pages/view/$1';
 $route['default_controller'] = 'pages';

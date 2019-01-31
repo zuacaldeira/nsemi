@@ -45,16 +45,16 @@
 
             <ul class="navbar-nav mr-auto">
                 <li id="nav-home" class="nav-item active">
-                    <a class="nav-link btn active" href="<?php echo base_url();?>home">Home</a>
+                    <a class="nav-link btn active" href="home">Home</a>
                 </li>
                 <li id="nav-gallery" class="nav-item">
-                    <a class="nav-link btn" href="<?php echo base_url();?>gallery">Gallery</a>
+                    <a class="nav-link btn" href="gallery">Gallery</a>
                 </li>
                 <li id="nav-tools" class="nav-item">
-                    <a class="nav-link btn" href="<?php echo base_url();?>tools">Tools</a>
+                    <a class="nav-link btn" href="tools">Tools</a>
                 </li>
                 <li id="nav-guides" class="nav-item">
-                    <a class="nav-link btn" href="<?php echo base_url();?>vguides">Guides</a>
+                    <a class="nav-link btn" href="vguides">Guides</a>
                 </li>
             </ul>
             <ul id="actions" class="navbar-nav ml-auto">

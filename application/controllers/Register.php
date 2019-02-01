@@ -1,19 +1,42 @@
 <?php
 
-class Register extends CI_COntroller {
+/**
+* Registration Process Controller.
+*/
+class Register extends CI_Controller {
     
     public function __construct() {
         parent::__construct();
-        $this->load->model('users_model');
     }
     
+    /**
+     * Entry point to the Registration Service.
+     * Shows, validates and process registration form for a new user.
+     * 
+     * Helpers: url, form
+     * Libraries: form_validation
+     */
     public function index() {
         $this->load->helper(array('url', 'form'));
-        $this->load->library('form_validation');#
+        $this->load->library('form_validation');
+        $this->load->model('users_model');
+
+        
+        // Store referrer in session
+        if(!strpos( $this->agent->referrer(), 'register' )) {
+            $this->session->set_userdata('referrer', $this->agent->referrer());
+        }
+
+        
+        // Form error delimiters
         $this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
         
+        // Form validation rules for...
+        // ... firstname
         $this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
+        // ... lastname
         $this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
+        // ... username
         $this->form_validation->set_rules(
             'username', 
             'Username', 
@@ -22,6 +45,7 @@ class Register extends CI_COntroller {
                 'required' => 'Provide %s', 
                 'is_unique' => 'This %s already exists')
         );
+        // ... email
         $this->form_validation->set_rules(
             'email', 
             'Email', 
@@ -30,49 +54,47 @@ class Register extends CI_COntroller {
                 'required' => 'Provide %s', 
                 'is_unique' => 'This %s already exists')
         );
+        // ... password
         $this->form_validation->set_rules(
             'password', 
             'Password', 
             'trim|required|min_length[8]'
         );
+        // ... password confirmation
         $this->form_validation->set_rules(
             'password-confirm', 
             'Password Confirmation', 
             'trim|required|matches[password]'
         );
 
+        // Run form validation
         if($this->form_validation->run() === FALSE) {
+            // Reload registration form
             $this->load->view('templates/header');
             $this->load->view("register/index");
             $this->load->view('templates/footer');
         }
         else {
-            $this->users_model->set_users();
+            // Stores the new user in db
+            $user = array(
+                'firstname' => $this->input->post('firstname'),
+                'lastname' => $this->input->post('lastname'),
+                'username' => $this->input->post('username'),
+                'email' => $this->input->post('email'),
+                'password' => $this->input->post('password')
+            );
+
+            $this->users_model->create_user(
+                $user['firstname'],
+                $user['lastname'],
+                $user['username'],
+                $user['email'],
+                $user['password']
+            );
             
-            $data = array(
-                'firstname' => $_POST['firstname'],
-                'lastname' => $_POST['lastname'],
-                'username' => $_POST['username'],
-                'email' => $_POST['email'],
-                'password' => $_POST['password']
-            );            
-            $this->load->view('templates/header');
-            $this->load->view("register/success", $data);
-            $this->load->view('templates/footer');
+            // Redirect to referrer
+            redirect($this->session->userdata('referrer'));
         }
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

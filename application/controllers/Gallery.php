@@ -4,7 +4,6 @@ class Gallery extends CI_Controller {
     
     public function __construct() {
         parent::__construct();
-        $this->load->model('images_model');
         $this->load->helper('url_helper');
         $this->load->library('image_lib');
     }
@@ -13,6 +12,7 @@ class Gallery extends CI_Controller {
         $data['title'] = 'Gallery';
         $images = null;
         try {
+            $this->load->model('images_model');
             $images = $this->images_model->get_thumbs();
             $data['images'] = $images;
             $this->load->view('templates/header', $data);

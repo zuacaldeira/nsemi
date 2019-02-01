@@ -9,41 +9,45 @@ class Users_model extends CI_Model {
         $this->load->database();
     }
     
-    public function get_users($username = FALSE) {
-        if($username === FALSE) {
-            $query = $this->db->get('users');
-            return $query->result_array();
-        }
-        
-        $query = $this->db->get_where('users', array('username' => $username));
+    public function get_users() {
+        $query = $this->db->get('users');
+        return $query->result_array();
+    }
+    
+    public function get_user($username) {
+        $query = $this->db->get_where(
+            'users', 
+            array('username' => $username)
+        );
         return $query->row_array();
     }
     
-    public function set_users() {
+    public function create_user(
+        $firstname, 
+        $lastname, 
+        $username, 
+        $email, 
+        $password) {
+
         $data = array(
-            'firstname' => $this->input->post('firstname'),
-            'lastname' => $this->input->post('lastname'),
-            'username' => $this->input->post('username'),
-            'email' => $this->input->post('email'),
-            'password' => $this->input->post('password')
-        );
-        
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'username' => username,
+            'email' => $email,
+            'password' => $password,
+            'created_at' => date()
+        );        
         return $this->db->insert('users', $data);
     }
     
-    public function login_user() {
-        $data = array(
-            'username' => $this->input->post('username'),
-            'password' => $this->input->post('password'),
-        );
-        
-        $user = $this->get_users($data['username']);
+    public function login_user($username, $password) {
+        $user = $this->get_user($username);
         if($user != null) {
             $this->db->set('is_logged_in', true);
             $this->db->where(
                 array(
-                    'username' => $data['username'], 
-                    'password' => $data['password']
+                    'username' => $username, 
+                    'password' => $password
                 )
             );
             $result = $this->db->update('users');

@@ -29,27 +29,35 @@ class Users_model extends CI_Model {
         $email, 
         $password) {
 
+        $this->load->helper('date');
         $data = array(
             'firstname' => $firstname,
             'lastname' => $lastname,
-            'username' => username,
+            'username' => $username,
             'email' => $email,
-            'password' => $password,
-            'created_at' => date()
+            'password' => $password
         );        
+        $this->db->set('created_at', 'NOW()', FALSE);
         return $this->db->insert('users', $data);
     }
     
     public function login_user($username, $password) {
         $user = $this->get_user($username);
-        if($user != null) {
-            $this->db->set('is_logged_in', true);
+        if($user !== NULL) {
+            $this->db->set(
+                array(
+                    'is_logged_in' => 1, 
+                )
+            );
+            $this->db->set('last_login', 'NOW()', FALSE);            
+
             $this->db->where(
                 array(
                     'username' => $username, 
                     'password' => $password
                 )
             );
+            
             $result = $this->db->update('users');
             return $result;
         }
@@ -57,4 +65,21 @@ class Users_model extends CI_Model {
         return false;
     }
     
+    public function logout_user($username) {
+        $user = $this->get_user($username);
+        if($user !== NULL) {
+            $this->db->set(
+                array(
+                    'is_logged_in' => 0, 
+                )
+            );
+            $this->db->set('last_logout', 'NOW()', FALSE);            
+            $this->db->where(array('username' => $username));
+            
+            $result = $this->db->update('users');
+            return $result;
+        }
+        
+        return false;
+    }
 }

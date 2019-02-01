@@ -15,12 +15,12 @@ class Migration_Add_Nsemi_Users_Table extends CI_Migration {
                 'lastname' => array('type' => 'VARCHAR', 'constraint' => 50),
                 'username' => 
                     array('type'        => 'VARCHAR', 
-                          'constraint'  => 256,
-                          /*'unique'      => TRUE*/),
+                          'constraint'  => 32,
+                          'unique'      => TRUE),
                 'email' => 
                     array('type'        => 'VARCHAR', 
-                          'constraint'  => 256,
-                          /*'unique'      => TRUE*/),
+                          'constraint'  => 64,
+                          'unique'      => TRUE),
                 'password' =>
                     array('type'        => 'VARCHAR', 
                           'constraint'  => 256),

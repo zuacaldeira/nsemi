@@ -6,8 +6,12 @@ class Logout extends CI_Controller {
     }
     
     public function index() {
+        $username = $this->session->userdata('username');
         $this->session->unset_userdata('username');
-        $this->session->unset_userdata('referrer');
+        
+        $this->load->model('users_model');
+        
+        $result = $this->users_model->logout_user($username);
         redirect($this->agent->referrer());
     }
 }

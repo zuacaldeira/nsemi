@@ -12,8 +12,8 @@ class Gallery extends CI_Controller {
         $data['title'] = 'Gallery';
         $images = null;
         try {
-            $this->load->model('images_model');
-            $images = $this->images_model->get_thumbnails();
+            $this->load->model('thumbnails_model');
+            $images = $this->thumbnails_model->read_all_with_flag("sm");
             
             $data['images'] = $images;
             $this->load->view('templates/header', $data);

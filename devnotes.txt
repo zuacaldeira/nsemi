@@ -1,0 +1,27 @@
+------------------------------------------------------
+TASK -- MVC Implementation Procedure for THUMBNAILS --
+------------------------------------------------------
+0 - Update ER Model Diagram
+[DONE] 0.1 - Add Thumbnail Entity
+
+1 - Create Migration (Migration_Nsemi_Create_Thumbnails_Table.php)
+[DONE] 1.1   - up() method
+[DONE] 1.2   - down() method
+
+2 - Update Migration Version
+[DONE] 2.1   - Update migration version in config/migrations.php
+
+3 - Run Migration
+[DONE] 3.1   - Call Controller Migrate by going to /migrate
+
+4 - Create Thumbnails_Model
+[TODO] 3.1   - create($d1, ..., $dn)
+[TODO] 3.2a  - read_with_id($thumbnail_id)
+[TODO] 3.2b  - read_with_name($name)
+[TODO] 3.2.c - real_all()
+[TODO] 3.2.d - read_all_with_flag($rflag)
+[TODO] 3.3   - update($d1, ..., $dn)
+[TODO] 3.4   - delete($thumbnail_id)
+
+5 - Update Gallery controller to use the Thumbnails_Model
+[TODO] 5.1 - @index -> read_all_with_flag("sm")

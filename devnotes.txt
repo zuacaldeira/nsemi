@@ -25,3 +25,12 @@ TASK -- MVC Implementation Procedure for THUMBNAILS --
 
 5 - Update Gallery controller to use the Thumbnails_Model
 [TODO] 5.1 - @index -> read_all_with_flag("sm")
+
+
+-------------------------------------------------------------
+TASK -- New Migration to seed the table conversion_methods --
+-------------------------------------------------------------
+1 - Create Migration (20190202205200_Migration_Nsemi_Seed_Conversion_Methods.php)
+[DONE] 1.1   - up() method
+[DONE] 1.2   - down() method
+

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Gallery Controller. Provides services to:
+ *  1 - View gallery of image thumbnails
+ *  2 - Visit an image page
+ *  3 - To Upload a new image, if the user is logged in.
+ */
 class Gallery extends CI_Controller {
     
     public function __construct() {
@@ -8,34 +14,62 @@ class Gallery extends CI_Controller {
         $this->load->library('image_lib');
     }
     
+    /**
+     * Show the gallery's home page, instantiated with 
+     * small thumbnails of the images stored in db.
+     * 
+     * Communicates with the View by passing a $data object with:
+     *  1 - title
+     *  2 - array of images
+     */
     public function index() {
-        $data['title'] = 'Gallery';
-        $images = null;
         try {
+            // Loads the models and thumbnails
             $this->load->model('thumbnails_model');
-            $images = $this->thumbnails_model->read_all_with_flag("sm");
-            
+            $images = $this->thumbnails_model->read_all_with_flag("sm");            
+            // Prepare communication data
+            $data['title'] = 'Gallery';
             $data['images'] = $images;
+            
+            // Builds View
             $this->load->view('templates/header', $data);
             $this->load->view('gallery/index', $data);
             $this->load->view('templates/footer');
+            
         } catch(Exception $ex) {
             show_404();
         }
     }
     
-    public function view($name = NULL) {
-        if($name === NULL) {
+    /**
+     * Visits an image page. The variable $name is the name 
+     * of a thumbnail. 
+     * 
+     * The internals of this method are:
+     * 
+     *  1 - Builds the name for a large thumbnail
+     *  2 - Retrieves the large thumbnail image from db
+     *  3 - Loads single image page view, passing a $data object
+     *      with title, name and image object as in the database.
+     *      
+     * @param string [$name = NULL] Name of the image.
+     */
+    public function view($name = FALSE) {
+        // Page Not Found if $name is not provided
+        if($name === FALSE) {
             show_404();
         }
         
+        // Large image name
         $new_name = str_replace('_sm_thumb', '_lg_thumb', $name);
-
+        $image = $this->thumbnails_model->read_with_name($new_name);
+        
+        // Prepare communication data object
         $data['title'] = $new_name;
         $data['name'] = $new_name;
-        $data['image'] = $this->images_model->get_images_by_name($new_name);
+        $data['image'] = $image;
         
-        
+        // Composes view
         $this->load->view('templates/header', $data);
         $this->load->view("gallery/view", $data);
         $this->load->view('templates/footer');
@@ -118,7 +152,7 @@ class Gallery extends CI_Controller {
         $filetype = $upload_data['file_type'];
         
         // Image properties
-        $user_id    = $this->get_session_user_id();
+        $user_id    = $this->get_user_id();
         $conversion_method_id = $this->get_conversion_method_id();
         $name       = $this->input->post('name');
         $width      = $this->input->post('width');
@@ -151,8 +185,29 @@ class Gallery extends CI_Controller {
     }
     
     private function storeSingleThumbnail($upload_data, $width, $height, $flag) {
+        $original_path   = $upload_data['full_path'];
+        $ext        = $upload_data['file_ext'];
+        $raw_name   = $upload_data['raw_name'];
+        $mime_type  = $upload_data['file_type'];
+        $filetype   = $mime_type;
+        
+        // Image properties
+        $original_id = $this->get_orginal_id($raw_name.$ext);
+        $rflag       = $flag;
+        $user_id     = $this->get_user_id();
+        $conversion_method_id = $this->get_conversion_method_id();
+        $name        = $raw_name."_$flag"."_thumb".$ext ;
+        $width       = $width;
+        $height      = $height;
+        $mime_type   = $mime_type;
+        $size        = NULL;        
+
+        $filepath    = $upload_data['file_path'].$username."/".$name;
+        $data_url    = $this->toDataUrl(file_get_contents($filepath), $filetype);
+
+        // Image library configuration data
         $config['image_library']    = 'gd2';
-        $config['source_image']     = $upload_data['full_path'];
+        $config['source_image']     = $original_path;
         $config['create_thumb']     = TRUE;
         $config['maintain_ratio']   = TRUE;
         $config['thumb_marker']     = "_".$flag."_thumb";
@@ -160,26 +215,29 @@ class Gallery extends CI_Controller {
         $config['height']           = $height;
         $config['remove_spaces']    = TRUE;        
         
+        // Initialize image library with configuration data
         $this->image_lib->initialize($config);
+        
+        // Resize
         $status = $this->image_lib->resize();
         
+        // Report errors, if any
         if (!$status) { die($this->image_lib->display_errors());}
         
-        $data['name'] = $upload_data['raw_name'] 
-            ."_$flag"
-            . "_thumb" 
-            . $upload_data['file_ext'] ;
-        $data['type'] = $upload_data['file_type'];
-        $data['path'] = $upload_data['file_path'].$data['name'];
-        $data['data_url'] = $this->toDataUrl(
-            file_get_contents($data['path']),
-            $upload_data['file_type']
+        // Store thumbnail in database
+        $this->thumbnails_model->create(
+            $original_id, 
+            $flag, 
+            $user_id, 
+            $conversion_method_id,
+            $name,
+            $width,
+            $height,
+            $mime_type,
+            $data_url,
+            $size
         );
-        echo 'path: '.$upload_data['file_path'].$data['name'];
-        $data['thumb'] = true;
-        $data['owner'] = $upload_data['owner'];
-
-        $this->images_model->set_images($data);
+        
         $this->image_lib->clear();
     }
     
@@ -191,6 +249,39 @@ class Gallery extends CI_Controller {
         return 'data:'.$mime.';base64,'.base64_encode($blob);
     }
     
+    /**
+     * Retrieves the user id of current user.
+     * 
+     * @return integer  The user id of current user.
+     */
+    private function get_user_id() {
+        // Current user's username
+        $username = $this->input->post('username');
+        
+        // Ask users model for a user
+        $this->load->model('users_model');
+        $user = $this->users_model->get_user_with_name($username);
+        
+        // Return the user_id
+        return $user['user_id'];
+    }
     
-    
+    /**
+     * Retrieves the conversion method id of the conversion method 
+     * in post request.
+     * 
+     * @return integer  The conversion method id.
+     */
+    private function get_conversion_method_id() {
+        $type = $this->input->post('conversion_method');
+        
+        // TODO: Load conversion_method_model
+        $this->load->model('conversion_methods');
+        
+        // TODO: Retrieve conversion method from db where type=$method
+        $cmethod = $this->conversion_methods->read_with_type($type);
+        
+        // TODO: Extracts the conversion_method_id from db object
+        return $cmethod['conversion_method_id'];
+    }
 }

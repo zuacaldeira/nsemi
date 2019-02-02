@@ -73,4 +73,14 @@ class Thumbnails_Model extends CI_Model {
         
         return $query->result_array();
     }
+
+    public function read_with_name($name) {
+        $query = $this->db->get_where(
+            'thumbnails', 
+            array('name' => $name)
+        );
+        
+        return $query->row_array();
+    }
+
 }

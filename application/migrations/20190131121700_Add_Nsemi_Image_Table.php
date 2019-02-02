@@ -23,9 +23,9 @@ class Migration_Add_Nsemi_Image_Table extends CI_Migration {
                           'constraint' => 255,
                           'unique' => TRUE),
                 'width' => 
-                    array('type' => 'DECIMAL(4,2)'),
+                    array('type' => 'DECIMAL(13,3)'),
                 'height' => 
-                    array('type' => 'DECIMAL(4,2)'),
+                    array('type' => 'DECIMAL(13,3)'),
                 'mime_type' => 
                     array('type' => 'VARCHAR',
                           'constraint' => 255),

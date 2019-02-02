@@ -43,7 +43,7 @@ class Images_model extends CI_Model {
      * @return Array  Array with a single image if an image with the given 
      *                name exists, or empty if there is no such image.
      */
-    public function get_image_named($name) {
+    public function read_with_name($name) {
         $query = $this->db->get_where('images', array('name' => $name));
         return $query->row_array();        
     }
@@ -65,7 +65,7 @@ class Images_model extends CI_Model {
     }
 
     public function create_image(
-        $userid,
+        $user_id,
         $conversion_method_id,
         $name,
         $width,

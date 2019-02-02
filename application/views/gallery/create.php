@@ -4,7 +4,7 @@
     <?php echo form_open_multipart('gallery/create'); ?>
 
    <?php if(count($error) > 0): ?>
-       <div class="error">$error</div>
+       <div class="error"><?php echo $error['error']; ?></div>
    <?php endif; ?>
    
     <div class="row">

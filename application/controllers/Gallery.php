@@ -123,7 +123,7 @@ class Gallery extends CI_Controller {
      */
     private function get_upload_path() {
         $username = $this->session->userdata('username');
-        return "./uploads/".$username."/";
+        return "./uploads/";
     }
     
     /**
@@ -136,8 +136,8 @@ class Gallery extends CI_Controller {
      * the uploaded data metadata.
      */
     private function process_upload($uploaded_data) {
-        $this->storeOriginal($upload_data);
-        $this->storeThumbnails($upload_data);            
+        $this->storeOriginal($uploaded_data);
+        $this->storeThumbnails($uploaded_data);            
     }
     
     /**
@@ -157,11 +157,12 @@ class Gallery extends CI_Controller {
         $name       = $this->input->post('name');
         $width      = $this->input->post('width');
         $height     = $this->input->post('height');
-        $mime_type  = $this->input->post('mime_type');
-        $size       = $this->input->post('size');        
+        $mime_type  = $filetype;
+        $size       = round(filesize($filepath)/1024, 2);        
         $data_url   = $this->toDataUrl(file_get_contents($filepath), $filetype);
         
         // Store image in db
+        $this->load->model('images_model');
         $this->images_model->create_image(
             $user_id,
             $conversion_method_id,
@@ -188,22 +189,21 @@ class Gallery extends CI_Controller {
         $original_path   = $upload_data['full_path'];
         $ext        = $upload_data['file_ext'];
         $raw_name   = $upload_data['raw_name'];
-        $mime_type  = $upload_data['file_type'];
+        $mime_type  = $upload_data['file_type'];        
         $filetype   = $mime_type;
         
         // Image properties
-        $original_id = $this->get_orginal_id($raw_name.$ext);
+        $original_id = $this->get_original_id();
         $rflag       = $flag;
         $user_id     = $this->get_user_id();
         $conversion_method_id = $this->get_conversion_method_id();
         $name        = $raw_name."_$flag"."_thumb".$ext ;
         $width       = $width;
         $height      = $height;
-        $mime_type   = $mime_type;
         $size        = NULL;        
 
-        $filepath    = $upload_data['file_path'].$username."/".$name;
-        $data_url    = $this->toDataUrl(file_get_contents($filepath), $filetype);
+        $filepath    = $upload_data['file_path'].$name;
+        
 
         // Image library configuration data
         $config['image_library']    = 'gd2';
@@ -224,7 +224,11 @@ class Gallery extends CI_Controller {
         // Report errors, if any
         if (!$status) { die($this->image_lib->display_errors());}
         
+        $size        = round(filesize($filepath)/1024, 2);
+        $data_url    = $this->toDataUrl(file_get_contents($filepath), $filetype);
+
         // Store thumbnail in database
+        $this->load->model('thumbnails_model');
         $this->thumbnails_model->create(
             $original_id, 
             $flag, 
@@ -256,11 +260,11 @@ class Gallery extends CI_Controller {
      */
     private function get_user_id() {
         // Current user's username
-        $username = $this->input->post('username');
-        
+        $username = $this->session->userdata('username');
+
         // Ask users model for a user
         $this->load->model('users_model');
-        $user = $this->users_model->get_user_with_name($username);
+        $user = $this->users_model->get_user_with_username($username);
         
         // Return the user_id
         return $user['user_id'];
@@ -276,12 +280,32 @@ class Gallery extends CI_Controller {
         $type = $this->input->post('conversion_method');
         
         // TODO: Load conversion_method_model
-        $this->load->model('conversion_methods');
+        $this->load->model('conversion_methods_model');
         
         // TODO: Retrieve conversion method from db where type=$method
-        $cmethod = $this->conversion_methods->read_with_type($type);
+        $cmethod = $this->conversion_methods_model->read_with_type($type);
         
         // TODO: Extracts the conversion_method_id from db object
         return $cmethod['conversion_method_id'];
+    }
+    
+    /**
+     * Returns the image_id of the image named $name.
+     * 
+     * @param string   $name The name of an original image.
+     *                                               
+     * @return integer The image id.
+     */
+    private function get_original_id() {
+        $name = $this->input->post('name');
+        
+        // Load the images model
+        $this->load->model('images_model');
+        
+        // Retrieve the image named $name
+        $image = $this->images_model->read_with_name($name);
+        
+        // Extracts the image id
+        return $image['image_id'];
     }
 }

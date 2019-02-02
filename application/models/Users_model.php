@@ -14,7 +14,7 @@ class Users_model extends CI_Model {
         return $query->result_array();
     }
     
-    public function get_user($username) {
+    public function get_user_with_username($username) {
         $query = $this->db->get_where(
             'users', 
             array('username' => $username)
@@ -42,7 +42,7 @@ class Users_model extends CI_Model {
     }
     
     public function login_user($username, $password) {
-        $user = $this->get_user($username);
+        $user = $this->get_user_with_username($username);
         if($user !== NULL) {
             $this->db->set(
                 array(
@@ -59,14 +59,14 @@ class Users_model extends CI_Model {
             );
             
             $result = $this->db->update('users');
-            return $result;
+            return true;
         }
         
         return false;
     }
     
     public function logout_user($username) {
-        $user = $this->get_user($username);
+        $user = $this->get_user_with_username($username);
         if($user !== NULL) {
             $this->db->set(
                 array(

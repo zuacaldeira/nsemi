@@ -63,8 +63,9 @@ class Login extends CI_Controller {
             // Username or Password incorrect so reload the login form
             // TODO: Mark error in form
             if(!$result) {
+                $data['error'] = 'Wrong Username / Password';
                 $this->load->view('templates/header');
-                $this->load->view("login/index");
+                $this->load->view("login/index", $data);
                 $this->load->view('templates/footer');
             }
             

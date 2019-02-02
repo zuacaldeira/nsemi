@@ -1,6 +1,10 @@
 <h2 class="my-5 w-50 mx-auto">Login From</h2>
 <?php echo form_open('login/index'); ?>      
-       
+   
+    <?php if(isset($error) && $error != null): ?>
+        <div class="error"><?php echo $error; ?></div>
+    <?php endif; ?>
+    
     <div class="input-group my-1 w-100 p-3">
         <label for="username" class="w-100">Username</label>
         <input id="username" type="text" name="username" class="w-100"  value="<?php echo set_value('username'); ?>"/>

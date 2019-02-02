@@ -13,7 +13,8 @@ class Gallery extends CI_Controller {
         $images = null;
         try {
             $this->load->model('images_model');
-            $images = $this->images_model->get_thumbs();
+            $images = $this->images_model->get_thumbnails();
+            
             $data['images'] = $images;
             $this->load->view('templates/header', $data);
             $this->load->view('gallery/index', $data);
@@ -40,25 +41,36 @@ class Gallery extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    /**
+     * Create image method. This method manages the upload process.
+     * 
+     * If the image is correctly uploaded, it stores the original and 
+     * thumbnails to be used in the website, for use on the gallery and 
+     * transformation tool.
+     */
     public function create() {
+        // Upload configuration object
         $config = array(
-            'upload_path'   => "./uploads/",
+            'upload_path'   => $this->get_upload_path(),
             'allowed_types' => "gif|jpg|png|jpeg|pdf|svg",
             'overwrite'     => TRUE,
             'max_size'      => "2048000"
         );
 
+        // Load form helper
         $this->load->helper('form');
+        
+        // Load upload library width a given configuration
         $this->load->library('upload', $config);
         
+        // Process uploaded data and redirect back to gallery
         if($this->upload->do_upload('data')) {
-            $upload_data = $this->upload->data();
-            $upload_data['owner'] = $this->session->userdata('username');
-            $this->storeOriginal($upload_data);
-            $this->storeThumbnails($upload_data);
-            
+            $uploaded_data = $this->upload->data();
+            $this->process_upload($uploaded_data);
             redirect('/gallery');
         }
+        // Reload the form and present the error to the user, 
+        // so that she can react
         else {
             $error = array('error' => $this->upload->display_errors());
             $data['error'] = $error;
@@ -68,24 +80,64 @@ class Gallery extends CI_Controller {
         }
     }
     
-    private function toDataUrl($blob, $mime) {
-        return 'data:'.$mime.';base64,'.base64_encode($blob);
+    /**
+     * Retrieves the upload path for the current user, 
+     * as stored in session.
+     * 
+     * @return string The upload path for the current 
+     * session user.
+     */
+    private function get_upload_path() {
+        $username = $this->session->userdata('username');
+        return "./uploads/".$username."/";
     }
     
+    /**
+     * Processes the uploaded data, that is the image.
+     * The process consists of storing 
+     *      1) the original image 
+     *      2) thumbnails for the website.
+     * 
+     * @param array $uploaded_data Associative array with 
+     * the uploaded data metadata.
+     */
+    private function process_upload($uploaded_data) {
+        $this->storeOriginal($upload_data);
+        $this->storeThumbnails($upload_data);            
+    }
+    
+    /**
+     * Store the original image in the database. Note that during 
+     * upload the image is store in the filesystem. 
+     * It is not clear wereThe ultimate target must be defined. For now we
+     * @param [[Type]] $upload_data [[Description]]
+     */
     private function storeOriginal($upload_data) {
-        $data['data'] = $upload_data;
-        $data['name'] = $upload_data['file_name'];
-        $data['type'] = $upload_data['file_type'];
-        $data['path'] = $upload_data['full_path'];
-        $data['size'] = $upload_data['file_size'];
-        $data['thumb'] = false;
-        $data['owner'] = $upload_data['owner'];
-
-        $data['data_url'] = $this->toDataUrl(
-            file_get_contents($data['path']), 
-            $data['type']);
+        // Where image is stored and it's type
+        $filepath = $upload_data['full_path'];
+        $filetype = $upload_data['file_type'];
         
-        $this->images_model->set_images($data);
+        // Image properties
+        $user_id    = $this->get_session_user_id();
+        $conversion_method_id = $this->get_conversion_method_id();
+        $name       = $this->input->post('name');
+        $width      = $this->input->post('width');
+        $height     = $this->input->post('height');
+        $mime_type  = $this->input->post('mime_type');
+        $size       = $this->input->post('size');        
+        $data_url   = $this->toDataUrl(file_get_contents($filepath), $filetype);
+        
+        // Store image in db
+        $this->images_model->create_image(
+            $user_id,
+            $conversion_method_id,
+            $name,
+            $width,
+            $height,
+            $mime_type,
+            $data_url,
+            $size
+        );
     }
     
     private function storeThumbnails($upload_data) {
@@ -134,5 +186,11 @@ class Gallery extends CI_Controller {
     private function handle_error($errors) {
         echo $errors;
     }
+    
+    private function toDataUrl($blob, $mime) {
+        return 'data:'.$mime.';base64,'.base64_encode($blob);
+    }
+    
+    
     
 }

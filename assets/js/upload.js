@@ -11,11 +11,21 @@ $(document).ready(function(){
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-
+        reader.fileName = input.files[0].name;
+        
         reader.onload = function(e) {
-            $('#previewer img').attr('src', e.target.result);
-            $('#previewer').show();
-            $('aside').addClass('loaded');
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function() {
+                console.log(this.width);
+                console.log(this.height);
+                
+                $('#previewer img').attr('src', this.src);
+                $('#previewer').show();
+                $('input#name').val(e.target.fileName);
+                $('input#width').val(this.width);
+                $('input#height').val(this.height);
+            }
         }
 
         reader.readAsDataURL(input.files[0]);

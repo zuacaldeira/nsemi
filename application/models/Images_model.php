@@ -72,7 +72,10 @@ class Images_model extends CI_Model {
         $height,
         $mime_type,
         $data_url,
-        $size) {
+        $size,
+        $description,
+        $keywords,
+        $colors) {
         
         $slug = urldecode(url_title($name.'-'.time(), 'dash', TRUE));
         $data = array(
@@ -83,7 +86,10 @@ class Images_model extends CI_Model {
             'height'                => $height,
             'mime_type'             => $mime_type,
             'data_url'              => $data_url,
-            'size'                  => $size
+            'size'                  => $size,
+            'description'           => $description,
+            'keywords'              => $keywords,
+            'colors'                => $colors
         );
         
         $this->db->set('created_at', 'NOW()', FALSE);        

@@ -160,6 +160,9 @@ class Gallery extends CI_Controller {
         $mime_type  = $filetype;
         $size       = round(filesize($filepath)/1024, 2);        
         $data_url   = $this->toDataUrl(file_get_contents($filepath), $filetype);
+        $description = $this->input->post('description');
+        $keywords    = $this->input->post('keywords');
+        $colors      = $this->input->post('colors');
         
         // Store image in db
         $this->load->model('images_model');
@@ -171,7 +174,10 @@ class Gallery extends CI_Controller {
             $height,
             $mime_type,
             $data_url,
-            $size
+            $size,
+            $description,
+            $keywords,
+            $colors
         );
     }
     

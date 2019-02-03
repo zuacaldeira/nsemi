@@ -24,17 +24,12 @@ class Tools extends CI_Controller {
             show_404();
         }
         
-        $session_data = $this->session->userdata('data');
-        $width = $this->input->post('width');
-        $height = $this->input->post('height');
+        // Load thumbnail (contains info about original image)
+        $this->load->model('thumbnails_model');
+        $thumbnail = $this->thumbnails_model->read_with_name($name);
 
         $data['title'] = 'Nsemi Image Transformation Tool';
-        $data['original'] = 
-            ['name' => $name,
-             'data' => $this->images_model->get_originals_by_name($name)['data'],
-             'width' => $width,
-             'height' => $height
-             ];
+        $data['image'] = $thumbnail;
         
         $this->load->view('templates/header');
         $this->load->view('tools/index', $data);

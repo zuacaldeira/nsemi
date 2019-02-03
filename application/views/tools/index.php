@@ -6,12 +6,12 @@
 
     <section id="s-upload" class="container-fluid my-5 p-1 rounded">
         <div class="row m-0 p-0">
-            <div id="previewer" class="col-md-8 overflow-auto w-100" data-name="<?php echo $original['name']; ?>" data-width="<?php echo $original['width']; ?>" data-height="<?php echo $original['height']; ?>">
-                <img src="<?php echo $original['data']; ?>" class="" />
+            <div id="previewer" class="col-md-8 overflow-auto w-100" data-name="<?php echo $image['name']; ?>" data-width="<?php echo $image['width']; ?>" data-height="<?php echo $image['height']; ?>">
+                <img src="<?php echo $image['data_url']; ?>" class="" />
             </div>
             <aside class="col-md-4 text-dark m-0 p-2 py-auto mx-auto">
                 <!-- Image Previewer -->
-                <?php if($original['name'] == null): ?>
+                <?php if($image['name'] == null): ?>
                 <input id="data" type="file" name="data" class="btn btn-sm btn-primary w-100 mx-auto mb-1" />
                 <?php endif; ?>
                 <div id="iactions" class="w-100 btn-group">

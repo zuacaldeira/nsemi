@@ -42,3 +42,29 @@ TASK -- New Migration to update images table --
 [DONE] 1.1   - up() method
 [DONE] 1.2   - down() method
 [DONE] 2 - Update Image Model and Gallery create method to insert description, keywords and colors
+
+
+-------------------------------------------------------------
+TASK -- Fix Single Image Page --
+-------------------------------------------------------------
+[TODO] 1 - Pass raw name  as url, without thumb marker nor extension
+[TODO] 2 - Load _lg_thumb thumbnails
+[TODO] 3 - Load original image
+[TODO] 4 - Merge Information
+[TODO]     4.1 - at model level (improve reutilization and 
+                 implements generalization as per ERD)
+[TODO]     4.2 - alternatively, at controller level (improve isolation)
+[TODO] 5 - Pass data to view gallery/view.php
+
+-------------------------------------------------------------
+TASK -- React to Violation of image name uniqueness        --
+-------------------------------------------------------------
+Solution 1 - At form validation (form validation for images is not implemented)
+
+    1.1 - Input "name" must change from disabled -> enabled in order to allow edition
+    
+Solution 2 - At backend, if violation is detected show specific error and redirect to form again    
+    
+-------------------------------------------------------------
+TASK -- Add IN DEVELOPMENT... MARKER                       --
+-------------------------------------------------------------

@@ -80,7 +80,22 @@ class Thumbnails_Model extends CI_Model {
             array('name' => $name)
         );
         
-        return $query->row_array();
+        $thumbnail = $query->row_array();
+        $original_id = $thumbnail['original_id'];
+        
+        $this->load->model('images_model');
+        $image = $this->images_model->read_with_id($original_id);
+        
+        $thumbnail['description']     = $image['description'];
+        $thumbnail['keywords']        = $image['keywords'];
+        $thumbnail['colors']          = $image['colors'];
+        $thumbnail['original_name']   = $image['name'];
+        $thumbnail['owner']           = $image['owner'];
+        $thumbnail['original_width']  = $image['width'];
+        $thumbnail['original_height'] = $image['height'];
+        $thumbnail['original_size']   = $image['size'];
+        
+        return $thumbnail;
     }
 
 }

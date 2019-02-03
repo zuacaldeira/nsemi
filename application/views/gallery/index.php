@@ -19,7 +19,7 @@
     <div class="my-5">
        <div class="thumbnails mx-auto">
             <?php foreach($images as $item): ?>
-                    <a href="gallery/<?php echo $item['name']; ?>" class="mx-auto">
+                    <a href="<?php echo 'gallery/'.$item['name']; ?>" class="mx-auto">
                         <img src="<?php echo $item['data_url']; ?>" style="width:150px; height:100px;"
                         class="mb-1"/>
                     </a>

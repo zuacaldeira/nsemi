@@ -62,6 +62,11 @@ class Gallery extends CI_Controller {
         
         // Large image name
         $new_name = str_replace('_sm_thumb', '_lg_thumb', $name);
+        
+        // Load thumbnails model
+        $this->load->model('thumbnails_model');
+        
+        // Get the large thumbnail from db
         $image = $this->thumbnails_model->read_with_name($new_name);
         
         // Prepare communication data object
@@ -70,7 +75,7 @@ class Gallery extends CI_Controller {
         $data['image'] = $image;
         
         // Composes view
-        $this->load->view('templates/header', $data);
+        $this->load->view('templates/header');
         $this->load->view("gallery/view", $data);
         $this->load->view('templates/footer');
     }

@@ -22,6 +22,14 @@ class Users_model extends CI_Model {
         return $query->row_array();
     }
     
+    public function get_user_with_id($user_id) {
+        $query = $this->db->get_where(
+            'users', 
+            array('user_id' => $user_id)
+        );
+        return $query->row_array();
+    }
+
     public function create_user(
         $firstname, 
         $lastname, 

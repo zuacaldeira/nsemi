@@ -49,6 +49,25 @@ class Images_model extends CI_Model {
     }
 
     /**
+     * Retrieves the image with a given image id.
+     * @param  String [$image_id] The Image id.
+     * @return Array  Array with a single image if an image with the given 
+     *                id exists, or empty if there is no such image.
+     */
+    public function read_with_id($image_id) {
+        $query = $this->db->get_where('images', array('image_id' => $image_id));
+        
+        $image = $query->row_array();
+        
+        // Load user full name
+        $this->load->model('users_model');
+        $user = $this->users_model->get_user_with_id($image['user_id']);
+        
+        $image['owner'] = $user['firstname'].' '.$user['lastname'];
+        return $image;
+    }
+    
+    /**
      * Retrieves the names of all images.
      * @return [array] Array with all images names.
      * TODO: Simplify by using a simple select name...

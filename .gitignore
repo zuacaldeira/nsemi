@@ -39,3 +39,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /application/session/
 /application/config/production/
 /.htaccess_prod
+/application/tests/_ci_phpunit_test/
+/application/tests/build/
+/application/tests/

@@ -73,17 +73,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$hostname           = $_SERVER['nsemi_db_host'];
-$database           = $_SERVER['nsemi_db_name'];
-$database_user      = $_SERVER['nsemi_db_user'];
-$database_password  = $_SERVER['nsemi_db_password'];
-
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => $hostname,//'localhost',
-	'database' => $database,//'db3653349',
-	'username' => $database_user,//'root',
-	'password' => (isset($database_password)?$database_password:''),//'',
+	'hostname' => 'localhost',
+	'database' => 'db3653349',
+	'username' => 'root',
+	'password' => '',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -99,27 +94,3 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-
-/*
-$db['production'] = array(
-	'dsn'	=> '',
-	'hostname' => 'rdbms.strato.de',
-	'database' => 'DB3653349',
-	'username' => 'U3653349',
-	'password' => 'Mia10Elisa44Zua45',
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
-*/

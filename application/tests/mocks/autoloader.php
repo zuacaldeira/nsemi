@@ -1,6 +1,8 @@
 <?php
 
-// This autoloader provide convenient way to working with mock object
+// This is from: https://github.com/bcit-ci/CodeIgniter/blob/develop/tests/mocks/autoloader.php
+
+// This autoloader provide convinient way to working with mock object
 // make the test looks natural. This autoloader support cascade file loading as well
 // within mocks directory.
 //

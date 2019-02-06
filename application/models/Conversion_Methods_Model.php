@@ -6,7 +6,7 @@
 /** 
  * Model Class for conversion_methods table.
  */
-class Conversion_Methods_Model extends CI_Model {
+class Conversion_methods_model extends CI_Model {
     
     /**
      * Creates a new instance of this model.

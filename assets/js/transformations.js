@@ -281,8 +281,8 @@ function resize(width, height, data, name, filter, multiple) {
             updateTransformations(result);
             endTransformationStatus();
         },
-        error: function () {
-            alert('Error during resize...');
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert('Error during resize... ' + jQuery.parseJSON( xhr.responseText ));
             endTransformationStatus();
         }
     })

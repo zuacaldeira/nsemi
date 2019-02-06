@@ -216,7 +216,7 @@ function createNewName2($name, $image, $format){
 
 function getImageFromDB($name) {
     $pdo = getPDO();
-    $query = "SELECT * FROM image WHERE name='$name'";
+    $query = "SELECT * FROM images WHERE name='$name'";
 
     $erg = $pdo->query($query);
     $result = $erg->fetch(PDO::FETCH_OBJ);

@@ -51,20 +51,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['logout/(:any)'] = 'logout';
 $route['logout'] = 'logout';
+
 $route['login/(:any)'] = 'login';
 $route['login'] = 'login';
+
 $route['register/(:any)'] = 'register/view/$1';
 $route['register'] = 'register';
+
 $route['tools/(:any)'] = 'tools/view/$1';
 $route['tools'] = 'tools';
 
 $route['gallery/create'] = 'gallery/create';
-$route['gallery/(:any)'] = 'gallery/view/$1';
 $route['gallery'] = 'gallery';
+$route['gallery/(:any)'] = 'gallery/view/$1';
 
 $route['vguides/upload'] = 'vguides/upload';
 $route['vguides/create'] = 'vguides/create';
-$route['vguides/(:any)'] = 'vguides/view/$1';
 $route['vguides'] = 'vguides';
 
 $route['news/create'] = 'news/create';
@@ -74,5 +76,4 @@ $route['news'] = 'news';
 
 $route['migrate'] = 'migrate';
 
-$route['(:any)'] = 'pages/view/$1';
-$route['default_controller'] = 'pages';
+$route['default_controller'] = 'welcome';

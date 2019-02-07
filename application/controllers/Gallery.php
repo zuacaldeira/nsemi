@@ -37,7 +37,7 @@ class Gallery extends CI_Controller {
             $this->load->view('templates/footer');
             
         } catch(Exception $ex) {
-            show_404();
+            show_404($ex->getMessage());
         }
     }
     

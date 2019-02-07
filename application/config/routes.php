@@ -58,14 +58,17 @@ $route['login'] = 'login';
 $route['register/(:any)'] = 'register/view/$1';
 $route['register'] = 'register';
 
+$route['tools/index'] = 'tools/index';
 $route['tools/(:any)'] = 'tools/view/$1';
 $route['tools'] = 'tools';
 
+$route['gallery/index']  = 'gallery/index';
 $route['gallery/create'] = 'gallery/create';
-$route['gallery'] = 'gallery';
 $route['gallery/(:any)'] = 'gallery/view/$1';
+$route['gallery']        = 'gallery';
 
-$route['vguides'] = 'vguides/index';
+$route['vguides/index'] = 'vguides/index';
+$route['vguides'] = 'vguides';
 
 $route['news/create'] = 'news/create';
 $route['news/update/(:any)'] = 'news/update/$1';

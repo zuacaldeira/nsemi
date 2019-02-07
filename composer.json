@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "classmap": [
+            "application/controllers"
+        ]
+    },
+    "require-dev": {
+        "kenjis/ci-phpunit-test": "^0.16.1"
+    }
+}

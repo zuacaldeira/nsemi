@@ -65,9 +65,7 @@ $route['gallery/create'] = 'gallery/create';
 $route['gallery'] = 'gallery';
 $route['gallery/(:any)'] = 'gallery/view/$1';
 
-$route['vguides/upload'] = 'vguides/upload';
-$route['vguides/create'] = 'vguides/create';
-$route['vguides'] = 'vguides';
+$route['vguides'] = 'vguides/index';
 
 $route['news/create'] = 'news/create';
 $route['news/update/(:any)'] = 'news/update/$1';

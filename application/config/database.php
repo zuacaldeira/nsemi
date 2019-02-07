@@ -73,12 +73,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+$ini = parse_ini_file('nsemi.ini');
+
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'database' => 'db3653349',
-	'username' => 'root',
-	'password' => '',
+	'hostname' => $ini['NSEMI_DB_HOSTNAME'],
+	'database' => $ini['NSEMI_DB_NAME'],
+	'username' => $ini['NSEMI_DB_USER'],
+	'password' => $ini['NSEMI_DB_PASSWORD'],
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

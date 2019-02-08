@@ -1,7 +1,8 @@
 {
     "autoload": {
         "classmap": [
-            "application/controllers"
+            "application/controllers",
+            "application/models"
         ]
     },
     "require-dev": {

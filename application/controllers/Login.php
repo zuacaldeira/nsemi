@@ -20,27 +20,9 @@ class Login extends CI_Controller {
     public function index() {
         // Loads helpers libraries and models needed for login
         $this->load->helper(array('url', 'form'));
-        $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
         
-        // Store referrer as a user session data 
-        if(!strpos( $this->agent->referrer(), 'login' )) {
-            $this->session->set_userdata('referrer', $this->agent->referrer());
-        }
-        
-        // Validation rule for input field 'username'
-        $this->form_validation->set_rules(
-            'username', 
-            'Username', 
-            'trim|required'
-        );
-        
-        // Validation rule for input field 'password'
-        $this->form_validation->set_rules(
-            'password', 
-            'Password', 
-            'trim|required'
-        );
+        // Sets form validation rules
+        $this->setupFormValidation();
 
         // Run form validation
         // In case of error, reload the form
@@ -83,6 +65,33 @@ class Login extends CI_Controller {
                 redirect($referrer);
             }
         }
+    }
+    
+    
+    private function setupFormValidation() {
+        // Loads form validation library
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
+        
+        // Store referrer as a user session data 
+        if(!strpos( $this->agent->referrer(), 'login' )) {
+            $this->session->set_userdata('referrer', $this->agent->referrer());
+        }
+        
+        // Validation rule for input field 'username'
+        $this->form_validation->set_rules(
+            'username', 
+            'Username', 
+            'trim|required'
+        );
+        
+        // Validation rule for input field 'password'
+        $this->form_validation->set_rules(
+            'password', 
+            'Password', 
+            'trim|required'
+        );
     }
     
     /**

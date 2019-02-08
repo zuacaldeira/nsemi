@@ -7,28 +7,45 @@
  * @copyright  2015 Kenji Suzuki
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
-class Welcome_test extends TestCase
+class Welcome_test extends NsemiControllerAbstractTest
 {
-	public function test_index()
-	{
-		$output = $this->request('GET', 'welcome/index');
-		$this->assertContains('<title>Nsemi Image Processing</title>', $output);
-	}
+    
+    /**
+     * Creates a Welcome controller test case.
+     */
+    public function __construct() {
+        parent::__construct('welcome');
+    }
+    
+    public function testHasWelcomeTitle() {
+        // Calls welcome/index...
+        $output = $this->request('GET', 'welcome');
+        $expected = 'Welcome to Nsemi';
+        
+        // Asserts on title existence
+        $this->assertContains($expected, $output);
+    }
+    
+    
+    public function testHasWelcomeSubtitle() {
+        // Calls welcome/index...
+        $output = $this->request('GET', 'welcome');
+        $expected = 'Image Transformation Tool for Image Lovers';
 
-	public function test_method_404()
-	{
-		$this->request('GET', 'welcome/method_not_exist');
-		$this->assertResponseCode(404);
-	}
+        // Asserts on subtitle existence
+        $this->assertContains($expected, $output);
+    }
+    
+    public function testHasWelcomeActions() {
+        // Calls welcome/index...
+        $output = $this->request('GET', 'welcome');
+        $expected1 = 'Search Gallery, Upload and  Monetize your Images';
+        $expected2 = 'Resize images, Create thumbnails and Convert images';
+        $expected3 = 'Easy to Use: Watch the Video Guides';
 
-	public function test_APPPATH()
-	{
-		$actual = realpath(APPPATH);
-		$expected = realpath(__DIR__ . '/../..');
-		$this->assertEquals(
-			$expected,
-			$actual,
-			'Your APPPATH seems to be wrong. Check your $application_folder in tests/Bootstrap.php'
-		);
-	}
+        // Asserts on subtitle existence
+        $this->assertContains($expected1, $output);
+        $this->assertContains($expected2, $output);
+        $this->assertContains($expected3, $output);
+    }
 }

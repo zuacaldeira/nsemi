@@ -55,7 +55,7 @@ $route['logout'] = 'logout';
 $route['login/(:any)'] = 'login';
 $route['login'] = 'login';
 
-$route['register/(:any)'] = 'register/view/$1';
+$route['register/(:any)'] = 'register';
 $route['register'] = 'register';
 
 $route['tools/index'] = 'tools/index';
@@ -68,6 +68,7 @@ $route['gallery/(:any)'] = 'gallery/view/$1';
 $route['gallery']        = 'gallery';
 
 $route['vguides/index'] = 'vguides/index';
+$route['vguides/(:any)'] = 'vguides/index';
 $route['vguides'] = 'vguides';
 
 $route['news/create'] = 'news/create';
